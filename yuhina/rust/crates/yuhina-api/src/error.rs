@@ -72,6 +72,26 @@ impl YuhinaError {
     pub fn java_not_found(message: impl Into<String>) -> Self {
         Self::new(YuhinaErrorKind::JavaNotFound, message)
     }
+
+    pub fn download_failed(message: impl Into<String>) -> Self {
+        Self::new(YuhinaErrorKind::DownloadFailed, message)
+    }
+
+    pub fn checksum_mismatch(message: impl Into<String>) -> Self {
+        Self::new(YuhinaErrorKind::ChecksumMismatch, message)
+    }
+
+    pub fn canceled(message: impl Into<String>) -> Self {
+        Self::new(YuhinaErrorKind::Canceled, message)
+    }
+
+    pub fn loader_not_installed(message: impl Into<String>) -> Self {
+        Self::new(YuhinaErrorKind::LoaderNotInstalled, message)
+    }
+
+    pub fn version_not_found(message: impl Into<String>) -> Self {
+        Self::new(YuhinaErrorKind::VersionNotFound, message)
+    }
 }
 
 impl fmt::Display for YuhinaErrorKind {
