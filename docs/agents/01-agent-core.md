@@ -86,9 +86,9 @@ rust/rust/                      ← 集成测试 (core_launch_test.rs 等)
 - 用 `wiremock`/axum test server 模拟 manifest/json/资产端点，避免依赖外网。
 
 ## 6. 交接清单（给下游）
-- [ ] `yuhina-api` 类型与错误枚举冻结并合入 main（B/C/D/E 依赖）。
-- [ ] `yuhina-db` schema + 迁移 + 仓储合入，schema 与契约 §5 一致。
-- [ ] 暴露 `install_loader` 底层 API 给 C（含进度/错误）。
-- [ ] 启动/进程 API 完成，E 侧可联调 `launch_instance`（先用离线账号）。
-- [ ] 慢速集成测试标签说明写入 `handoff.md`。
-- [ ] 未完成/风险项在 PR 描述中明示，不留静默 TODO。
+- [x] `yuhina-api` 类型与错误枚举冻结并合入 main（B/C/D/E 依赖）。
+- [x] `yuhina-db` schema + 迁移 + 仓储合入，schema 与契约 §5 一致。
+- [x] 暴露 `install_loader` 底层 API 给 C（含进度/错误）。
+- [x] 启动/进程 API 完成，E 侧可联调 `launch_instance`（先用离线账号）。
+- [x] 慢速集成测试标签说明写入 `handoff.md`。
+- [x] 未完成/风险项在 PR 描述中明示，不留静默 TODO。
