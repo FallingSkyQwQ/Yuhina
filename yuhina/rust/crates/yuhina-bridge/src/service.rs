@@ -114,7 +114,7 @@ impl YuhinaService {
     }
 
     /// Global event stream (Config/Accounts/Instances/Tasks/Java/Versions changed).
-    pub fn watch_events(&self, sink: StreamSink<AppEvent>) {
+    pub async fn watch_events(&self, sink: StreamSink<AppEvent>) {
         let mut rx = self.events_tx.subscribe();
         tokio::spawn(async move {
             while let Ok(e) = rx.recv().await {
@@ -443,7 +443,7 @@ impl YuhinaService {
     }
 
     /// Global download progress stream (throttled to 100ms by the manager).
-    pub fn watch_progress(&self, sink: StreamSink<DownloadProgressEvent>) {
+    pub async fn watch_progress(&self, sink: StreamSink<DownloadProgressEvent>) {
         let mut rx = self.download.subscribe();
         tokio::spawn(async move {
             while let Ok(e) = rx.recv().await {
@@ -475,7 +475,7 @@ impl YuhinaService {
     }
 
     /// Real-time stdout/stderr stream for one session (line-delimited).
-    pub fn watch_game_output(
+    pub async fn watch_game_output(
         &self,
         session_id: String,
         sink: StreamSink<GameOutput>,

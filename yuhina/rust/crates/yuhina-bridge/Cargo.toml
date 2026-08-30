@@ -3,6 +3,9 @@ name = "yuhina-bridge"
 version.workspace = true
 edition.workspace = true
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 yuhina-api = { path = "../yuhina-api" }
 yuhina-db = { path = "../yuhina-db" }

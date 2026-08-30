@@ -3,6 +3,8 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api.dart';
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -69,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => 463137917;
+  int get rustContentHash => -877007989;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -81,242 +83,6 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  String? yuhinaApiTypesCreateInstanceRequestAutoAccessorGetDirName({
-    required CreateInstanceRequest that,
-  });
-
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetIcon({
-    required CreateInstanceRequest that,
-  });
-
-  JavaSelection yuhinaApiTypesCreateInstanceRequestAutoAccessorGetJava({
-    required CreateInstanceRequest that,
-  });
-
-  Loader? yuhinaApiTypesCreateInstanceRequestAutoAccessorGetLoader({
-    required CreateInstanceRequest that,
-  });
-
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetMcVersion({
-    required CreateInstanceRequest that,
-  });
-
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetName({
-    required CreateInstanceRequest that,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetDirName({
-    required CreateInstanceRequest that,
-    String? dirName,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetIcon({
-    required CreateInstanceRequest that,
-    required String icon,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetJava({
-    required CreateInstanceRequest that,
-    required JavaSelection java,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetLoader({
-    required CreateInstanceRequest that,
-    Loader? loader,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetMcVersion({
-    required CreateInstanceRequest that,
-    required String mcVersion,
-  });
-
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetName({
-    required CreateInstanceRequest that,
-    required String name,
-  });
-
-  String yuhinaApiTypesGameSessionAutoAccessorGetInstanceId({
-    required GameSession that,
-  });
-
-  int yuhinaApiTypesGameSessionAutoAccessorGetPid({required GameSession that});
-
-  String yuhinaApiTypesGameSessionAutoAccessorGetSessionId({
-    required GameSession that,
-  });
-
-  BigInt yuhinaApiTypesGameSessionAutoAccessorGetStartedAt({
-    required GameSession that,
-  });
-
-  GameState yuhinaApiTypesGameSessionAutoAccessorGetState({
-    required GameSession that,
-  });
-
-  void yuhinaApiTypesGameSessionAutoAccessorSetInstanceId({
-    required GameSession that,
-    required String instanceId,
-  });
-
-  void yuhinaApiTypesGameSessionAutoAccessorSetPid({
-    required GameSession that,
-    required int pid,
-  });
-
-  void yuhinaApiTypesGameSessionAutoAccessorSetSessionId({
-    required GameSession that,
-    required String sessionId,
-  });
-
-  void yuhinaApiTypesGameSessionAutoAccessorSetStartedAt({
-    required GameSession that,
-    required BigInt startedAt,
-  });
-
-  void yuhinaApiTypesGameSessionAutoAccessorSetState({
-    required GameSession that,
-    required GameState state,
-  });
-
-  String yuhinaApiTypesInstanceDetailAutoAccessorGetGameDir({
-    required InstanceDetail that,
-  });
-
-  JavaSelection yuhinaApiTypesInstanceDetailAutoAccessorGetJava({
-    required InstanceDetail that,
-  });
-
-  LaunchArgs? yuhinaApiTypesInstanceDetailAutoAccessorGetLaunchArgs({
-    required InstanceDetail that,
-  });
-
-  String yuhinaApiTypesInstanceDetailAutoAccessorGetNotes({
-    required InstanceDetail that,
-  });
-
-  InstanceSummary yuhinaApiTypesInstanceDetailAutoAccessorGetSummary({
-    required InstanceDetail that,
-  });
-
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetGameDir({
-    required InstanceDetail that,
-    required String gameDir,
-  });
-
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetJava({
-    required InstanceDetail that,
-    required JavaSelection java,
-  });
-
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetLaunchArgs({
-    required InstanceDetail that,
-    LaunchArgs? launchArgs,
-  });
-
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetNotes({
-    required InstanceDetail that,
-    required String notes,
-  });
-
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetSummary({
-    required InstanceDetail that,
-    required InstanceSummary summary,
-  });
-
-  bool yuhinaApiTypesLauncherConfigAutoAccessorGetAutoUpdate({
-    required LauncherConfig that,
-  });
-
-  String? yuhinaApiTypesLauncherConfigAutoAccessorGetCustomSourceHost({
-    required LauncherConfig that,
-  });
-
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetDataDir({
-    required LauncherConfig that,
-  });
-
-  Source yuhinaApiTypesLauncherConfigAutoAccessorGetDownloadSource({
-    required LauncherConfig that,
-  });
-
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetGameRoot({
-    required LauncherConfig that,
-  });
-
-  LaunchArgs yuhinaApiTypesLauncherConfigAutoAccessorGetLaunchArgs({
-    required LauncherConfig that,
-  });
-
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetLocale({
-    required LauncherConfig that,
-  });
-
-  int yuhinaApiTypesLauncherConfigAutoAccessorGetThemeSeed({
-    required LauncherConfig that,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetAutoUpdate({
-    required LauncherConfig that,
-    required bool autoUpdate,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetCustomSourceHost({
-    required LauncherConfig that,
-    String? customSourceHost,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetDataDir({
-    required LauncherConfig that,
-    required String dataDir,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetDownloadSource({
-    required LauncherConfig that,
-    required Source downloadSource,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetGameRoot({
-    required LauncherConfig that,
-    required String gameRoot,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetLaunchArgs({
-    required LauncherConfig that,
-    required LaunchArgs launchArgs,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetLocale({
-    required LauncherConfig that,
-    required String locale,
-  });
-
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetThemeSeed({
-    required LauncherConfig that,
-    required int themeSeed,
-  });
-
-  YuhinaErrorKind yuhinaApiErrorYuhinaErrorAutoAccessorGetKind({
-    required YuhinaError that,
-  });
-
-  String yuhinaApiErrorYuhinaErrorAutoAccessorGetMessage({
-    required YuhinaError that,
-  });
-
-  void yuhinaApiErrorYuhinaErrorAutoAccessorSetKind({
-    required YuhinaError that,
-    required YuhinaErrorKind kind,
-  });
-
-  void yuhinaApiErrorYuhinaErrorAutoAccessorSetMessage({
-    required YuhinaError that,
-    required String message,
-  });
-
-  Future<YuhinaError> yuhinaApiErrorYuhinaErrorCanceled();
-
-  Future<YuhinaError> yuhinaApiErrorYuhinaErrorNotLoggedIn();
-
   Future<JavaRuntime> crateServiceYuhinaServiceAddManualJava({
     required YuhinaService that,
     required String path,
@@ -629,88 +395,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<LaunchArgs> yuhinaApiTypesLaunchArgsDefault();
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_AppEvent;
+  Future<YuhinaError> yuhinaApiErrorYuhinaErrorCanceled();
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_AppEvent;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_AppEventPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_CreateInstanceRequest;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_CreateInstanceRequest;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_CreateInstanceRequestPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_GameSession;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_GameSession;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_GameSessionPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_GameState;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_GameState;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_GameStatePtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_InstanceDetail;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_InstanceDetail;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_InstanceDetailPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_JavaSelection;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_JavaSelection;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_JavaSelectionPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_LauncherConfig;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_LauncherConfig;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_LauncherConfigPtr;
-
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Source;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Source;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_SourcePtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_YuhinaError;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_YuhinaError;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_YuhinaErrorPtr;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_YuhinaErrorKind;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_YuhinaErrorKind;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_YuhinaErrorKindPtr;
+  Future<YuhinaError> yuhinaApiErrorYuhinaErrorNotLoggedIn();
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_YuhinaService;
@@ -731,1812 +418,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  String? yuhinaApiTypesCreateInstanceRequestAutoAccessorGetDirName({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_opt_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetDirNameConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetDirNameConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_dir_name",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetIcon({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetIconConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetIconConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_icon",
-        argNames: ["that"],
-      );
-
-  @override
-  JavaSelection yuhinaApiTypesCreateInstanceRequestAutoAccessorGetJava({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetJavaConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetJavaConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_java",
-        argNames: ["that"],
-      );
-
-  @override
-  Loader? yuhinaApiTypesCreateInstanceRequestAutoAccessorGetLoader({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_opt_box_autoadd_loader,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetLoaderConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetLoaderConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_loader",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetMcVersion({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetMcVersionConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetMcVersionConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_mc_version",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesCreateInstanceRequestAutoAccessorGetName({
-    required CreateInstanceRequest that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetNameConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorGetNameConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_get_name",
-        argNames: ["that"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetDirName({
-    required CreateInstanceRequest that,
-    String? dirName,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_opt_String(dirName, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetDirNameConstMeta,
-        argValues: [that, dirName],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetDirNameConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_dir_name",
-        argNames: ["that", "dirName"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetIcon({
-    required CreateInstanceRequest that,
-    required String icon,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_String(icon, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetIconConstMeta,
-        argValues: [that, icon],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetIconConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_icon",
-        argNames: ["that", "icon"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetJava({
-    required CreateInstanceRequest that,
-    required JavaSelection java,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-            java,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetJavaConstMeta,
-        argValues: [that, java],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetJavaConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_java",
-        argNames: ["that", "java"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetLoader({
-    required CreateInstanceRequest that,
-    Loader? loader,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_opt_box_autoadd_loader(loader, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetLoaderConstMeta,
-        argValues: [that, loader],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetLoaderConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_loader",
-        argNames: ["that", "loader"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetMcVersion({
-    required CreateInstanceRequest that,
-    required String mcVersion,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_String(mcVersion, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetMcVersionConstMeta,
-        argValues: [that, mcVersion],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetMcVersionConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_mc_version",
-        argNames: ["that", "mcVersion"],
-      );
-
-  @override
-  void yuhinaApiTypesCreateInstanceRequestAutoAccessorSetName({
-    required CreateInstanceRequest that,
-    required String name,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            that,
-            serializer,
-          );
-          sse_encode_String(name, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetNameConstMeta,
-        argValues: [that, name],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesCreateInstanceRequestAutoAccessorSetNameConstMeta =>
-      const TaskConstMeta(
-        debugName: "CreateInstanceRequest_auto_accessor_set_name",
-        argNames: ["that", "name"],
-      );
-
-  @override
-  String yuhinaApiTypesGameSessionAutoAccessorGetInstanceId({
-    required GameSession that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorGetInstanceIdConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorGetInstanceIdConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_get_instance_id",
-        argNames: ["that"],
-      );
-
-  @override
-  int yuhinaApiTypesGameSessionAutoAccessorGetPid({required GameSession that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_u_32,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorGetPidConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesGameSessionAutoAccessorGetPidConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_get_pid",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesGameSessionAutoAccessorGetSessionId({
-    required GameSession that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorGetSessionIdConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorGetSessionIdConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_get_session_id",
-        argNames: ["that"],
-      );
-
-  @override
-  BigInt yuhinaApiTypesGameSessionAutoAccessorGetStartedAt({
-    required GameSession that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_u_64,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorGetStartedAtConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorGetStartedAtConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_get_started_at",
-        argNames: ["that"],
-      );
-
-  @override
-  GameState yuhinaApiTypesGameSessionAutoAccessorGetState({
-    required GameSession that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorGetStateConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesGameSessionAutoAccessorGetStateConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_get_state",
-        argNames: ["that"],
-      );
-
-  @override
-  void yuhinaApiTypesGameSessionAutoAccessorSetInstanceId({
-    required GameSession that,
-    required String instanceId,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          sse_encode_String(instanceId, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 18)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorSetInstanceIdConstMeta,
-        argValues: [that, instanceId],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorSetInstanceIdConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_set_instance_id",
-        argNames: ["that", "instanceId"],
-      );
-
-  @override
-  void yuhinaApiTypesGameSessionAutoAccessorSetPid({
-    required GameSession that,
-    required int pid,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          sse_encode_u_32(pid, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 19)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorSetPidConstMeta,
-        argValues: [that, pid],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesGameSessionAutoAccessorSetPidConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_set_pid",
-        argNames: ["that", "pid"],
-      );
-
-  @override
-  void yuhinaApiTypesGameSessionAutoAccessorSetSessionId({
-    required GameSession that,
-    required String sessionId,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          sse_encode_String(sessionId, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 20)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorSetSessionIdConstMeta,
-        argValues: [that, sessionId],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorSetSessionIdConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_set_session_id",
-        argNames: ["that", "sessionId"],
-      );
-
-  @override
-  void yuhinaApiTypesGameSessionAutoAccessorSetStartedAt({
-    required GameSession that,
-    required BigInt startedAt,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          sse_encode_u_64(startedAt, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorSetStartedAtConstMeta,
-        argValues: [that, startedAt],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesGameSessionAutoAccessorSetStartedAtConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_set_started_at",
-        argNames: ["that", "startedAt"],
-      );
-
-  @override
-  void yuhinaApiTypesGameSessionAutoAccessorSetState({
-    required GameSession that,
-    required GameState state,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-            state,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 22)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesGameSessionAutoAccessorSetStateConstMeta,
-        argValues: [that, state],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesGameSessionAutoAccessorSetStateConstMeta =>
-      const TaskConstMeta(
-        debugName: "GameSession_auto_accessor_set_state",
-        argNames: ["that", "state"],
-      );
-
-  @override
-  String yuhinaApiTypesInstanceDetailAutoAccessorGetGameDir({
-    required InstanceDetail that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 23)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorGetGameDirConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorGetGameDirConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_get_game_dir",
-        argNames: ["that"],
-      );
-
-  @override
-  JavaSelection yuhinaApiTypesInstanceDetailAutoAccessorGetJava({
-    required InstanceDetail that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorGetJavaConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesInstanceDetailAutoAccessorGetJavaConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_get_java",
-        argNames: ["that"],
-      );
-
-  @override
-  LaunchArgs? yuhinaApiTypesInstanceDetailAutoAccessorGetLaunchArgs({
-    required InstanceDetail that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 25)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_opt_box_autoadd_launch_args,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesInstanceDetailAutoAccessorGetLaunchArgsConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorGetLaunchArgsConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_get_launch_args",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesInstanceDetailAutoAccessorGetNotes({
-    required InstanceDetail that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorGetNotesConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorGetNotesConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_get_notes",
-        argNames: ["that"],
-      );
-
-  @override
-  InstanceSummary yuhinaApiTypesInstanceDetailAutoAccessorGetSummary({
-    required InstanceDetail that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_instance_summary,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorGetSummaryConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorGetSummaryConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_get_summary",
-        argNames: ["that"],
-      );
-
-  @override
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetGameDir({
-    required InstanceDetail that,
-    required String gameDir,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          sse_encode_String(gameDir, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorSetGameDirConstMeta,
-        argValues: [that, gameDir],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorSetGameDirConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_set_game_dir",
-        argNames: ["that", "gameDir"],
-      );
-
-  @override
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetJava({
-    required InstanceDetail that,
-    required JavaSelection java,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-            java,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 29)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorSetJavaConstMeta,
-        argValues: [that, java],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiTypesInstanceDetailAutoAccessorSetJavaConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_set_java",
-        argNames: ["that", "java"],
-      );
-
-  @override
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetLaunchArgs({
-    required InstanceDetail that,
-    LaunchArgs? launchArgs,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          sse_encode_opt_box_autoadd_launch_args(launchArgs, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 30)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesInstanceDetailAutoAccessorSetLaunchArgsConstMeta,
-        argValues: [that, launchArgs],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorSetLaunchArgsConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_set_launch_args",
-        argNames: ["that", "launchArgs"],
-      );
-
-  @override
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetNotes({
-    required InstanceDetail that,
-    required String notes,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          sse_encode_String(notes, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 31)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorSetNotesConstMeta,
-        argValues: [that, notes],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorSetNotesConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_set_notes",
-        argNames: ["that", "notes"],
-      );
-
-  @override
-  void yuhinaApiTypesInstanceDetailAutoAccessorSetSummary({
-    required InstanceDetail that,
-    required InstanceSummary summary,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-            that,
-            serializer,
-          );
-          sse_encode_instance_summary(summary, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 32)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesInstanceDetailAutoAccessorSetSummaryConstMeta,
-        argValues: [that, summary],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesInstanceDetailAutoAccessorSetSummaryConstMeta =>
-      const TaskConstMeta(
-        debugName: "InstanceDetail_auto_accessor_set_summary",
-        argNames: ["that", "summary"],
-      );
-
-  @override
-  bool yuhinaApiTypesLauncherConfigAutoAccessorGetAutoUpdate({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 33)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetAutoUpdateConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetAutoUpdateConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_auto_update",
-        argNames: ["that"],
-      );
-
-  @override
-  String? yuhinaApiTypesLauncherConfigAutoAccessorGetCustomSourceHost({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_opt_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetCustomSourceHostConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetCustomSourceHostConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_custom_source_host",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetDataDir({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesLauncherConfigAutoAccessorGetDataDirConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetDataDirConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_data_dir",
-        argNames: ["that"],
-      );
-
-  @override
-  Source yuhinaApiTypesLauncherConfigAutoAccessorGetDownloadSource({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetDownloadSourceConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetDownloadSourceConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_download_source",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetGameRoot({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetGameRootConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetGameRootConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_game_root",
-        argNames: ["that"],
-      );
-
-  @override
-  LaunchArgs yuhinaApiTypesLauncherConfigAutoAccessorGetLaunchArgs({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_launch_args,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetLaunchArgsConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetLaunchArgsConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_launch_args",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiTypesLauncherConfigAutoAccessorGetLocale({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesLauncherConfigAutoAccessorGetLocaleConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetLocaleConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_locale",
-        argNames: ["that"],
-      );
-
-  @override
-  int yuhinaApiTypesLauncherConfigAutoAccessorGetThemeSeed({
-    required LauncherConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_u_32,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorGetThemeSeedConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorGetThemeSeedConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_get_theme_seed",
-        argNames: ["that"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetAutoUpdate({
-    required LauncherConfig that,
-    required bool autoUpdate,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_bool(autoUpdate, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetAutoUpdateConstMeta,
-        argValues: [that, autoUpdate],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetAutoUpdateConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_auto_update",
-        argNames: ["that", "autoUpdate"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetCustomSourceHost({
-    required LauncherConfig that,
-    String? customSourceHost,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_opt_String(customSourceHost, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetCustomSourceHostConstMeta,
-        argValues: [that, customSourceHost],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetCustomSourceHostConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_custom_source_host",
-        argNames: ["that", "customSourceHost"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetDataDir({
-    required LauncherConfig that,
-    required String dataDir,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_String(dataDir, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesLauncherConfigAutoAccessorSetDataDirConstMeta,
-        argValues: [that, dataDir],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetDataDirConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_data_dir",
-        argNames: ["that", "dataDir"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetDownloadSource({
-    required LauncherConfig that,
-    required Source downloadSource,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-            downloadSource,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetDownloadSourceConstMeta,
-        argValues: [that, downloadSource],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetDownloadSourceConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_download_source",
-        argNames: ["that", "downloadSource"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetGameRoot({
-    required LauncherConfig that,
-    required String gameRoot,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_String(gameRoot, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetGameRootConstMeta,
-        argValues: [that, gameRoot],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetGameRootConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_game_root",
-        argNames: ["that", "gameRoot"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetLaunchArgs({
-    required LauncherConfig that,
-    required LaunchArgs launchArgs,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_launch_args(launchArgs, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetLaunchArgsConstMeta,
-        argValues: [that, launchArgs],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetLaunchArgsConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_launch_args",
-        argNames: ["that", "launchArgs"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetLocale({
-    required LauncherConfig that,
-    required String locale,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_String(locale, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiTypesLauncherConfigAutoAccessorSetLocaleConstMeta,
-        argValues: [that, locale],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetLocaleConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_locale",
-        argNames: ["that", "locale"],
-      );
-
-  @override
-  void yuhinaApiTypesLauncherConfigAutoAccessorSetThemeSeed({
-    required LauncherConfig that,
-    required int themeSeed,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            that,
-            serializer,
-          );
-          sse_encode_u_32(themeSeed, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta:
-            kYuhinaApiTypesLauncherConfigAutoAccessorSetThemeSeedConstMeta,
-        argValues: [that, themeSeed],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kYuhinaApiTypesLauncherConfigAutoAccessorSetThemeSeedConstMeta =>
-      const TaskConstMeta(
-        debugName: "LauncherConfig_auto_accessor_set_theme_seed",
-        argNames: ["that", "themeSeed"],
-      );
-
-  @override
-  YuhinaErrorKind yuhinaApiErrorYuhinaErrorAutoAccessorGetKind({
-    required YuhinaError that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 49)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorAutoAccessorGetKindConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorAutoAccessorGetKindConstMeta =>
-      const TaskConstMeta(
-        debugName: "YuhinaError_auto_accessor_get_kind",
-        argNames: ["that"],
-      );
-
-  @override
-  String yuhinaApiErrorYuhinaErrorAutoAccessorGetMessage({
-    required YuhinaError that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 50)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorAutoAccessorGetMessageConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorAutoAccessorGetMessageConstMeta =>
-      const TaskConstMeta(
-        debugName: "YuhinaError_auto_accessor_get_message",
-        argNames: ["that"],
-      );
-
-  @override
-  void yuhinaApiErrorYuhinaErrorAutoAccessorSetKind({
-    required YuhinaError that,
-    required YuhinaErrorKind kind,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-            kind,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 51)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorAutoAccessorSetKindConstMeta,
-        argValues: [that, kind],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorAutoAccessorSetKindConstMeta =>
-      const TaskConstMeta(
-        debugName: "YuhinaError_auto_accessor_set_kind",
-        argNames: ["that", "kind"],
-      );
-
-  @override
-  void yuhinaApiErrorYuhinaErrorAutoAccessorSetMessage({
-    required YuhinaError that,
-    required String message,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-            that,
-            serializer,
-          );
-          sse_encode_String(message, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 52)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorAutoAccessorSetMessageConstMeta,
-        argValues: [that, message],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorAutoAccessorSetMessageConstMeta =>
-      const TaskConstMeta(
-        debugName: "YuhinaError_auto_accessor_set_message",
-        argNames: ["that", "message"],
-      );
-
-  @override
-  Future<YuhinaError> yuhinaApiErrorYuhinaErrorCanceled() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 53,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorCanceledConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorCanceledConstMeta =>
-      const TaskConstMeta(debugName: "YuhinaError_canceled", argNames: []);
-
-  @override
-  Future<YuhinaError> yuhinaApiErrorYuhinaErrorNotLoggedIn() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 54,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
-          decodeErrorData: null,
-        ),
-        constMeta: kYuhinaApiErrorYuhinaErrorNotLoggedInConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kYuhinaApiErrorYuhinaErrorNotLoggedInConstMeta =>
-      const TaskConstMeta(debugName: "YuhinaError_not_logged_in", argNames: []);
-
-  @override
   Future<JavaRuntime> crateServiceYuhinaServiceAddManualJava({
     required YuhinaService that,
     required String path,
@@ -2553,14 +434,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 55,
+            funcId: 1,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_java_runtime,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceAddManualJavaConstMeta,
         argValues: [that, path],
@@ -2592,14 +472,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 56,
+            funcId: 2,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_account,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceAddOfflineAccountConstMeta,
         argValues: [that, username],
@@ -2635,14 +514,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 57,
+            funcId: 3,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_account,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceAddYggdrasilAccountConstMeta,
         argValues: [that, serverUrl, username, password],
@@ -2672,14 +550,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 58,
+            funcId: 4,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_microsoft_login_handle,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceBeginMicrosoftLoginConstMeta,
         argValues: [that],
@@ -2711,14 +588,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 59,
+            funcId: 5,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCancelMicrosoftLoginConstMeta,
         argValues: [that, handle],
@@ -2750,14 +626,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 60,
+            funcId: 6,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCancelTaskConstMeta,
         argValues: [that, id],
@@ -2787,14 +662,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 61,
+            funcId: 7,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_String,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCheckLauncherUpdateConstMeta,
         argValues: [that],
@@ -2826,14 +700,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 62,
+            funcId: 8,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_mod_conflict,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCheckModConflictsConstMeta,
         argValues: [that, instanceId],
@@ -2865,14 +738,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 63,
+            funcId: 9,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_mod_update,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCheckModUpdatesConstMeta,
         argValues: [that, instanceId],
@@ -2902,14 +774,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 64,
+            funcId: 10,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceClearFinishedTasksConstMeta,
         argValues: [that],
@@ -2943,14 +814,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 65,
+            funcId: 11,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_instance_summary,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCloneInstanceConstMeta,
         argValues: [that, id, newName],
@@ -2978,21 +848,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-            req,
-            serializer,
-          );
+          sse_encode_box_autoadd_create_instance_request(req, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 66,
+            funcId: 12,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_instance_summary,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceCreateInstanceConstMeta,
         argValues: [that, req],
@@ -3026,14 +892,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 67,
+            funcId: 13,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceDeleteInstanceConstMeta,
         argValues: [that, id, deleteFiles],
@@ -3067,14 +932,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 68,
+            funcId: 14,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceDeleteModConstMeta,
         argValues: [that, instanceId, modId],
@@ -3108,14 +972,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 69,
+            funcId: 15,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_instance_summary,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta:
             kCrateServiceYuhinaServiceDownloadModpackFromModrinthConstMeta,
@@ -3151,14 +1014,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 70,
+            funcId: 16,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceExportModpackConstMeta,
         argValues: [that, instanceId, destPath],
@@ -3188,14 +1050,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 71,
+            funcId: 17,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_news_item,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceFetchNewsConstMeta,
         argValues: [that],
@@ -3225,14 +1086,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 72,
+            funcId: 18,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_version_meta,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceFetchVersionListConstMeta,
         argValues: [that],
@@ -3262,14 +1122,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 73,
+            funcId: 19,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_account,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceGetActiveAccountConstMeta,
         argValues: [that],
@@ -3299,13 +1158,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 74,
+            funcId: 20,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig,
+          decodeSuccessData: sse_decode_launcher_config,
           decodeErrorData: null,
         ),
         constMeta: kCrateServiceYuhinaServiceGetConfigConstMeta,
@@ -3340,7 +1198,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 75,
+            funcId: 21,
             port: port_,
           );
         },
@@ -3378,15 +1236,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 76,
+            funcId: 22,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeSuccessData: sse_decode_game_session,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceGetGameSessionConstMeta,
         argValues: [that, sessionId],
@@ -3418,15 +1274,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 77,
+            funcId: 23,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeSuccessData: sse_decode_instance_detail,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceGetInstanceConstMeta,
         argValues: [that, id],
@@ -3458,14 +1312,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 78,
+            funcId: 24,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_modrinth_project,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceGetModProjectConstMeta,
         argValues: [that, projectId],
@@ -3495,7 +1348,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 79,
+            funcId: 25,
             port: port_,
           );
         },
@@ -3531,7 +1384,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 80,
+            funcId: 26,
             port: port_,
           );
         },
@@ -3571,14 +1424,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 81,
+            funcId: 27,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_instance_summary,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceImportModpackConstMeta,
         argValues: [that, mrpackPath, name],
@@ -3612,14 +1464,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 82,
+            funcId: 28,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceInstallInstanceLoaderConstMeta,
         argValues: [that, id, loader],
@@ -3651,14 +1502,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 83,
+            funcId: 29,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_java_runtime,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceInstallJavaConstMeta,
         argValues: [that, major],
@@ -3694,14 +1544,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 84,
+            funcId: 30,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_installed_mod,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceInstallModConstMeta,
         argValues: [that, instanceId, projectId, versionId],
@@ -3735,14 +1584,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 85,
+            funcId: 31,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_installed_mod,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceInstallModFileConstMeta,
         argValues: [that, instanceId, path],
@@ -3774,15 +1622,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 86,
+            funcId: 32,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeSuccessData: sse_decode_game_session,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceLaunchInstanceConstMeta,
         argValues: [that, instanceId],
@@ -3812,7 +1658,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 87,
+            funcId: 33,
             port: port_,
           );
         },
@@ -3848,7 +1694,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 88,
+            funcId: 34,
             port: port_,
           );
         },
@@ -3884,13 +1730,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 89,
+            funcId: 35,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession,
+          decodeSuccessData: sse_decode_list_game_session,
           decodeErrorData: null,
         ),
         constMeta: kCrateServiceYuhinaServiceListGameSessionsConstMeta,
@@ -3921,7 +1766,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 90,
+            funcId: 36,
             port: port_,
           );
         },
@@ -3957,7 +1802,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 91,
+            funcId: 37,
             port: port_,
           );
         },
@@ -3999,7 +1844,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 92,
+            funcId: 38,
             port: port_,
           );
         },
@@ -4037,7 +1882,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 93,
+            funcId: 39,
             port: port_,
           );
         },
@@ -4066,22 +1911,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            config,
-            serializer,
-          );
+          sse_encode_box_autoadd_launcher_config(config, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 94,
+            funcId: 40,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData:
               sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaService,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceNewConstMeta,
         argValues: [config],
@@ -4110,14 +1951,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 95,
+            funcId: 41,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceOpenGameDirConstMeta,
         argValues: [that, instanceId],
@@ -4149,14 +1989,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 96,
+            funcId: 42,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServicePauseTaskConstMeta,
         argValues: [that, id],
@@ -4188,14 +2027,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 97,
+            funcId: 43,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_account,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServicePollMicrosoftLoginConstMeta,
         argValues: [that, handle],
@@ -4227,14 +2065,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 98,
+            funcId: 44,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_account,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceRefreshAccountConstMeta,
         argValues: [that, id],
@@ -4266,14 +2103,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 99,
+            funcId: 45,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceRemoveAccountConstMeta,
         argValues: [that, id],
@@ -4305,14 +2141,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 100,
+            funcId: 46,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceRemoveJavaConstMeta,
         argValues: [that, id],
@@ -4346,14 +2181,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 101,
+            funcId: 47,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceRenameInstanceConstMeta,
         argValues: [that, id, name],
@@ -4383,14 +2217,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 102,
+            funcId: 48,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_record_string_string,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceResolveDataPathsConstMeta,
         argValues: [that],
@@ -4422,14 +2255,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 103,
+            funcId: 49,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceResumeTaskConstMeta,
         argValues: [that, id],
@@ -4459,14 +2291,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 104,
+            funcId: 50,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceScanSystemJavaConstMeta,
         argValues: [that],
@@ -4506,14 +2337,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 105,
+            funcId: 51,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_search_result,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceSearchModsConstMeta,
         argValues: [that, query, loaders, gameVersions, index, limit],
@@ -4552,14 +2382,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 106,
+            funcId: 52,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceSetActiveAccountConstMeta,
         argValues: [that, id],
@@ -4587,21 +2416,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-            config,
-            serializer,
-          );
+          sse_encode_box_autoadd_launcher_config(config, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 107,
+            funcId: 53,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceSetConfigConstMeta,
         argValues: [that, config],
@@ -4635,14 +2460,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 108,
+            funcId: 54,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceSetInstanceIconConstMeta,
         argValues: [that, id, icon],
@@ -4678,14 +2502,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 109,
+            funcId: 55,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceSetModEnabledConstMeta,
         argValues: [that, instanceId, modId, enabled],
@@ -4717,14 +2540,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 110,
+            funcId: 56,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceStopGameConstMeta,
         argValues: [that, sessionId],
@@ -4760,14 +2582,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 111,
+            funcId: 57,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_installed_mod,
-          decodeErrorData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+          decodeErrorData: sse_decode_yuhina_error,
         ),
         constMeta: kCrateServiceYuhinaServiceUpdateModConstMeta,
         argValues: [that, instanceId, modId, toVersionId],
@@ -4796,14 +2617,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
               that,
               serializer,
             );
-            sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent_Sse(
-              sink,
-              serializer,
-            );
+            sse_encode_StreamSink_app_event_Sse(sink, serializer);
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 112,
+              funcId: 58,
               port: port_,
             );
           },
@@ -4846,14 +2664,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 113,
+              funcId: 59,
               port: port_,
             );
           },
           codec: SseCodec(
             decodeSuccessData: sse_decode_unit,
-            decodeErrorData:
-                sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError,
+            decodeErrorData: sse_decode_yuhina_error,
           ),
           constMeta: kCrateServiceYuhinaServiceWatchGameOutputConstMeta,
           argValues: [that, sessionId, sink],
@@ -4888,7 +2705,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 114,
+              funcId: 60,
               port: port_,
             );
           },
@@ -4921,7 +2738,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 115,
+            funcId: 61,
             port: port_,
           );
         },
@@ -4949,7 +2766,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 116,
+            funcId: 62,
             port: port_,
           );
         },
@@ -4976,7 +2793,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 117,
+            funcId: 63,
             port: port_,
           );
         },
@@ -4994,85 +2811,62 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kYuhinaApiTypesLaunchArgsDefaultConstMeta =>
       const TaskConstMeta(debugName: "launch_args_default", argNames: []);
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_AppEvent => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent;
+  @override
+  Future<YuhinaError> yuhinaApiErrorYuhinaErrorCanceled() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 64,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_yuhina_error,
+          decodeErrorData: null,
+        ),
+        constMeta: kYuhinaApiErrorYuhinaErrorCanceledConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_AppEvent => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent;
+  TaskConstMeta get kYuhinaApiErrorYuhinaErrorCanceledConstMeta =>
+      const TaskConstMeta(debugName: "yuhina_error_canceled", argNames: []);
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_CreateInstanceRequest => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest;
+  @override
+  Future<YuhinaError> yuhinaApiErrorYuhinaErrorNotLoggedIn() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 65,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_yuhina_error,
+          decodeErrorData: null,
+        ),
+        constMeta: kYuhinaApiErrorYuhinaErrorNotLoggedInConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_CreateInstanceRequest => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_GameSession => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_GameSession => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_GameState => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_GameState => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_InstanceDetail => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_InstanceDetail => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_JavaSelection => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_JavaSelection => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_LauncherConfig => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_LauncherConfig => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_Source => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_Source => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_YuhinaError => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_YuhinaError => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_YuhinaErrorKind => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_YuhinaErrorKind => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind;
+  TaskConstMeta get kYuhinaApiErrorYuhinaErrorNotLoggedInConstMeta =>
+      const TaskConstMeta(
+        debugName: "yuhina_error_not_logged_in",
+        argNames: [],
+      );
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_YuhinaService => wire
@@ -5089,192 +2883,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  AppEvent
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return AppEventImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  CreateInstanceRequest
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameSession
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameSessionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameState
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameStateImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  InstanceDetail
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  JavaSelection
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return JavaSelectionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  LauncherConfig
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Source
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return SourceImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaError
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaErrorKind
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorKindImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
   YuhinaService
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaService(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return YuhinaServiceImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  CreateInstanceRequest
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameSession
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameSessionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  InstanceDetail
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  LauncherConfig
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaError
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  CreateInstanceRequest
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameSession
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameSessionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  InstanceDetail
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  LauncherConfig
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaError
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -5287,96 +2901,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  AppEvent
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return AppEventImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  CreateInstanceRequest
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameSession
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameSessionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  GameState
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return GameStateImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  InstanceDetail
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  JavaSelection
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return JavaSelectionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  LauncherConfig
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Source
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return SourceImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaError
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  YuhinaErrorKind
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return YuhinaErrorKindImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
   YuhinaService
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaService(
     dynamic raw,
@@ -5386,10 +2910,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  RustStreamSink<AppEvent>
-  dco_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent_Sse(
-    dynamic raw,
-  ) {
+  RustStreamSink<AppEvent> dco_decode_StreamSink_app_event_Sse(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError();
   }
@@ -5440,6 +2961,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AppEvent dco_decode_app_event(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return AppEvent_ConfigChanged();
+      case 1:
+        return AppEvent_AccountsChanged();
+      case 2:
+        return AppEvent_InstancesChanged();
+      case 3:
+        return AppEvent_TaskChanged(dco_decode_String(raw[1]));
+      case 4:
+        return AppEvent_JavaRuntimesChanged();
+      case 5:
+        return AppEvent_VersionListChanged();
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
@@ -5458,9 +3000,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CreateInstanceRequest dco_decode_box_autoadd_create_instance_request(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_create_instance_request(raw);
+  }
+
+  @protected
   LaunchArgs dco_decode_box_autoadd_launch_args(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_launch_args(raw);
+  }
+
+  @protected
+  LauncherConfig dco_decode_box_autoadd_launcher_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_launcher_config(raw);
   }
 
   @protected
@@ -5499,6 +3055,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ConflictSeverity dco_decode_conflict_severity(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ConflictSeverity.values[raw as int];
+  }
+
+  @protected
+  CreateInstanceRequest dco_decode_create_instance_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    return CreateInstanceRequest(
+      name: dco_decode_String(arr[0]),
+      icon: dco_decode_String(arr[1]),
+      mcVersion: dco_decode_String(arr[2]),
+      loader: dco_decode_opt_box_autoadd_loader(arr[3]),
+      java: dco_decode_java_selection(arr[4]),
+      dirName: dco_decode_opt_String(arr[5]),
+    );
   }
 
   @protected
@@ -5570,6 +3142,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GameSession dco_decode_game_session(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return GameSession(
+      sessionId: dco_decode_String(arr[0]),
+      instanceId: dco_decode_String(arr[1]),
+      pid: dco_decode_u_32(arr[2]),
+      state: dco_decode_game_state(arr[3]),
+      startedAt: dco_decode_u_64(arr[4]),
+    );
+  }
+
+  @protected
+  GameState dco_decode_game_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return GameState_Starting();
+      case 1:
+        return GameState_Running();
+      case 2:
+        return GameState_Stopped(dco_decode_i_32(raw[1]));
+      case 3:
+        return GameState_Crashed(dco_decode_String(raw[1]));
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -5595,6 +3199,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       versionId: dco_decode_opt_String(arr[10]),
       enabled: dco_decode_bool(arr[11]),
       installedAt: dco_decode_u_64(arr[12]),
+    );
+  }
+
+  @protected
+  InstanceDetail dco_decode_instance_detail(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return InstanceDetail(
+      summary: dco_decode_instance_summary(arr[0]),
+      gameDir: dco_decode_String(arr[1]),
+      java: dco_decode_java_selection(arr[2]),
+      launchArgs: dco_decode_opt_box_autoadd_launch_args(arr[3]),
+      notes: dco_decode_String(arr[4]),
     );
   }
 
@@ -5637,6 +3256,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  JavaSelection dco_decode_java_selection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return JavaSelection_Auto(dco_decode_u_32(raw[1]));
+      case 1:
+        return JavaSelection_Manual(dco_decode_String(raw[1]));
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   JavaSource dco_decode_java_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return JavaSource.values[raw as int];
@@ -5659,16 +3291,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<GameSession>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    dynamic raw,
-  ) {
+  LauncherConfig dco_decode_launcher_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(
-          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession,
-        )
-        .toList();
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return LauncherConfig(
+      dataDir: dco_decode_String(arr[0]),
+      gameRoot: dco_decode_String(arr[1]),
+      downloadSource: dco_decode_source(arr[2]),
+      customSourceHost: dco_decode_opt_String(arr[3]),
+      launchArgs: dco_decode_launch_args(arr[4]),
+      locale: dco_decode_String(arr[5]),
+      themeSeed: dco_decode_u_32(arr[6]),
+      autoUpdate: dco_decode_bool(arr[7]),
+    );
   }
 
   @protected
@@ -5693,6 +3330,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<GameLogEntry> dco_decode_list_game_log_entry(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_game_log_entry).toList();
+  }
+
+  @protected
+  List<GameSession> dco_decode_list_game_session(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_game_session).toList();
   }
 
   @protected
@@ -5972,6 +3615,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Source dco_decode_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return Source_Official();
+      case 1:
+        return Source_Bmclapi();
+      case 2:
+        return Source_Custom(dco_decode_String(raw[1]));
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  int dco_decode_u_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
   int dco_decode_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -6018,130 +3682,66 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  YuhinaError dco_decode_yuhina_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return YuhinaError(
+      kind: dco_decode_yuhina_error_kind(arr[0]),
+      message: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  YuhinaErrorKind dco_decode_yuhina_error_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return YuhinaErrorKind_Network();
+      case 1:
+        return YuhinaErrorKind_Http(
+          dco_decode_u_16(raw[1]),
+          dco_decode_String(raw[2]),
+        );
+      case 2:
+        return YuhinaErrorKind_Auth();
+      case 3:
+        return YuhinaErrorKind_AuthExpired();
+      case 4:
+        return YuhinaErrorKind_NotLoggedIn();
+      case 5:
+        return YuhinaErrorKind_VersionNotFound();
+      case 6:
+        return YuhinaErrorKind_LoaderNotInstalled();
+      case 7:
+        return YuhinaErrorKind_JavaNotFound();
+      case 8:
+        return YuhinaErrorKind_InvalidInstance();
+      case 9:
+        return YuhinaErrorKind_ModConflict();
+      case 10:
+        return YuhinaErrorKind_ModpackInvalid();
+      case 11:
+        return YuhinaErrorKind_ChecksumMismatch();
+      case 12:
+        return YuhinaErrorKind_DownloadFailed();
+      case 13:
+        return YuhinaErrorKind_Canceled();
+      case 14:
+        return YuhinaErrorKind_Io();
+      case 15:
+        return YuhinaErrorKind_Internal();
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
     return AnyhowException(inner);
-  }
-
-  @protected
-  AppEvent
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return AppEventImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  CreateInstanceRequest
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameSession
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameSessionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameState
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameStateImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  InstanceDetail
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  JavaSelection
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return JavaSelectionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  LauncherConfig
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Source
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return SourceImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaError
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaErrorKind
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorKindImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
   }
 
   @protected
@@ -6151,126 +3751,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return YuhinaServiceImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  CreateInstanceRequest
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameSession
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameSessionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  InstanceDetail
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  LauncherConfig
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaError
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  CreateInstanceRequest
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameSession
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameSessionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  InstanceDetail
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  LauncherConfig
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaError
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -6289,126 +3769,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  AppEvent
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return AppEventImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  CreateInstanceRequest
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return CreateInstanceRequestImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameSession
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameSessionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  GameState
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return GameStateImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  InstanceDetail
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return InstanceDetailImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  JavaSelection
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return JavaSelectionImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  LauncherConfig
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return LauncherConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Source
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return SourceImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaError
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  YuhinaErrorKind
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return YuhinaErrorKindImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
   YuhinaService
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaService(
     SseDeserializer deserializer,
@@ -6421,8 +3781,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  RustStreamSink<AppEvent>
-  sse_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent_Sse(
+  RustStreamSink<AppEvent> sse_decode_StreamSink_app_event_Sse(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6484,6 +3843,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AppEvent sse_decode_app_event(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return AppEvent_ConfigChanged();
+      case 1:
+        return AppEvent_AccountsChanged();
+      case 2:
+        return AppEvent_InstancesChanged();
+      case 3:
+        var var_field0 = sse_decode_String(deserializer);
+        return AppEvent_TaskChanged(var_field0);
+      case 4:
+        return AppEvent_JavaRuntimesChanged();
+      case 5:
+        return AppEvent_VersionListChanged();
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
@@ -6504,9 +3887,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CreateInstanceRequest sse_decode_box_autoadd_create_instance_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_create_instance_request(deserializer));
+  }
+
+  @protected
   LaunchArgs sse_decode_box_autoadd_launch_args(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_launch_args(deserializer));
+  }
+
+  @protected
+  LauncherConfig sse_decode_box_autoadd_launcher_config(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_launcher_config(deserializer));
   }
 
   @protected
@@ -6547,6 +3946,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return ConflictSeverity.values[inner];
+  }
+
+  @protected
+  CreateInstanceRequest sse_decode_create_instance_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_icon = sse_decode_String(deserializer);
+    var var_mcVersion = sse_decode_String(deserializer);
+    var var_loader = sse_decode_opt_box_autoadd_loader(deserializer);
+    var var_java = sse_decode_java_selection(deserializer);
+    var var_dirName = sse_decode_opt_String(deserializer);
+    return CreateInstanceRequest(
+      name: var_name,
+      icon: var_icon,
+      mcVersion: var_mcVersion,
+      loader: var_loader,
+      java: var_java,
+      dirName: var_dirName,
+    );
   }
 
   @protected
@@ -6631,6 +4051,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GameSession sse_decode_game_session(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_sessionId = sse_decode_String(deserializer);
+    var var_instanceId = sse_decode_String(deserializer);
+    var var_pid = sse_decode_u_32(deserializer);
+    var var_state = sse_decode_game_state(deserializer);
+    var var_startedAt = sse_decode_u_64(deserializer);
+    return GameSession(
+      sessionId: var_sessionId,
+      instanceId: var_instanceId,
+      pid: var_pid,
+      state: var_state,
+      startedAt: var_startedAt,
+    );
+  }
+
+  @protected
+  GameState sse_decode_game_state(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return GameState_Starting();
+      case 1:
+        return GameState_Running();
+      case 2:
+        var var_field0 = sse_decode_i_32(deserializer);
+        return GameState_Stopped(var_field0);
+      case 3:
+        var var_field0 = sse_decode_String(deserializer);
+        return GameState_Crashed(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
@@ -6666,6 +4124,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       versionId: var_versionId,
       enabled: var_enabled,
       installedAt: var_installedAt,
+    );
+  }
+
+  @protected
+  InstanceDetail sse_decode_instance_detail(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_summary = sse_decode_instance_summary(deserializer);
+    var var_gameDir = sse_decode_String(deserializer);
+    var var_java = sse_decode_java_selection(deserializer);
+    var var_launchArgs = sse_decode_opt_box_autoadd_launch_args(deserializer);
+    var var_notes = sse_decode_String(deserializer);
+    return InstanceDetail(
+      summary: var_summary,
+      gameDir: var_gameDir,
+      java: var_java,
+      launchArgs: var_launchArgs,
+      notes: var_notes,
     );
   }
 
@@ -6720,6 +4195,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  JavaSelection sse_decode_java_selection(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_u_32(deserializer);
+        return JavaSelection_Auto(var_field0);
+      case 1:
+        var var_field0 = sse_decode_String(deserializer);
+        return JavaSelection_Manual(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   JavaSource sse_decode_java_source(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
@@ -6746,22 +4238,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<GameSession>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    SseDeserializer deserializer,
-  ) {
+  LauncherConfig sse_decode_launcher_config(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <GameSession>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(
-        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-          deserializer,
-        ),
-      );
-    }
-    return ans_;
+    var var_dataDir = sse_decode_String(deserializer);
+    var var_gameRoot = sse_decode_String(deserializer);
+    var var_downloadSource = sse_decode_source(deserializer);
+    var var_customSourceHost = sse_decode_opt_String(deserializer);
+    var var_launchArgs = sse_decode_launch_args(deserializer);
+    var var_locale = sse_decode_String(deserializer);
+    var var_themeSeed = sse_decode_u_32(deserializer);
+    var var_autoUpdate = sse_decode_bool(deserializer);
+    return LauncherConfig(
+      dataDir: var_dataDir,
+      gameRoot: var_gameRoot,
+      downloadSource: var_downloadSource,
+      customSourceHost: var_customSourceHost,
+      launchArgs: var_launchArgs,
+      locale: var_locale,
+      themeSeed: var_themeSeed,
+      autoUpdate: var_autoUpdate,
+    );
   }
 
   @protected
@@ -6812,6 +4308,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <GameLogEntry>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_game_log_entry(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<GameSession> sse_decode_list_game_session(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <GameSession>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_game_session(deserializer));
     }
     return ans_;
   }
@@ -7219,6 +4727,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Source sse_decode_source(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return Source_Official();
+      case 1:
+        return Source_Bmclapi();
+      case 2:
+        var var_field0 = sse_decode_String(deserializer);
+        return Source_Custom(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  int sse_decode_u_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint16();
+  }
+
+  @protected
   int sse_decode_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint32();
@@ -7267,142 +4799,65 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  YuhinaError sse_decode_yuhina_error(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_kind = sse_decode_yuhina_error_kind(deserializer);
+    var var_message = sse_decode_String(deserializer);
+    return YuhinaError(kind: var_kind, message: var_message);
+  }
+
+  @protected
+  YuhinaErrorKind sse_decode_yuhina_error_kind(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return YuhinaErrorKind_Network();
+      case 1:
+        var var_field0 = sse_decode_u_16(deserializer);
+        var var_field1 = sse_decode_String(deserializer);
+        return YuhinaErrorKind_Http(var_field0, var_field1);
+      case 2:
+        return YuhinaErrorKind_Auth();
+      case 3:
+        return YuhinaErrorKind_AuthExpired();
+      case 4:
+        return YuhinaErrorKind_NotLoggedIn();
+      case 5:
+        return YuhinaErrorKind_VersionNotFound();
+      case 6:
+        return YuhinaErrorKind_LoaderNotInstalled();
+      case 7:
+        return YuhinaErrorKind_JavaNotFound();
+      case 8:
+        return YuhinaErrorKind_InvalidInstance();
+      case 9:
+        return YuhinaErrorKind_ModConflict();
+      case 10:
+        return YuhinaErrorKind_ModpackInvalid();
+      case 11:
+        return YuhinaErrorKind_ChecksumMismatch();
+      case 12:
+        return YuhinaErrorKind_DownloadFailed();
+      case 13:
+        return YuhinaErrorKind_Canceled();
+      case 14:
+        return YuhinaErrorKind_Io();
+      case 15:
+        return YuhinaErrorKind_Internal();
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   void sse_encode_AnyhowException(
     AnyhowException self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.message, serializer);
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    AppEvent self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as AppEventImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    CreateInstanceRequest self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as CreateInstanceRequestImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    GameSession self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameSessionImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    GameState self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameStateImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    InstanceDetail self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as InstanceDetailImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    JavaSelection self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as JavaSelectionImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    LauncherConfig self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as LauncherConfigImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    Source self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as SourceImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    YuhinaError self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    YuhinaErrorKind self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorKindImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
   }
 
   @protected
@@ -7414,136 +4869,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as YuhinaServiceImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    CreateInstanceRequest self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as CreateInstanceRequestImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    GameSession self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameSessionImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    InstanceDetail self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as InstanceDetailImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    LauncherConfig self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as LauncherConfigImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    YuhinaError self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    CreateInstanceRequest self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as CreateInstanceRequestImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    GameSession self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameSessionImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    InstanceDetail self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as InstanceDetailImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    LauncherConfig self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as LauncherConfigImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    YuhinaError self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -7563,136 +4888,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent(
-    AppEvent self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as AppEventImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateInstanceRequest(
-    CreateInstanceRequest self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as CreateInstanceRequestImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    GameSession self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameSessionImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameState(
-    GameState self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as GameStateImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerInstanceDetail(
-    InstanceDetail self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as InstanceDetailImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJavaSelection(
-    JavaSelection self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as JavaSelectionImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLauncherConfig(
-    LauncherConfig self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as LauncherConfigImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSource(
-    Source self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as SourceImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaError(
-    YuhinaError self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaErrorKind(
-    YuhinaErrorKind self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as YuhinaErrorKindImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerYuhinaService(
     YuhinaService self,
     SseSerializer serializer,
@@ -7705,8 +4900,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void
-  sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent_Sse(
+  void sse_encode_StreamSink_app_event_Sse(
     RustStreamSink<AppEvent> self,
     SseSerializer serializer,
   ) {
@@ -7714,8 +4908,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(
       self.setupAndSerialize(
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAppEvent,
+          decodeSuccessData: sse_decode_app_event,
           decodeErrorData: sse_decode_AnyhowException,
         ),
       ),
@@ -7783,6 +4976,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_app_event(AppEvent self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case AppEvent_ConfigChanged():
+        sse_encode_i_32(0, serializer);
+      case AppEvent_AccountsChanged():
+        sse_encode_i_32(1, serializer);
+      case AppEvent_InstancesChanged():
+        sse_encode_i_32(2, serializer);
+      case AppEvent_TaskChanged(field0: final field0):
+        sse_encode_i_32(3, serializer);
+        sse_encode_String(field0, serializer);
+      case AppEvent_JavaRuntimesChanged():
+        sse_encode_i_32(4, serializer);
+      case AppEvent_VersionListChanged():
+        sse_encode_i_32(5, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
@@ -7804,12 +5017,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_create_instance_request(
+    CreateInstanceRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_create_instance_request(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_launch_args(
     LaunchArgs self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_launch_args(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_launcher_config(
+    LauncherConfig self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_launcher_config(self, serializer);
   }
 
   @protected
@@ -7852,6 +5083,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_create_instance_request(
+    CreateInstanceRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.icon, serializer);
+    sse_encode_String(self.mcVersion, serializer);
+    sse_encode_opt_box_autoadd_loader(self.loader, serializer);
+    sse_encode_java_selection(self.java, serializer);
+    sse_encode_opt_String(self.dirName, serializer);
   }
 
   @protected
@@ -7906,6 +5151,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_game_session(GameSession self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.sessionId, serializer);
+    sse_encode_String(self.instanceId, serializer);
+    sse_encode_u_32(self.pid, serializer);
+    sse_encode_game_state(self.state, serializer);
+    sse_encode_u_64(self.startedAt, serializer);
+  }
+
+  @protected
+  void sse_encode_game_state(GameState self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case GameState_Starting():
+        sse_encode_i_32(0, serializer);
+      case GameState_Running():
+        sse_encode_i_32(1, serializer);
+      case GameState_Stopped(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_i_32(field0, serializer);
+      case GameState_Crashed(field0: final field0):
+        sse_encode_i_32(3, serializer);
+        sse_encode_String(field0, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
@@ -7927,6 +5199,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.versionId, serializer);
     sse_encode_bool(self.enabled, serializer);
     sse_encode_u_64(self.installedAt, serializer);
+  }
+
+  @protected
+  void sse_encode_instance_detail(
+    InstanceDetail self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_instance_summary(self.summary, serializer);
+    sse_encode_String(self.gameDir, serializer);
+    sse_encode_java_selection(self.java, serializer);
+    sse_encode_opt_box_autoadd_launch_args(self.launchArgs, serializer);
+    sse_encode_String(self.notes, serializer);
   }
 
   @protected
@@ -7961,6 +5246,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_java_selection(JavaSelection self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case JavaSelection_Auto(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_u_32(field0, serializer);
+      case JavaSelection_Manual(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_String(field0, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_java_source(JavaSource self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
@@ -7978,19 +5276,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-    List<GameSession> self,
+  void sse_encode_launcher_config(
+    LauncherConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGameSession(
-        item,
-        serializer,
-      );
-    }
+    sse_encode_String(self.dataDir, serializer);
+    sse_encode_String(self.gameRoot, serializer);
+    sse_encode_source(self.downloadSource, serializer);
+    sse_encode_opt_String(self.customSourceHost, serializer);
+    sse_encode_launch_args(self.launchArgs, serializer);
+    sse_encode_String(self.locale, serializer);
+    sse_encode_u_32(self.themeSeed, serializer);
+    sse_encode_bool(self.autoUpdate, serializer);
   }
 
   @protected
@@ -8032,6 +5330,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_game_log_entry(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_game_session(
+    List<GameSession> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_game_session(item, serializer);
     }
   }
 
@@ -8386,6 +5696,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_source(Source self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case Source_Official():
+        sse_encode_i_32(0, serializer);
+      case Source_Bmclapi():
+        sse_encode_i_32(1, serializer);
+      case Source_Custom(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_String(field0, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_u_16(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint16(self);
+  }
+
+  @protected
   void sse_encode_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint32(self);
@@ -8424,437 +5754,57 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.isLatestRelease, serializer);
     sse_encode_bool(self.isLatestSnapshot, serializer);
   }
-}
 
-@sealed
-class AppEventImpl extends RustOpaque implements AppEvent {
-  // Not to be used by end users
-  AppEventImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  AppEventImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_AppEvent,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_AppEvent,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_AppEventPtr,
-  );
-}
-
-@sealed
-class CreateInstanceRequestImpl extends RustOpaque
-    implements CreateInstanceRequest {
-  // Not to be used by end users
-  CreateInstanceRequestImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  CreateInstanceRequestImpl.frbInternalSseDecode(
-    BigInt ptr,
-    int externalSizeOnNative,
-  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount: RustLib
-        .instance
-        .api
-        .rust_arc_increment_strong_count_CreateInstanceRequest,
-    rustArcDecrementStrongCount: RustLib
-        .instance
-        .api
-        .rust_arc_decrement_strong_count_CreateInstanceRequest,
-    rustArcDecrementStrongCountPtr: RustLib
-        .instance
-        .api
-        .rust_arc_decrement_strong_count_CreateInstanceRequestPtr,
-  );
-
-  String? get dirName => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetDirName(that: this);
-
-  String get icon => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetIcon(that: this);
-
-  JavaSelection get java => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetJava(that: this);
-
-  Loader? get loader => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetLoader(that: this);
-
-  String get mcVersion => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetMcVersion(that: this);
-
-  String get name => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorGetName(that: this);
-
-  set dirName(String? dirName) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetDirName(
-        that: this,
-        dirName: dirName,
-      );
-
-  set icon(String icon) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetIcon(
-        that: this,
-        icon: icon,
-      );
-
-  set java(JavaSelection java) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetJava(
-        that: this,
-        java: java,
-      );
-
-  set loader(Loader? loader) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetLoader(
-        that: this,
-        loader: loader,
-      );
-
-  set mcVersion(String mcVersion) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetMcVersion(
-        that: this,
-        mcVersion: mcVersion,
-      );
-
-  set name(String name) => RustLib.instance.api
-      .yuhinaApiTypesCreateInstanceRequestAutoAccessorSetName(
-        that: this,
-        name: name,
-      );
-}
-
-@sealed
-class GameSessionImpl extends RustOpaque implements GameSession {
-  // Not to be used by end users
-  GameSessionImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  GameSessionImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_GameSession,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_GameSession,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_GameSessionPtr,
-  );
-
-  String get instanceId => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorGetInstanceId(that: this);
-
-  int get pid => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorGetPid(that: this);
-
-  String get sessionId => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorGetSessionId(that: this);
-
-  BigInt get startedAt => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorGetStartedAt(that: this);
-
-  GameState get state => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorGetState(that: this);
-
-  set instanceId(String instanceId) =>
-      RustLib.instance.api.yuhinaApiTypesGameSessionAutoAccessorSetInstanceId(
-        that: this,
-        instanceId: instanceId,
-      );
-
-  set pid(int pid) => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorSetPid(that: this, pid: pid);
-
-  set sessionId(String sessionId) =>
-      RustLib.instance.api.yuhinaApiTypesGameSessionAutoAccessorSetSessionId(
-        that: this,
-        sessionId: sessionId,
-      );
-
-  set startedAt(BigInt startedAt) =>
-      RustLib.instance.api.yuhinaApiTypesGameSessionAutoAccessorSetStartedAt(
-        that: this,
-        startedAt: startedAt,
-      );
-
-  set state(GameState state) => RustLib.instance.api
-      .yuhinaApiTypesGameSessionAutoAccessorSetState(that: this, state: state);
-}
-
-@sealed
-class GameStateImpl extends RustOpaque implements GameState {
-  // Not to be used by end users
-  GameStateImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  GameStateImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_GameState,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_GameState,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_GameStatePtr,
-  );
-}
-
-@sealed
-class InstanceDetailImpl extends RustOpaque implements InstanceDetail {
-  // Not to be used by end users
-  InstanceDetailImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  InstanceDetailImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_InstanceDetail,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_InstanceDetail,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_InstanceDetailPtr,
-  );
-
-  String get gameDir => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorGetGameDir(that: this);
-
-  JavaSelection get java => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorGetJava(that: this);
-
-  LaunchArgs? get launchArgs => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorGetLaunchArgs(that: this);
-
-  String get notes => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorGetNotes(that: this);
-
-  InstanceSummary get summary => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorGetSummary(that: this);
-
-  set gameDir(String gameDir) =>
-      RustLib.instance.api.yuhinaApiTypesInstanceDetailAutoAccessorSetGameDir(
-        that: this,
-        gameDir: gameDir,
-      );
-
-  set java(JavaSelection java) => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorSetJava(that: this, java: java);
-
-  set launchArgs(LaunchArgs? launchArgs) => RustLib.instance.api
-      .yuhinaApiTypesInstanceDetailAutoAccessorSetLaunchArgs(
-        that: this,
-        launchArgs: launchArgs,
-      );
-
-  set notes(String notes) =>
-      RustLib.instance.api.yuhinaApiTypesInstanceDetailAutoAccessorSetNotes(
-        that: this,
-        notes: notes,
-      );
-
-  set summary(InstanceSummary summary) =>
-      RustLib.instance.api.yuhinaApiTypesInstanceDetailAutoAccessorSetSummary(
-        that: this,
-        summary: summary,
-      );
-}
-
-@sealed
-class JavaSelectionImpl extends RustOpaque implements JavaSelection {
-  // Not to be used by end users
-  JavaSelectionImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  JavaSelectionImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_JavaSelection,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_JavaSelection,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_JavaSelectionPtr,
-  );
-}
-
-@sealed
-class LauncherConfigImpl extends RustOpaque implements LauncherConfig {
-  // Not to be used by end users
-  LauncherConfigImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  LauncherConfigImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_LauncherConfig,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_LauncherConfig,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_LauncherConfigPtr,
-  );
-
-  bool get autoUpdate => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetAutoUpdate(that: this);
-
-  String? get customSourceHost => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetCustomSourceHost(that: this);
-
-  String get dataDir => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetDataDir(that: this);
-
-  Source get downloadSource => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetDownloadSource(that: this);
-
-  String get gameRoot => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetGameRoot(that: this);
-
-  LaunchArgs get launchArgs => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetLaunchArgs(that: this);
-
-  String get locale => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetLocale(that: this);
-
-  int get themeSeed => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorGetThemeSeed(that: this);
-
-  set autoUpdate(bool autoUpdate) => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorSetAutoUpdate(
-        that: this,
-        autoUpdate: autoUpdate,
-      );
-
-  set customSourceHost(String? customSourceHost) => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorSetCustomSourceHost(
-        that: this,
-        customSourceHost: customSourceHost,
-      );
-
-  set dataDir(String dataDir) =>
-      RustLib.instance.api.yuhinaApiTypesLauncherConfigAutoAccessorSetDataDir(
-        that: this,
-        dataDir: dataDir,
-      );
-
-  set downloadSource(Source downloadSource) => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorSetDownloadSource(
-        that: this,
-        downloadSource: downloadSource,
-      );
-
-  set gameRoot(String gameRoot) =>
-      RustLib.instance.api.yuhinaApiTypesLauncherConfigAutoAccessorSetGameRoot(
-        that: this,
-        gameRoot: gameRoot,
-      );
-
-  set launchArgs(LaunchArgs launchArgs) => RustLib.instance.api
-      .yuhinaApiTypesLauncherConfigAutoAccessorSetLaunchArgs(
-        that: this,
-        launchArgs: launchArgs,
-      );
-
-  set locale(String locale) =>
-      RustLib.instance.api.yuhinaApiTypesLauncherConfigAutoAccessorSetLocale(
-        that: this,
-        locale: locale,
-      );
-
-  set themeSeed(int themeSeed) =>
-      RustLib.instance.api.yuhinaApiTypesLauncherConfigAutoAccessorSetThemeSeed(
-        that: this,
-        themeSeed: themeSeed,
-      );
-}
-
-@sealed
-class SourceImpl extends RustOpaque implements Source {
-  // Not to be used by end users
-  SourceImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  SourceImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_Source,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_Source,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_SourcePtr,
-  );
-}
-
-@sealed
-class YuhinaErrorImpl extends RustOpaque implements YuhinaError {
-  // Not to be used by end users
-  YuhinaErrorImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  YuhinaErrorImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_YuhinaError,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_YuhinaError,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_YuhinaErrorPtr,
-  );
-
-  YuhinaErrorKind get kind => RustLib.instance.api
-      .yuhinaApiErrorYuhinaErrorAutoAccessorGetKind(that: this);
-
-  String get message => RustLib.instance.api
-      .yuhinaApiErrorYuhinaErrorAutoAccessorGetMessage(that: this);
-
-  set kind(YuhinaErrorKind kind) => RustLib.instance.api
-      .yuhinaApiErrorYuhinaErrorAutoAccessorSetKind(that: this, kind: kind);
-
-  set message(String message) =>
-      RustLib.instance.api.yuhinaApiErrorYuhinaErrorAutoAccessorSetMessage(
-        that: this,
-        message: message,
-      );
-}
-
-@sealed
-class YuhinaErrorKindImpl extends RustOpaque implements YuhinaErrorKind {
-  // Not to be used by end users
-  YuhinaErrorKindImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  YuhinaErrorKindImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_YuhinaErrorKind,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_YuhinaErrorKind,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_YuhinaErrorKindPtr,
-  );
+  @protected
+  void sse_encode_yuhina_error(YuhinaError self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_yuhina_error_kind(self.kind, serializer);
+    sse_encode_String(self.message, serializer);
+  }
+
+  @protected
+  void sse_encode_yuhina_error_kind(
+    YuhinaErrorKind self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case YuhinaErrorKind_Network():
+        sse_encode_i_32(0, serializer);
+      case YuhinaErrorKind_Http(field0: final field0, field1: final field1):
+        sse_encode_i_32(1, serializer);
+        sse_encode_u_16(field0, serializer);
+        sse_encode_String(field1, serializer);
+      case YuhinaErrorKind_Auth():
+        sse_encode_i_32(2, serializer);
+      case YuhinaErrorKind_AuthExpired():
+        sse_encode_i_32(3, serializer);
+      case YuhinaErrorKind_NotLoggedIn():
+        sse_encode_i_32(4, serializer);
+      case YuhinaErrorKind_VersionNotFound():
+        sse_encode_i_32(5, serializer);
+      case YuhinaErrorKind_LoaderNotInstalled():
+        sse_encode_i_32(6, serializer);
+      case YuhinaErrorKind_JavaNotFound():
+        sse_encode_i_32(7, serializer);
+      case YuhinaErrorKind_InvalidInstance():
+        sse_encode_i_32(8, serializer);
+      case YuhinaErrorKind_ModConflict():
+        sse_encode_i_32(9, serializer);
+      case YuhinaErrorKind_ModpackInvalid():
+        sse_encode_i_32(10, serializer);
+      case YuhinaErrorKind_ChecksumMismatch():
+        sse_encode_i_32(11, serializer);
+      case YuhinaErrorKind_DownloadFailed():
+        sse_encode_i_32(12, serializer);
+      case YuhinaErrorKind_Canceled():
+        sse_encode_i_32(13, serializer);
+      case YuhinaErrorKind_Io():
+        sse_encode_i_32(14, serializer);
+      case YuhinaErrorKind_Internal():
+        sse_encode_i_32(15, serializer);
+    }
+  }
 }
 
 @sealed

@@ -3,132 +3,13 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
+import '../../api.dart';
 import '../../frb_generated.dart';
 
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AccountAuth`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<AppEvent>>
-abstract class AppEvent implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CreateInstanceRequest>>
-abstract class CreateInstanceRequest implements RustOpaqueInterface {
-  String? get dirName;
-
-  String get icon;
-
-  JavaSelection get java;
-
-  Loader? get loader;
-
-  String get mcVersion;
-
-  String get name;
-
-  set dirName(String? dirName);
-
-  set icon(String icon);
-
-  set java(JavaSelection java);
-
-  set loader(Loader? loader);
-
-  set mcVersion(String mcVersion);
-
-  set name(String name);
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GameSession>>
-abstract class GameSession implements RustOpaqueInterface {
-  String get instanceId;
-
-  int get pid;
-
-  String get sessionId;
-
-  BigInt get startedAt;
-
-  GameState get state;
-
-  set instanceId(String instanceId);
-
-  set pid(int pid);
-
-  set sessionId(String sessionId);
-
-  set startedAt(BigInt startedAt);
-
-  set state(GameState state);
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GameState>>
-abstract class GameState implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<InstanceDetail>>
-abstract class InstanceDetail implements RustOpaqueInterface {
-  String get gameDir;
-
-  JavaSelection get java;
-
-  LaunchArgs? get launchArgs;
-
-  String get notes;
-
-  InstanceSummary get summary;
-
-  set gameDir(String gameDir);
-
-  set java(JavaSelection java);
-
-  set launchArgs(LaunchArgs? launchArgs);
-
-  set notes(String notes);
-
-  set summary(InstanceSummary summary);
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JavaSelection>>
-abstract class JavaSelection implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LauncherConfig>>
-abstract class LauncherConfig implements RustOpaqueInterface {
-  bool get autoUpdate;
-
-  String? get customSourceHost;
-
-  String get dataDir;
-
-  Source get downloadSource;
-
-  String get gameRoot;
-
-  LaunchArgs get launchArgs;
-
-  String get locale;
-
-  int get themeSeed;
-
-  set autoUpdate(bool autoUpdate);
-
-  set customSourceHost(String? customSourceHost);
-
-  set dataDir(String dataDir);
-
-  set downloadSource(Source downloadSource);
-
-  set gameRoot(String gameRoot);
-
-  set launchArgs(LaunchArgs launchArgs);
-
-  set locale(String locale);
-
-  set themeSeed(int themeSeed);
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Source>>
-abstract class Source implements RustOpaqueInterface {}
 
 /// Account as exposed to the UI. Tokens are NOT part of this struct; they are
 /// stored encrypted in `yuhina-db`.
@@ -210,6 +91,45 @@ enum ConflictKind {
 }
 
 enum ConflictSeverity { warning, error }
+
+class CreateInstanceRequest {
+  final String name;
+  final String icon;
+  final String mcVersion;
+  final Loader? loader;
+  final JavaSelection java;
+  final String? dirName;
+
+  const CreateInstanceRequest({
+    required this.name,
+    required this.icon,
+    required this.mcVersion,
+    this.loader,
+    required this.java,
+    this.dirName,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      icon.hashCode ^
+      mcVersion.hashCode ^
+      loader.hashCode ^
+      java.hashCode ^
+      dirName.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CreateInstanceRequest &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          icon == other.icon &&
+          mcVersion == other.mcVersion &&
+          loader == other.loader &&
+          java == other.java &&
+          dirName == other.dirName;
+}
 
 class DownloadProgressEvent {
   final String taskId;
@@ -355,6 +275,41 @@ class GameOutput {
           text == other.text;
 }
 
+class GameSession {
+  final String sessionId;
+  final String instanceId;
+  final int pid;
+  final GameState state;
+  final BigInt startedAt;
+
+  const GameSession({
+    required this.sessionId,
+    required this.instanceId,
+    required this.pid,
+    required this.state,
+    required this.startedAt,
+  });
+
+  @override
+  int get hashCode =>
+      sessionId.hashCode ^
+      instanceId.hashCode ^
+      pid.hashCode ^
+      state.hashCode ^
+      startedAt.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GameSession &&
+          runtimeType == other.runtimeType &&
+          sessionId == other.sessionId &&
+          instanceId == other.instanceId &&
+          pid == other.pid &&
+          state == other.state &&
+          startedAt == other.startedAt;
+}
+
 class InstalledMod {
   /// instance内唯一(文件hash)
   final String id;
@@ -423,6 +378,45 @@ class InstalledMod {
           versionId == other.versionId &&
           enabled == other.enabled &&
           installedAt == other.installedAt;
+}
+
+class InstanceDetail {
+  final InstanceSummary summary;
+  final String gameDir;
+
+  /// Manual(path) | Auto(major)
+  final JavaSelection java;
+
+  /// 覆盖全局
+  final LaunchArgs? launchArgs;
+  final String notes;
+
+  const InstanceDetail({
+    required this.summary,
+    required this.gameDir,
+    required this.java,
+    this.launchArgs,
+    required this.notes,
+  });
+
+  @override
+  int get hashCode =>
+      summary.hashCode ^
+      gameDir.hashCode ^
+      java.hashCode ^
+      launchArgs.hashCode ^
+      notes.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InstanceDetail &&
+          runtimeType == other.runtimeType &&
+          summary == other.summary &&
+          gameDir == other.gameDir &&
+          java == other.java &&
+          launchArgs == other.launchArgs &&
+          notes == other.notes;
 }
 
 class InstanceSummary {
@@ -575,6 +569,64 @@ class LaunchArgs {
           extraMcArgs == other.extraMcArgs &&
           windowWidth == other.windowWidth &&
           windowHeight == other.windowHeight;
+}
+
+class LauncherConfig {
+  /// 启动器数据目录(实例/下载/缓存)
+  final String dataDir;
+
+  /// 游戏目录根
+  final String gameRoot;
+  final Source downloadSource;
+  final String? customSourceHost;
+
+  /// 全局默认 JVM/GC/分辨率
+  final LaunchArgs launchArgs;
+
+  /// "zh-CN" | "en-US"
+  final String locale;
+
+  /// UI 动态主题种子色(由 UI 使用)
+  final int themeSeed;
+
+  /// 启动器自更新开关
+  final bool autoUpdate;
+
+  const LauncherConfig({
+    required this.dataDir,
+    required this.gameRoot,
+    required this.downloadSource,
+    this.customSourceHost,
+    required this.launchArgs,
+    required this.locale,
+    required this.themeSeed,
+    required this.autoUpdate,
+  });
+
+  @override
+  int get hashCode =>
+      dataDir.hashCode ^
+      gameRoot.hashCode ^
+      downloadSource.hashCode ^
+      customSourceHost.hashCode ^
+      launchArgs.hashCode ^
+      locale.hashCode ^
+      themeSeed.hashCode ^
+      autoUpdate.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LauncherConfig &&
+          runtimeType == other.runtimeType &&
+          dataDir == other.dataDir &&
+          gameRoot == other.gameRoot &&
+          downloadSource == other.downloadSource &&
+          customSourceHost == other.customSourceHost &&
+          launchArgs == other.launchArgs &&
+          locale == other.locale &&
+          themeSeed == other.themeSeed &&
+          autoUpdate == other.autoUpdate;
 }
 
 class Loader {
