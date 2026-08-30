@@ -205,14 +205,38 @@ struct SearchHit {
     icon_url: Option<String>,
     downloads: u64,
     follows: u64,
+    /// The live `/v2/search` hits do NOT include `loaders`/`game_versions`
+    /// (only the project detail endpoint does); they are filled from
+    /// `categories`/`versions` when absent.
+    #[serde(default)]
     loaders: Vec<String>,
+    #[serde(default)]
     game_versions: Vec<String>,
+    #[serde(default)]
     categories: Vec<String>,
+    #[serde(default)]
     versions: Vec<String>,
 }
 
 impl SearchHit {
     fn into_project(self) -> ModrinthProject {
+        // Loader tags inside `categories` (fabric/quilt/forge/...) are reused
+        // as the `loaders` facet data; `versions` is the supported game
+        // version list.
+        let loaders = if !self.loaders.is_empty() {
+            self.loaders
+        } else {
+            self.categories
+                .iter()
+                .filter(|c| KNOWN_LOADER_TAGS.contains(&c.as_str()))
+                .cloned()
+                .collect()
+        };
+        let game_versions = if !self.game_versions.is_empty() {
+            self.game_versions
+        } else {
+            self.versions.clone()
+        };
         ModrinthProject {
             project_id: self.project_id,
             slug: self.slug,
@@ -221,13 +245,26 @@ impl SearchHit {
             icon_url: self.icon_url,
             downloads: self.downloads,
             follows: self.follows,
-            loaders: self.loaders,
-            game_versions: self.game_versions,
+            loaders,
+            game_versions,
             categories: self.categories,
             versions: self.versions,
         }
     }
 }
+
+/// Modrinth project category tags that denote a mod loader (used to recover
+/// `loaders` from search hits, which only expose `categories`).
+const KNOWN_LOADER_TAGS: &[&str] = &[
+    "fabric",
+    "forge",
+    "quilt",
+    "neoforge",
+    "liteloader",
+    "rift",
+    "modloader",
+    "legacy-fabric",
+];
 
 #[derive(Deserialize)]
 struct ProjectWire {
@@ -296,6 +333,9 @@ impl VersionWire {
 
 #[derive(Deserialize)]
 struct FileWire {
+    /// The Modrinth API names this field `filename` on both the version-list
+    /// and single-version endpoints.
+    #[serde(rename = "filename")]
     name: String,
     size: u64,
     url: String,

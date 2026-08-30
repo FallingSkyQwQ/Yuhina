@@ -132,7 +132,7 @@ async fn version_detail_maps_dependencies_and_files() {
             "id": "v1", "project_id": "AAA", "name": "n", "version_number": "1.0",
             "game_versions": ["1.20.4"], "loaders": ["fabric"],
             "files": [{
-                "name": "a-1.0.jar", "size": 10, "url": "http://cdn/a-1.0.jar",
+                "filename": "a-1.0.jar", "size": 10, "url": "http://cdn/a-1.0.jar",
                 "hashes": {"sha1": "deadbeef"}
             }],
             "dependencies": [

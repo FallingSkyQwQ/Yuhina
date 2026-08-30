@@ -59,7 +59,7 @@ async fn roundtrip_preserves_mods_and_overrides() {
             "id": "lv1", "project_id": "LINKED", "name": "Linked", "version_number": "1.0",
             "game_versions": ["1.20.4"], "loaders": ["fabric"],
             "files": [{
-                "name": "linked.jar", "size": jar_bytes.len(),
+                "filename": "linked.jar", "size": jar_bytes.len(),
                 "url": mock.url("/files/linked.jar"), "hashes": {"sha1": sha1}
             }],
             "dependencies": [], "date_published": "2024-01-01T00:00:00Z"
@@ -202,7 +202,7 @@ async fn download_modpack_from_modrinth_imports() {
         serde_json::json!({
             "id": "cv1", "project_id": "C", "name": "C", "version_number": "1",
             "game_versions": ["1.20.4"], "loaders": ["fabric"],
-            "files": [{"name": "c.jar", "size": jar_bytes.len(), "url": mock.url("/files/c.jar"),
+            "files": [{"filename": "c.jar", "size": jar_bytes.len(), "url": mock.url("/files/c.jar"),
                         "hashes": {"sha1": sha1}}],
             "dependencies": [], "date_published": "2024-01-01T00:00:00Z"
         }),
@@ -231,7 +231,7 @@ async fn download_modpack_from_modrinth_imports() {
         serde_json::json!({
             "id": "pv1", "project_id": "PACK", "name": "Pack v1", "version_number": "1.0",
             "game_versions": ["1.20.4"], "loaders": ["fabric"],
-            "files": [{"name": "pack.mrpack", "size": pack_size,
+            "files": [{"filename": "pack.mrpack", "size": pack_size,
                         "url": mock.url("/files/pack.mrpack"), "hashes": {"sha1": pack_sha1}}],
             "dependencies": [], "date_published": "2024-02-01T00:00:00Z"
         }),

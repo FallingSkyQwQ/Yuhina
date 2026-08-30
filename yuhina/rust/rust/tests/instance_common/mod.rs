@@ -365,7 +365,7 @@ pub fn version_with_file(
 ) -> Value {
     let mut v = version_json(vid, pid, published, game_versions, loaders, deps);
     v["files"] = serde_json::json!([{
-        "name": format!("{vid}.jar"),
+        "filename": format!("{vid}.jar"),
         "size": 1,
         "url": file_url,
         "hashes": {"sha1": file_sha1}

@@ -39,7 +39,7 @@
 
 - [x] **M0 地基**：Cargo workspace 构建通过；FRB 集成 + codegen 跑通且可复现；db schema 合入；clippy/fmt/test 门禁本地全绿（CI 真跑待 push 后验证）。
 - [x] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志。验证于 2026-08-30（`feature/m1-real-launch`，本地 `main` 派生）：MC **1.21.1**（release，非最新）经 **BMCLAPI 镜像** 完成 client jar + libraries + ~3888 个 assets（约 785MB）；Java **21.0.12.1**（Eclipse Adoptium JRE，`install_java(21)` 自动下载；`vendor` 参数修正后可用）；离线账号 `Tester`（标准 `OfflinePlayer:Tester` UUID）；`xvfb-run` 虚拟显示下 `launch_instance_with` 启动到主菜单。关键日志证据：`Setting user: Tester`、`Backend library: LWJGL version 3.3.3+5`、`Reloading ResourceManager: vanilla`、`Sound engine started`、`Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas`。`stop_game` SIGTERM 后 JVM 以 143 退出（预期）。集成测试：`rust/rust/tests/real_launch_test.rs`（`#[ignore]`，`xvfb-run -a cargo test --test real_launch_test -- --ignored --nocapture`，可设 `YUHINA_M1_ROOT` 复用下载缓存）。
-- [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功（mock 测试已绿，真实 Modrinth 联调未做）。
+- [x] **M2 实例+Mod**：验证于 2026-08-30（`feature/m2-modpack`，`feature/m1-real-launch` 派生）。真实 Modrinth 搜索/安装/依赖解析 + Fabric 真实启动 + mrpack round-trip 全过（`rust/rust/tests/real_modpack_test.rs`，`#[ignore]`，`xvfb-run -a cargo test --test real_modpack_test -- --ignored --nocapture`，缓存根 `YUHINA_M2_ROOT`，默认 `Source::Official`，`YUHINA_M2_SOURCE=bmclapi` 可切换镜像）。Fabric loader **0.19.3**（meta.fabricmc.net 稳定版）装于 MC **1.21.1**；Java **21.0.12.1**（Adoptium 自动下载）。Mod：`fabric-api 0.116.15+1.21.1` + `iris 1.8.14-beta.1+1.21.1`（**自动解析 required 依赖 → `sodium 0.8.12-beta.1`**）共 3 个。真实启动证据：`Loading Minecraft 1.21.1 with Fabric Loader 0.19.3`、`Loading 59 mods:` 下含 `- iris`/`- sodium`/`- fabric-api`、`Reloading ResourceManager: ... fabricloader, iris, sodium`、`Setting user: Tester`；`stop_game` 后 JVM exit 143（预期，同 M1）。mrpack round-trip：`export_modpack` → `index.json`（formatVersion 1、modloaders `fabric-0.19.3`、3 文件含 download url + sha1）→ `import_modpack` 新实例 → 3 mod **文件名 + sha1 逐字节一致**。冲突：0 Error、1 Warning（fabric-api 的 `fabric.mod.json` 声明版本范围 `>=1.21- <1.21.2-`，启发式解析为精确列表 `["1.21","1.21.2"]` 后判 `McVersionMismatch`，属 T6 规则 4 的已知局限）。本次修复：① Modrinth search hit 不带 `loaders`/`game_versions`（已从 hit 的 `categories`/`versions` 补齐）；② Modrinth version 文件字段实为 `filename`（非 `name`，wire 类型对齐真实 API）；③ Fabric 实例启动此前仅按 vanilla 组装（无 loader 库/`KnotClient` main class，等于启动原版）——core 新增 `prepare_fabric_launch`：拉取 fabric profile（meta）→ 确保 loader 库落盘（复用 installer 副本或镜像下载）→ classpath 追加 loader 库、main class 用 `net.fabricmc.loader.impl.launch.knot.KnotClient`。
 - [ ] **M3 账号**：真实微软账号（client_id `ff0aea8c-…79b`）与 LittleSkin 账号登录并启动成功（mock 测试已绿，真实联调未做）。
 - [ ] **M4 UI 收口**：手工 E2E 清单（§3）全过（widget/golden/冒烟测试已绿，真机手工清单未执行）。
 - [ ] **M5 发布**：push 后打 tag → 双平台安装包/便携包自动发布到 GitHub Release（workflow 已写，未真跑）。
@@ -78,6 +78,7 @@
 | Forge/Fabric/NeoForge/Quilt installer 安装 | A/C | 需真实 jar + 匹配 Java；A 已提供 `install_loader` 编排 + 版本解析（离线 fixture 单测），真实安装为 `#[ignore]` 慢测 |
 | 真实 Java 启动子进程 | A | 需已装 Java；进程模块用假进程（`sh`）集成测试覆盖流/退出码，真实 java 启动为 `#[ignore]` |
 | Modrinth 真实搜索/版本拉取 | C | 需外网；已交付 `rust/rust/tests/real_network_test.rs`（`--ignored`，含 Modrinth 搜索/项目/版本 + Fabric loader 真实 meta 拉取） |
+| M2 全流程（真实 Modrinth→Fabric 启动→mrpack round-trip） | C | 需外网 + Java 21 + xvfb；`rust/rust/tests/real_modpack_test.rs`（`--ignored`，`YUHINA_M2_ROOT` 缓存可复用下载，M2 已真实通过） |
 | 真实微软/XBL/XSTS 联调 | D | 手动，不进 CI |
 
 ## 5. 分支与评审约定

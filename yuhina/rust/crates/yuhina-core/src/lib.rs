@@ -341,17 +341,39 @@ impl YuhinaCore {
         }
         std::fs::create_dir_all(&session_natives)
             .map_err(|e| YuhinaError::io(format!("mkdir natives: {e}")))?;
-        let resolved = resolve_libraries(
-            &manifest.libraries,
-            &platform,
-            &Features {
-                has_custom_resolution: None,
-                is_demo_user: None,
-            },
-        );
+        let features = Features {
+            has_custom_resolution: None,
+            is_demo_user: None,
+        };
+        let vanilla_resolved = resolve_libraries(&manifest.libraries, &platform, &features);
+
+        // Loader-aware launch: a loader instance needs its loader libraries on
+        // the classpath and its own main class (e.g. Fabric's KnotClient),
+        // otherwise the game would boot as vanilla and mods never load.
+        let game_dir = Path::new(&detail.game_dir);
+        let loader_profile = match &summary.loader {
+            Some(loader) if loader.kind == LoaderKind::Fabric => Some(
+                self.prepare_fabric_launch(summary, game_dir, &manifest)
+                    .await?,
+            ),
+            _ => None,
+        };
+
+        let resolved: Vec<crate::libraries::ResolvedLibrary> = match &loader_profile {
+            Some(profile) => {
+                let mut all = vanilla_resolved.clone();
+                let loader_libs = resolve_libraries(&profile.libraries, &platform, &features);
+                for lib in loader_libs {
+                    if !all.iter().any(|l| l.name == lib.name) {
+                        all.push(lib);
+                    }
+                }
+                all
+            }
+            None => vanilla_resolved.clone(),
+        };
         crate::launch::extract_natives(&resolved, &self.paths.libraries_dir, &session_natives)?;
 
-        let game_dir = Path::new(&detail.game_dir);
         let client_jar = self.paths.client_jar(&summary.mc_version);
         let classpath = build_classpath_for(&resolved, &self.paths, &client_jar);
         let launch_args = detail
@@ -359,6 +381,10 @@ impl YuhinaCore {
             .clone()
             .unwrap_or_else(|| self.config().launch_args.clone());
         let version_name = loader_version_name(summary, &manifest);
+        let main_class = loader_profile
+            .as_ref()
+            .map(|p| p.main_class.clone())
+            .unwrap_or_else(|| manifest.main_class.clone());
         let input = LaunchInput {
             java_bin,
             game_dir,
@@ -368,7 +394,7 @@ impl YuhinaCore {
             classpath,
             version_name,
             version_type: manifest.version_type.clone(),
-            main_class: manifest.main_class.clone(),
+            main_class,
             launch_args: &launch_args,
             account,
             manifest: &manifest,
@@ -614,6 +640,69 @@ impl YuhinaCore {
         let _ = self.events.send(AppEvent::InstancesChanged);
         info!(instance_id, loader = %loader.version, "loader installed");
         Ok(loader.clone())
+    }
+
+    /// Prepare the runtime pieces a Fabric instance needs to launch as Fabric:
+    /// resolve the loader profile (extra libraries + main class) from the
+    /// Fabric meta service, make sure every loader library is present in the
+    /// shared libraries dir, and persist the profile json in the game dir so
+    /// the loader's runtime can locate its version metadata.
+    async fn prepare_fabric_launch(
+        &self,
+        summary: &InstanceSummary,
+        game_dir: &Path,
+        vanilla: &VersionManifest,
+    ) -> YuhinaResult<VersionManifest> {
+        let loader = summary.loader.as_ref().expect("fabric loader");
+        let profile_url = format!(
+            "https://meta.fabricmc.net/v2/versions/loader/{}/{}/profile/json",
+            summary.mc_version, loader.version
+        );
+        let bytes = self.downloader().fetch_bytes(&profile_url).await?;
+        let value: Value = serde_json::from_slice(&bytes)
+            .map_err(|e| YuhinaError::internal(format!("parse fabric profile: {e}")))?;
+        let profile = VersionManifest::parse(&value)?;
+
+        // Persist the profile json where the fabric runtime looks it up
+        // (`<game_dir>/versions/<version-name>/<version-name>.json`).
+        let version_name = loader_version_name(summary, vanilla);
+        let vdir = game_dir.join("versions").join(&version_name);
+        std::fs::create_dir_all(&vdir)
+            .map_err(|e| YuhinaError::io(format!("mkdir {}: {e}", vdir.display())))?;
+        if let Ok(pretty) = serde_json::to_string_pretty(&value) {
+            let _ = std::fs::write(vdir.join(format!("{version_name}.json")), pretty);
+        }
+
+        // Ensure every loader library is on disk. Prefer the copy the loader
+        // installer already placed in the instance dir; otherwise download it
+        // (mirror-aware) into the shared libraries dir.
+        let platform = Platform::detect();
+        let features = Features {
+            has_custom_resolution: None,
+            is_demo_user: None,
+        };
+        let resolved = resolve_libraries(&profile.libraries, &platform, &features);
+        let dl = self.downloader();
+        for lib in &resolved {
+            let item = lib.to_download_item(&self.paths.libraries_dir);
+            let dest = Path::new(&item.target_path);
+            if crate::orchestrate::file_ok(dest, item.sha1.as_deref()) {
+                continue;
+            }
+            let installer_copy = game_dir.join("libraries").join(&lib.path);
+            if installer_copy.is_file() {
+                if let Some(parent) = dest.parent() {
+                    std::fs::create_dir_all(parent)
+                        .map_err(|e| YuhinaError::io(format!("mkdir {}: {e}", parent.display())))?;
+                }
+                std::fs::copy(&installer_copy, dest).map_err(|e| {
+                    YuhinaError::io(format!("copy {}: {e}", installer_copy.display()))
+                })?;
+                continue;
+            }
+            dl.download(&item.url, dest, item.sha1.as_deref()).await?;
+        }
+        Ok(profile)
     }
 
     // -----------------------------------------------------------------
