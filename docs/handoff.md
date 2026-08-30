@@ -44,7 +44,7 @@
 - [ ] **M3 账号（真人 E2E，留给人）**：**真人授权登录需用户手动 E2E** —— 微软完整链路需真人完成浏览器授权页（无头环境无法代替）；LittleSkin 需真实账号密码登录成功、皮肤正确并启动游戏。此部分 mock（`ms_mock_test.rs`/`yggdrasil_mock_test.rs`）与协议层已绿，仅剩真人操作。
 - [x] **M4 UI 收口（自动化部分）**：`flutter test` 18/18（含首页/实例库浅深 golden）；`integration_test` 冒烟通过（真实 FFI：service init + config 往返 + 事件流）；Linux App 在 Xvfb 下启动存活、FFI 库加载成功、零日志错误。**CMake 已加 Rust cdylib 构建/打包**（`linux/CMakeLists.txt`、`windows/CMakeLists.txt`，bundle 内含 `libyuhina_bridge.so`）。**无头环境 Impeller 首帧未完成致窗口未映射**，属 llvmpipe/Xvfb 环境限制，真机桌面渲染需用户目视确认。
 - [ ] **M4 UI 手工 E2E（真机，留给人）**：§3 清单中需真人执行的部分（真机目视渲染、真人登录、通过 UI 真实启动）。
-- [ ] **M5 发布**：push 后打 tag → 双平台安装包/便携包自动发布到 GitHub Release（workflow 已写，未真跑）。
+- [x] **M5 发布（v0.1.0）**：tag `v0.1.0` → 双平台产物已发布到 GitHub Release（draft=false）：`yuhina-0.1.0-linux-x64.tar.gz`、`yuhina-0.1.0-linux-x64.AppImage`、`yuhina-0.1.0-windows-x64.zip`、`yuhina-0.1.0-windows-x64-setup.exe`。CI（ubuntu+windows）全绿；发布流水线经 4 轮修复稳定（appimagetool 404→去 gtk 插件 best-effort、NSIS 路径/`!if /FILEEXISTS`、上传只含最终产物）。已知：AppImage 未捆绑 GTK（无 gtk 插件源），依赖系统 GTK3；tar.gz 为最可靠便携包。
 
 ## 3. 手工 E2E 清单（M4 执行）
 
