@@ -9,13 +9,13 @@ use std::time::Duration;
 use tokio::sync::{broadcast, Notify};
 use tokio::task::JoinHandle;
 
+use crate::store::{now_ms, Store, StoredTask};
+use crate::task::{part_path, req_from_row, row_from_req, FileReq, Priority};
+use crate::worker;
+use crate::YuhinaResult;
 use yuhina_api::{
     DownloadProgressEvent, DownloadState, DownloadTask, YuhinaError, YuhinaErrorKind,
 };
-use crate::store::{Store, StoredTask, now_ms};
-use crate::task::{FileReq, Priority, part_path, req_from_row, row_from_req};
-use crate::worker;
-use crate::YuhinaResult;
 
 /// Default number of concurrent downloads.
 pub const DEFAULT_CONCURRENCY: usize = 8;
@@ -217,7 +217,12 @@ impl DownloadManager {
         let priority = req.priority;
         inner
             .store
-            .insert_task(&row_from_req(id.clone(), &req, DownloadState::Queued, created))
+            .insert_task(&row_from_req(
+                id.clone(),
+                &req,
+                DownloadState::Queued,
+                created,
+            ))
             .map_err(internal)?;
         let handle = Arc::new(TaskHandle {
             id: id.clone(),
@@ -237,7 +242,7 @@ impl DownloadManager {
     pub async fn pause_task(&self, id: &str) -> YuhinaResult<()> {
         let inner = &self.inner;
         let handle = self.find_handle(id)?;
-        let state = handle.state.lock().unwrap().clone();
+        let state = *handle.state.lock().unwrap();
         match state {
             DownloadState::Queued | DownloadState::Running => {
                 handle.pause.store(true, Ordering::Relaxed);
@@ -259,7 +264,7 @@ impl DownloadManager {
     pub async fn resume_task(&self, id: &str) -> YuhinaResult<()> {
         let inner = &self.inner;
         let handle = self.find_handle(id)?;
-        let state = handle.state.lock().unwrap().clone();
+        let state = *handle.state.lock().unwrap();
         match state {
             DownloadState::Paused => {
                 handle.pause.store(false, Ordering::Relaxed);
@@ -289,7 +294,7 @@ impl DownloadManager {
     pub async fn cancel_task(&self, id: &str) -> YuhinaResult<()> {
         let inner = &self.inner;
         let handle = self.find_handle(id)?;
-        let state = handle.state.lock().unwrap().clone();
+        let state = *handle.state.lock().unwrap();
         match state {
             DownloadState::Running | DownloadState::Queued => {
                 // The worker observes the flag at the next chunk boundary and
@@ -345,7 +350,11 @@ impl DownloadManager {
                 total: row.total_bytes,
             }),
         });
-        inner.tasks.lock().unwrap().insert(id.clone(), handle.clone());
+        inner
+            .tasks
+            .lock()
+            .unwrap()
+            .insert(id.clone(), handle.clone());
         enqueue_job(inner, &id, &Priority::Library);
         Ok(id)
     }
@@ -366,7 +375,7 @@ impl DownloadManager {
         let mut tasks = self.inner.tasks.lock().unwrap();
         tasks.retain(|_, h| {
             !matches!(
-                h.state.lock().unwrap().clone(),
+                *h.state.lock().unwrap(),
                 DownloadState::Done | DownloadState::Canceled | DownloadState::Failed
             )
         });
@@ -438,7 +447,7 @@ pub(crate) async fn finish(
     state: DownloadState,
     error: Option<String>,
 ) {
-    set_state(inner, handle, state.clone(), error).await;
+    set_state(inner, handle, state, error).await;
     broadcast_event(inner, handle, &state, 0);
     if matches!(state, DownloadState::Done | DownloadState::Canceled) {
         remove_handle(inner, handle);
@@ -454,7 +463,7 @@ pub(crate) async fn set_state(
     error: Option<String>,
 ) {
     let prog = *handle.progress.lock().unwrap();
-    *handle.state.lock().unwrap() = state.clone();
+    *handle.state.lock().unwrap() = state;
     let _ = inner
         .store
         .update_task(&handle.id, &state, prog.done, error.as_deref());
@@ -472,7 +481,7 @@ pub(crate) fn broadcast_event(
     let prog = *handle.progress.lock().unwrap();
     let _ = inner.tx.send(DownloadProgressEvent {
         task_id: handle.id.clone(),
-        state: state.clone(),
+        state: *state,
         done_bytes: prog.done,
         total_bytes: prog.total,
         speed_bps,
@@ -536,7 +545,7 @@ async fn broadcaster_loop(inner: Arc<Inner>) {
         let running_ids: HashSet<String> = running.iter().map(|(id, _, _)| id.clone()).collect();
         last.retain(|id, _| running_ids.contains(id));
 
-        if tick % persist_every == 0 {
+        if tick.is_multiple_of(persist_every) {
             for (id, done, total) in &running {
                 let _ = inner
                     .store

@@ -67,7 +67,7 @@ impl VersionCacheRepo {
         let conn = self.conn.lock().unwrap();
         let latest = latest_ids(&conn)?;
         let mut stmt = conn.prepare("SELECT * FROM version_cache ORDER BY release_time DESC")?;
-        let rows = stmt.query_map([], |r| meta_from(r))?;
+        let rows = stmt.query_map([], meta_from)?;
         let mut out = Vec::new();
         for row in rows {
             out.push(with_latest(row?, &latest));
@@ -78,7 +78,9 @@ impl VersionCacheRepo {
 
 fn latest_ids(conn: &Connection) -> anyhow::Result<(Option<String>, Option<String>)> {
     let mut latest = (None, None);
-    let mut stmt = conn.prepare("SELECT manifest_json FROM version_cache WHERE manifest_json IS NOT NULL LIMIT 1")?;
+    let mut stmt = conn.prepare(
+        "SELECT manifest_json FROM version_cache WHERE manifest_json IS NOT NULL LIMIT 1",
+    )?;
     let mut rows = stmt.query([])?;
     if let Some(r) = rows.next()? {
         let raw: String = r.get(0)?;

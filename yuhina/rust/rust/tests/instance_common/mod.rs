@@ -352,6 +352,7 @@ pub fn dep(project: &str, dep_type: &str) -> Value {
 }
 
 /// Version document with one downloadable file.
+#[allow(clippy::too_many_arguments)]
 pub fn version_with_file(
     vid: &str,
     pid: &str,

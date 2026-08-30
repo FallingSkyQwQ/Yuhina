@@ -51,7 +51,10 @@ impl YuhinaError {
     }
 
     pub fn http(status: u16, url: impl Into<String>) -> Self {
-        Self::new(YuhinaErrorKind::Http(status, url.into()), format!("HTTP {status}"))
+        Self::new(
+            YuhinaErrorKind::Http(status, url.into()),
+            format!("HTTP {status}"),
+        )
     }
 
     pub fn auth(message: impl Into<String>) -> Self {

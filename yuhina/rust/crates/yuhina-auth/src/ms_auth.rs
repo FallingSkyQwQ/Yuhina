@@ -130,7 +130,12 @@ impl MsAuth {
         };
 
         let session = self
-            .exchange_code(&handle.client_id, &code, &handle.verifier, &handle.redirect_uri)
+            .exchange_code(
+                &handle.client_id,
+                &code,
+                &handle.verifier,
+                &handle.redirect_uri,
+            )
             .await?;
         let account = build_ms_account(&session, false);
 
@@ -390,8 +395,9 @@ fn xsts_url_env() -> String {
 }
 
 fn mc_login_url_env() -> String {
-    std::env::var("YUHINA_MC_LOGIN_URL")
-        .unwrap_or_else(|_| "https://api.minecraftservices.com/authentication/login_with_xbox".into())
+    std::env::var("YUHINA_MC_LOGIN_URL").unwrap_or_else(|_| {
+        "https://api.minecraftservices.com/authentication/login_with_xbox".into()
+    })
 }
 
 fn profile_url_env() -> String {
@@ -400,8 +406,9 @@ fn profile_url_env() -> String {
 }
 
 fn authorize_url_env() -> String {
-    std::env::var("YUHINA_MS_AUTHORIZE_URL")
-        .unwrap_or_else(|_| "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize".into())
+    std::env::var("YUHINA_MS_AUTHORIZE_URL").unwrap_or_else(|_| {
+        "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize".into()
+    })
 }
 
 /// SHA-256 based PKCE challenge (S256).
@@ -545,7 +552,10 @@ impl CallbackServer {
         )))
     }
 
-    fn spawn(server: tiny_http::Server, redirect_uri: String) -> (Self, String, mpsc::Receiver<CallbackResult>) {
+    fn spawn(
+        server: tiny_http::Server,
+        redirect_uri: String,
+    ) -> (Self, String, mpsc::Receiver<CallbackResult>) {
         let server = Arc::new(server);
         let stop = Arc::new(AtomicBool::new(false));
         let (tx, rx) = mpsc::channel();
@@ -736,10 +746,7 @@ mod tests {
             std::env::remove_var("YUHINA_MS_CLIENT_ID");
         }
         assert_eq!(client_id(), DEFAULT_CLIENT_ID);
-        assert_eq!(
-            DEFAULT_CLIENT_ID,
-            "ff0aea8c-fc13-40b7-9f40-1c29fa20979b"
-        );
+        assert_eq!(DEFAULT_CLIENT_ID, "ff0aea8c-fc13-40b7-9f40-1c29fa20979b");
     }
 
     #[test]
@@ -747,10 +754,7 @@ mod tests {
         let verifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
         let challenge = code_challenge(verifier).unwrap();
         // RFC 7636 S256 example.
-        assert_eq!(
-            challenge,
-            "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
-        );
+        assert_eq!(challenge, "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM");
     }
 
     #[test]

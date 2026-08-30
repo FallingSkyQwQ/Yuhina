@@ -11,7 +11,7 @@ use tokio_stream::StreamExt;
 use yuhina_api::DownloadState;
 
 use crate::checksum::verify_file;
-use crate::manager::{Inner, Progress, TaskHandle, finish, set_state};
+use crate::manager::{finish, set_state, Inner, Progress, TaskHandle};
 use crate::task::part_path;
 
 /// Outcome of a single download job.
@@ -38,7 +38,7 @@ pub(crate) async fn worker_loop(inner: Arc<Inner>) {
             continue;
         }
         if handle.pause.load(std::sync::atomic::Ordering::Relaxed)
-            || handle.state.lock().unwrap().clone() == DownloadState::Paused
+            || *handle.state.lock().unwrap() == DownloadState::Paused
         {
             finish(&inner, &handle, DownloadState::Paused, None).await;
             continue;
@@ -168,7 +168,11 @@ async fn run_download(inner: &Arc<Inner>, handle: &Arc<TaskHandle>) -> JobOutcom
         }
         let mut file = match opts.open(&part).await {
             Ok(f) => f,
-            Err(e) => return JobOutcome::Failed { error: format!("open part file: {e}") },
+            Err(e) => {
+                return JobOutcome::Failed {
+                    error: format!("open part file: {e}"),
+                }
+            }
         };
 
         let mut done = start_actual;
@@ -183,7 +187,9 @@ async fn run_download(inner: &Arc<Inner>, handle: &Arc<TaskHandle>) -> JobOutcom
             match chunk {
                 Ok(bytes) => {
                     if let Err(e) = file.write_all(&bytes).await {
-                        return JobOutcome::Failed { error: format!("write part file: {e}") };
+                        return JobOutcome::Failed {
+                            error: format!("write part file: {e}"),
+                        };
                     }
                     done += bytes.len() as u64;
                     let mut p = handle.progress.lock().unwrap();

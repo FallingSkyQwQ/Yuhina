@@ -3,10 +3,9 @@
 
 use std::time::Duration;
 
-use quick_xml::Reader;
 use quick_xml::events::{BytesCData, Event};
 use quick_xml::name::QName;
-
+use quick_xml::Reader;
 
 use yuhina_api::{NewsItem, YuhinaError};
 
@@ -240,7 +239,10 @@ mod tests {
         let items = parse_rss(SAMPLE);
         assert_eq!(items.len(), 2);
         assert_eq!(items[0].title, "Dungeons: New DLC!");
-        assert_eq!(items[0].url, "https://www.minecraft.net/en-us/article/new-dlc");
+        assert_eq!(
+            items[0].url,
+            "https://www.minecraft.net/en-us/article/new-dlc"
+        );
         assert!(items[0].published.starts_with("Fri, 10 Jan 2025"));
         assert!(items[0].summary.contains("new DLC"));
         assert!(!items[0].summary.contains('<'));

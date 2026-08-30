@@ -5,8 +5,8 @@
 //! Multiple accounts are isolated by per-account `clientToken`
 //! (04-agent-auth.md T4).
 
-use yuhina_api::{Account, AccountKind, Result, YuhinaError};
 use base64::Engine;
+use yuhina_api::{Account, AccountKind, Result, YuhinaError};
 
 pub const LITTLESKIN_URL: &str = "https://littleskin.cn/api/yggdrasil";
 
@@ -66,7 +66,9 @@ impl YggdrasilClient {
             .ok_or_else(|| YuhinaError::auth("authenticate returned no access token."))?;
         Ok(YggdrasilSession {
             access_token,
-            client_token: parsed.client_token.unwrap_or_else(|| client_token.to_string()),
+            client_token: parsed
+                .client_token
+                .unwrap_or_else(|| client_token.to_string()),
             profile,
         })
     }
@@ -107,7 +109,9 @@ impl YggdrasilClient {
             .ok_or_else(|| YuhinaError::auth("refresh returned no profile."))?;
         Ok(YggdrasilSession {
             access_token,
-            client_token: parsed.client_token.unwrap_or_else(|| client_token.to_string()),
+            client_token: parsed
+                .client_token
+                .unwrap_or_else(|| client_token.to_string()),
             profile,
         })
     }

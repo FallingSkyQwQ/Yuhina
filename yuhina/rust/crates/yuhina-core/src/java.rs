@@ -33,13 +33,21 @@ pub fn is_java_executable(path: &Path) -> bool {
     } else {
         // must be executable
         use std::os::unix::fs::PermissionsExt;
-        path.exists() && path.metadata().map(|m| m.permissions().mode() & 0o111 != 0).unwrap_or(false)
+        path.exists()
+            && path
+                .metadata()
+                .map(|m| m.permissions().mode() & 0o111 != 0)
+                .unwrap_or(false)
     }
 }
 
 /// Resolve the java binary inside a JRE/JDK home dir (`<home>/bin/java`).
 pub fn java_bin_in_home(home: &Path) -> Option<PathBuf> {
-    let bin = if cfg!(windows) { home.join("bin/java.exe") } else { home.join("bin/java") };
+    let bin = if cfg!(windows) {
+        home.join("bin/java.exe")
+    } else {
+        home.join("bin/java")
+    };
     if is_java_executable(&bin) {
         Some(bin)
     } else {
@@ -53,9 +61,16 @@ pub fn parse_major(version: &str) -> u32 {
     let v = version.trim();
     if let Some(rest) = v.strip_prefix("1.") {
         // legacy: 1.8.x → 8
-        return rest.split('.').next().and_then(|s| s.parse().ok()).unwrap_or(0);
+        return rest
+            .split('.')
+            .next()
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(0);
     }
-    v.split(['.', '-', '+', '_']).next().and_then(|s| s.parse().ok()).unwrap_or(0)
+    v.split(['.', '-', '+', '_'])
+        .next()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(0)
 }
 
 /// Detect java info by invoking `java -XshowSettings:properties -version`.
@@ -84,7 +99,9 @@ pub fn detect_java(bin: &Path) -> Result<JavaInfo, YuhinaError> {
             vendor = line.split('=').nth(1).unwrap_or("").trim().to_string();
         }
         // fallback: parse the plain `java -version` banner
-        if version.is_empty() && (line.starts_with("openjdk version") || line.starts_with("java version")) {
+        if version.is_empty()
+            && (line.starts_with("openjdk version") || line.starts_with("java version"))
+        {
             if let Some(q) = line.find('"') {
                 if let Some(q2) = line[q + 1..].find('"') {
                     version = line[q + 1..q + 1 + q2].to_string();
@@ -134,7 +151,13 @@ pub fn system_search_paths() -> Vec<PathBuf> {
     if cfg!(windows) {
         let pf = std::env::var_os("ProgramFiles").map(PathBuf::from);
         if let Some(pf) = pf {
-            for vendor_dir in ["Java", "Eclipse Adoptium", "Microsoft", "Zulu", "Amazon Corretto"] {
+            for vendor_dir in [
+                "Java",
+                "Eclipse Adoptium",
+                "Microsoft",
+                "Zulu",
+                "Amazon Corretto",
+            ] {
                 if let Ok(entries) = std::fs::read_dir(pf.join(vendor_dir)) {
                     for e in entries.flatten() {
                         paths.push(e.path());
@@ -152,7 +175,9 @@ pub fn scan_system() -> Vec<JavaRuntime> {
     let mut out = Vec::new();
     let mut candidates: Vec<PathBuf> = Vec::new();
     for p in system_search_paths() {
-        let is_binary = p.file_name().is_some_and(|n| n == "java" || n == "java.exe");
+        let is_binary = p
+            .file_name()
+            .is_some_and(|n| n == "java" || n == "java.exe");
         if let Some(bin) = java_bin_in_home(&p) {
             candidates.push(bin);
         } else if is_binary {
@@ -221,12 +246,12 @@ pub async fn query_adoptium(
     let bytes = downloader.fetch_bytes(&url).await?;
     let value: Value = serde_json::from_slice(&bytes)
         .map_err(|e| YuhinaError::internal(format!("parse adoptium response: {e}")))?;
-    let arr = value
-        .as_array()
-        .ok_or_else(|| YuhinaError::download_failed(format!("adoptium returned non-array for {url}")))?;
-    let asset = arr
-        .first()
-        .ok_or_else(|| YuhinaError::download_failed(format!("no adoptium asset for java {major}")))?;
+    let arr = value.as_array().ok_or_else(|| {
+        YuhinaError::download_failed(format!("adoptium returned non-array for {url}"))
+    })?;
+    let asset = arr.first().ok_or_else(|| {
+        YuhinaError::download_failed(format!("no adoptium asset for java {major}"))
+    })?;
     let binary = asset
         .get("binary")
         .ok_or_else(|| YuhinaError::internal("adoptium asset missing binary"))?;
@@ -245,7 +270,10 @@ pub async fn query_adoptium(
             .unwrap_or("")
             .to_string(),
         size: pkg.get("size").and_then(Value::as_u64).unwrap_or(0),
-        checksum: pkg.get("checksum").and_then(Value::as_str).map(String::from),
+        checksum: pkg
+            .get("checksum")
+            .and_then(Value::as_str)
+            .map(String::from),
         release_name: binary
             .get("release_name")
             .and_then(Value::as_str)
@@ -374,13 +402,19 @@ mod tests {
 
     #[test]
     fn adoptium_url_builder() {
-        let linux = Platform { os: "linux".into(), arch: "x86_64".into() };
+        let linux = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
         let url = adoptium_url(21, &linux, "jre");
         assert!(url.contains("/v3/assets/latest/21/hotspot"));
         assert!(url.contains("os=linux"));
         assert!(url.contains("architecture=x86_64"));
         assert!(url.contains("image_type=jre"));
-        let win = Platform { os: "windows".into(), arch: "arm64".into() };
+        let win = Platform {
+            os: "windows".into(),
+            arch: "arm64".into(),
+        };
         let url = adoptium_url(17, &win, "jdk");
         assert!(url.contains("os=windows"));
         assert!(url.contains("architecture=arm64"));

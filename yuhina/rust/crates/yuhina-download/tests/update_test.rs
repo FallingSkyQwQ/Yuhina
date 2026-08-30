@@ -41,7 +41,7 @@ async fn no_releases_returns_none() {
         fail_count: 0,
         ..Default::default()
     });
-    let url = format!("{}", server.base_url);
+    let url = server.base_url.to_string();
     // Simulate 404 by hitting a path the mock treats as unknown? Mock always
     // returns the configured data, so craft a dedicated unreachable check
     // instead: a bare port-1 URL below covers the "no network" case.

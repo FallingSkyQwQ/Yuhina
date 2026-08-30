@@ -1,12 +1,12 @@
 //! Integration tests exercising `yuhina-core` through its public API.
 //! All tests run offline against real Mojang fixtures.
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use yuhina_api::{Account, AccountKind, LaunchArgs, LauncherConfig};
 use yuhina_core::{
-    CorePaths, GameManager, GameState, Platform, VersionManifest, build_classpath_for,
-    build_launch_command, launch::LaunchInput, libraries::resolve_libraries,
+    build_classpath_for, build_launch_command, launch::LaunchInput, libraries::resolve_libraries,
+    CorePaths, GameManager, GameState, Platform, VersionManifest,
 };
 
 fn fixture(name: &str) -> serde_json::Value {
@@ -24,7 +24,7 @@ fn test_root() -> PathBuf {
     path
 }
 
-fn core_config(root: &PathBuf) -> LauncherConfig {
+fn core_config(root: &Path) -> LauncherConfig {
     LauncherConfig {
         data_dir: root.join("data").to_string_lossy().to_string(),
         game_root: root.join("game").to_string_lossy().to_string(),
@@ -99,7 +99,11 @@ async fn integration_fake_game_process() {
     let log_path = dir.path().join("logs/sess1/game.log");
     let mgr = GameManager::new();
     let cmd = yuhina_core::LaunchCommand {
-        java_bin: if cfg!(windows) { "cmd".into() } else { "sh".into() },
+        java_bin: if cfg!(windows) {
+            "cmd".into()
+        } else {
+            "sh".into()
+        },
         args: if cfg!(windows) {
             vec!["/C".into(), "echo hello & exit /b 0".into()]
         } else {

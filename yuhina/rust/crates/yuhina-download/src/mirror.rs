@@ -23,18 +23,54 @@ struct HostRule {
 }
 
 const HOST_RULES: &[HostRule] = &[
-    HostRule { official: "launchermeta.mojang.com", path_prefix: None },
-    HostRule { official: "launcher.mojang.com", path_prefix: None },
-    HostRule { official: "libraries.mojang.com", path_prefix: None },
-    HostRule { official: "resources.download.minecraft.net", path_prefix: None },
-    HostRule { official: "piston-meta.mojang.com", path_prefix: None },
-    HostRule { official: "api.adoptium.net", path_prefix: None },
-    HostRule { official: "maven.fabricmc.net", path_prefix: Some("fabric-maven") },
-    HostRule { official: "meta.fabricmc.net", path_prefix: Some("fabric-meta") },
-    HostRule { official: "meta.quiltmc.org", path_prefix: Some("quilt-meta") },
-    HostRule { official: "maven.quiltmc.org", path_prefix: Some("quilt-maven") },
-    HostRule { official: "maven.minecraftforge.net", path_prefix: Some("forge") },
-    HostRule { official: "maven.neoforged.net", path_prefix: Some("neoforge") },
+    HostRule {
+        official: "launchermeta.mojang.com",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "launcher.mojang.com",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "libraries.mojang.com",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "resources.download.minecraft.net",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "piston-meta.mojang.com",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "api.adoptium.net",
+        path_prefix: None,
+    },
+    HostRule {
+        official: "maven.fabricmc.net",
+        path_prefix: Some("fabric-maven"),
+    },
+    HostRule {
+        official: "meta.fabricmc.net",
+        path_prefix: Some("fabric-meta"),
+    },
+    HostRule {
+        official: "meta.quiltmc.org",
+        path_prefix: Some("quilt-meta"),
+    },
+    HostRule {
+        official: "maven.quiltmc.org",
+        path_prefix: Some("quilt-maven"),
+    },
+    HostRule {
+        official: "maven.minecraftforge.net",
+        path_prefix: Some("forge"),
+    },
+    HostRule {
+        official: "maven.neoforged.net",
+        path_prefix: Some("neoforge"),
+    },
 ];
 
 /// Rewrites `input` according to the selected download source.
@@ -79,7 +115,7 @@ fn rewrite_with_origin(input: &str, scheme: &str, host: &str, port: Option<u16>)
         } else {
             format!("/{prefix}/{base}")
         };
-        let _ = url.set_path(&new_path);
+        url.set_path(&new_path);
     }
     url.to_string()
 }
@@ -111,7 +147,10 @@ mod tests {
     #[test]
     fn official_is_identity() {
         assert_eq!(
-            rewrite_url("https://launcher.mojang.com/v1/objects/x/file.jar", &Source::Official),
+            rewrite_url(
+                "https://launcher.mojang.com/v1/objects/x/file.jar",
+                &Source::Official
+            ),
             "https://launcher.mojang.com/v1/objects/x/file.jar"
         );
     }
@@ -235,7 +274,10 @@ mod tests {
     fn custom_bare_host_prefix() {
         let src = Source::Custom("mirror.example.com".into());
         assert_eq!(
-            rewrite_url("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json", &src),
+            rewrite_url(
+                "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+                &src
+            ),
             "https://mirror.example.com/mc/game/version_manifest_v2.json"
         );
     }

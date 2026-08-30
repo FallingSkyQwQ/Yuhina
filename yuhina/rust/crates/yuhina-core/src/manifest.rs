@@ -6,8 +6,8 @@
 use serde_json::Value;
 use yuhina_api::YuhinaError;
 
-use crate::arguments::{ArgumentMode, ArgTokens, build_arguments, build_legacy_game_args};
-use crate::libraries::{Features, Library, Platform, resolve_libraries};
+use crate::arguments::{build_arguments, build_legacy_game_args, ArgTokens, ArgumentMode};
+use crate::libraries::{resolve_libraries, Features, Library, Platform};
 
 /// Reference to a download artifact inside the version json.
 #[derive(Debug, Clone)]
@@ -79,10 +79,18 @@ impl VersionManifest {
         let asset_index = raw
             .get("assetIndex")
             .map(|ai| AssetIndexRef {
-                id: ai.get("id").and_then(Value::as_str).unwrap_or(&assets).to_string(),
+                id: ai
+                    .get("id")
+                    .and_then(Value::as_str)
+                    .unwrap_or(&assets)
+                    .to_string(),
                 sha1: ai.get("sha1").and_then(Value::as_str).map(String::from),
                 size: ai.get("size").and_then(Value::as_u64),
-                url: ai.get("url").and_then(Value::as_str).unwrap_or("").to_string(),
+                url: ai
+                    .get("url")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .to_string(),
             })
             .unwrap_or(AssetIndexRef {
                 id: assets.clone(),
@@ -90,8 +98,14 @@ impl VersionManifest {
                 size: None,
                 url: String::new(),
             });
-        let client = raw.get("downloads").and_then(|d| d.get("client")).map(parse_download);
-        let server = raw.get("downloads").and_then(|d| d.get("server")).map(parse_download);
+        let client = raw
+            .get("downloads")
+            .and_then(|d| d.get("client"))
+            .map(parse_download);
+        let server = raw
+            .get("downloads")
+            .and_then(|d| d.get("server"))
+            .map(parse_download);
         let java_major = raw
             .get("javaVersion")
             .and_then(|j| j.get("majorVersion"))
@@ -127,16 +141,32 @@ impl VersionManifest {
                     .and_then(Value::as_str)
                     .unwrap_or("client-1.12.xml")
                     .to_string(),
-                sha1: c.get("file").and_then(|f| f.get("sha1")).and_then(Value::as_str).map(String::from),
-                size: c.get("file").and_then(|f| f.get("size")).and_then(Value::as_u64),
-                url: c.get("file").and_then(|f| f.get("url")).and_then(Value::as_str).unwrap_or("").to_string(),
+                sha1: c
+                    .get("file")
+                    .and_then(|f| f.get("sha1"))
+                    .and_then(Value::as_str)
+                    .map(String::from),
+                size: c
+                    .get("file")
+                    .and_then(|f| f.get("size"))
+                    .and_then(Value::as_u64),
+                url: c
+                    .get("file")
+                    .and_then(|f| f.get("url"))
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .to_string(),
             });
         let release_time = raw
             .get("releaseTime")
             .and_then(Value::as_str)
             .unwrap_or("")
             .to_string();
-        let time = raw.get("time").and_then(Value::as_str).unwrap_or("").to_string();
+        let time = raw
+            .get("time")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .to_string();
 
         Ok(Self {
             id,
@@ -163,7 +193,10 @@ impl VersionManifest {
     }
 
     /// Resolved client libraries for `platform`.
-    pub fn resolved_libraries(&self, platform: &Platform) -> Vec<crate::libraries::ResolvedLibrary> {
+    pub fn resolved_libraries(
+        &self,
+        platform: &Platform,
+    ) -> Vec<crate::libraries::ResolvedLibrary> {
         let features = Features {
             has_custom_resolution: None,
             is_demo_user: None,
@@ -180,10 +213,7 @@ impl VersionManifest {
             };
             build_arguments(args, platform, &features, ArgumentMode::Game, tokens)
         } else {
-            build_legacy_game_args(
-                self.minecraft_arguments.as_deref().unwrap_or(""),
-                tokens,
-            )
+            build_legacy_game_args(self.minecraft_arguments.as_deref().unwrap_or(""), tokens)
         }
     }
 
@@ -205,7 +235,11 @@ fn parse_download(v: &Value) -> VersionDownload {
     VersionDownload {
         sha1: v.get("sha1").and_then(Value::as_str).map(String::from),
         size: v.get("size").and_then(Value::as_u64),
-        url: v.get("url").and_then(Value::as_str).unwrap_or("").to_string(),
+        url: v
+            .get("url")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .to_string(),
     }
 }
 
@@ -239,7 +273,11 @@ mod tests {
         assert!(!m.uses_modern_arguments());
         assert!(m.minecraft_arguments.is_some());
         // legacy game args include the username token
-        assert!(m.minecraft_arguments.as_deref().unwrap().contains("${auth_player_name}"));
+        assert!(m
+            .minecraft_arguments
+            .as_deref()
+            .unwrap()
+            .contains("${auth_player_name}"));
         // 1.12.2 has a log4j client config too
         assert!(m.logging.is_some());
     }
@@ -248,7 +286,10 @@ mod tests {
     fn game_arguments_modern_with_tokens() {
         let vj = load_fixture("1.20.4.json");
         let m = VersionManifest::parse(&vj).unwrap();
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
         let tokens = ArgTokens {
             auth_player_name: "Steve".into(),
             version_name: "1.20.4".into(),
@@ -280,7 +321,10 @@ mod tests {
     fn game_arguments_legacy() {
         let vj = load_fixture("1.12.2.json");
         let m = VersionManifest::parse(&vj).unwrap();
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
         let tokens = ArgTokens {
             auth_player_name: "Steve".into(),
             version_name: "1.12.2".into(),
@@ -309,7 +353,10 @@ mod tests {
     fn jvm_arguments_modern() {
         let vj = load_fixture("1.20.4.json");
         let m = VersionManifest::parse(&vj).unwrap();
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
         let tokens = ArgTokens {
             auth_player_name: "Steve".into(),
             version_name: "1.20.4".into(),
@@ -331,7 +378,11 @@ mod tests {
         };
         let jvm = m.jvm_arguments(&platform, &tokens);
         // jvm args should include the classpath token
-        assert!(jvm.iter().any(|a| a.contains("${classpath}") || a.contains("/cp")));
-        assert!(jvm.iter().any(|a| a.contains("natives_directory") || a.contains("java.library.path")));
+        assert!(jvm
+            .iter()
+            .any(|a| a.contains("${classpath}") || a.contains("/cp")));
+        assert!(jvm
+            .iter()
+            .any(|a| a.contains("natives_directory") || a.contains("java.library.path")));
     }
 }

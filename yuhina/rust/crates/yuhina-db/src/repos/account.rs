@@ -88,7 +88,7 @@ impl AccountRepo {
     pub fn list(&self) -> anyhow::Result<Vec<AccountRow>> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare(&format!("{SELECT} ORDER BY created_at ASC"))?;
-        let rows = stmt.query_map([], |r| row_from(r))?;
+        let rows = stmt.query_map([], row_from)?;
         let mut out = Vec::new();
         for row in rows {
             out.push(row?);

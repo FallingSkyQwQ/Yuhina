@@ -194,7 +194,10 @@ async fn yggdrasil_login_skin_and_refresh_round_trip() {
     assert_eq!(auth_body["password"].as_str(), Some("correct-password"));
     assert_eq!(auth_body["requestUser"].as_bool(), Some(true));
     let client_token_1 = auth_body["clientToken"].as_str().unwrap().to_string();
-    assert_eq!(client_token_1, account.id, "clientToken == stable account id");
+    assert_eq!(
+        client_token_1, account.id,
+        "clientToken == stable account id"
+    );
 
     // Skin lookup happened after authenticate.
     assert!(captures
@@ -254,8 +257,14 @@ async fn yggdrasil_multi_account_client_token_isolation() {
         .cloned()
         .collect();
     assert_eq!(token_calls.len(), 2);
-    let ct_a = json_body(&token_calls[0])["clientToken"].as_str().unwrap().to_string();
-    let ct_b = json_body(&token_calls[1])["clientToken"].as_str().unwrap().to_string();
+    let ct_a = json_body(&token_calls[0])["clientToken"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    let ct_b = json_body(&token_calls[1])["clientToken"]
+        .as_str()
+        .unwrap()
+        .to_string();
     assert_eq!(ct_a, a.id);
     assert_eq!(ct_b, b.id);
     assert_ne!(ct_a, ct_b);

@@ -16,10 +16,7 @@ pub fn validate_username(name: &str) -> Result<()> {
             "Username must be at most {MAX_USERNAME_LEN} characters."
         )));
     }
-    if !name
-        .chars()
-        .all(|c| c.is_ascii_alphanumeric() || c == '_')
-    {
+    if !name.chars().all(|c| c.is_ascii_alphanumeric() || c == '_') {
         return Err(YuhinaError::auth(
             "Username may only contain letters, digits and underscore.",
         ));

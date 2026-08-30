@@ -9,7 +9,7 @@ use yuhina_api::{Account, AccountKind, LaunchArgs};
 
 use crate::arguments::ArgTokens;
 use crate::config::{memory_flags, CorePaths};
-use crate::libraries::{Platform, build_classpath};
+use crate::libraries::{build_classpath, Platform};
 use crate::manifest::VersionManifest;
 
 /// Everything needed to build the launch command.
@@ -162,10 +162,12 @@ pub fn extract_natives(
         if !jar_path.exists() {
             continue;
         }
-        let file = std::fs::File::open(&jar_path)
-            .map_err(|e| yuhina_api::YuhinaError::io(format!("open {}: {e}", jar_path.display())))?;
-        let mut zip = zip::ZipArchive::new(file)
-            .map_err(|e| yuhina_api::YuhinaError::io(format!("read {}: {e}", jar_path.display())))?;
+        let file = std::fs::File::open(&jar_path).map_err(|e| {
+            yuhina_api::YuhinaError::io(format!("open {}: {e}", jar_path.display()))
+        })?;
+        let mut zip = zip::ZipArchive::new(file).map_err(|e| {
+            yuhina_api::YuhinaError::io(format!("read {}: {e}", jar_path.display()))
+        })?;
         for i in 0..zip.len() {
             let mut entry = match zip.by_index(i) {
                 Ok(e) => e,
@@ -190,8 +192,9 @@ pub fn extract_natives(
             let mut f = std::fs::File::create(&out).map_err(|e| {
                 yuhina_api::YuhinaError::io(format!("create {}: {e}", out.display()))
             })?;
-            std::io::copy(&mut entry, &mut f)
-                .map_err(|e| yuhina_api::YuhinaError::io(format!("extract {}: {e}", out.display())))?;
+            std::io::copy(&mut entry, &mut f).map_err(|e| {
+                yuhina_api::YuhinaError::io(format!("extract {}: {e}", out.display()))
+            })?;
         }
     }
     Ok(())
@@ -263,11 +266,18 @@ mod tests {
             logs_dir: root.join("data/logs"),
             db_path: root.join("data/yuhina.db"),
         };
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
-        let resolved = resolve_libraries(&manifest.libraries, &platform, &crate::libraries::Features {
-            has_custom_resolution: None,
-            is_demo_user: None,
-        });
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
+        let resolved = resolve_libraries(
+            &manifest.libraries,
+            &platform,
+            &crate::libraries::Features {
+                has_custom_resolution: None,
+                is_demo_user: None,
+            },
+        );
         let game_dir = root.join("instances/vanilla");
         let client_jar = paths.client_jar("1.20.4");
         let classpath = build_classpath_for(&resolved, &paths, &client_jar);
@@ -308,7 +318,9 @@ mod tests {
         assert!(argv.iter().any(|a| a == "-Xmx4096M"), "Xmx present");
         assert!(argv.iter().any(|a| a == "-Dcustom=jvm"));
         // natives injected via modern jvm args
-        assert!(argv.iter().any(|a| a.as_str() == format!("-Djava.library.path={}", natives.display()).as_str()));
+        assert!(argv
+            .iter()
+            .any(|a| a.as_str() == format!("-Djava.library.path={}", natives.display()).as_str()));
         assert!(argv.iter().any(|a| a == "-cp"));
         // game args token substitution
         let user_idx = argv.iter().position(|a| a == "--username").unwrap();
@@ -318,7 +330,10 @@ mod tests {
         let ai_idx = argv.iter().position(|a| a == "--assetIndex").unwrap();
         assert_eq!(argv[ai_idx + 1], "12");
         // main class between jvm args and game args
-        let main_idx = argv.iter().position(|a| a == "net.minecraft.client.main.Main").unwrap();
+        let main_idx = argv
+            .iter()
+            .position(|a| a == "net.minecraft.client.main.Main")
+            .unwrap();
         assert!(main_idx > argv.iter().position(|a| a == "-cp").unwrap());
         assert!(argv.iter().position(|a| a == "--username").unwrap() > main_idx);
         // extra mc args appended at end
@@ -344,11 +359,18 @@ mod tests {
             logs_dir: root.join("data/logs"),
             db_path: root.join("data/yuhina.db"),
         };
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
-        let resolved = resolve_libraries(&manifest.libraries, &platform, &crate::libraries::Features {
-            has_custom_resolution: None,
-            is_demo_user: None,
-        });
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
+        let resolved = resolve_libraries(
+            &manifest.libraries,
+            &platform,
+            &crate::libraries::Features {
+                has_custom_resolution: None,
+                is_demo_user: None,
+            },
+        );
         let game_dir = root.join("instances/legacy");
         let classpath = build_classpath_for(&resolved, &paths, &paths.client_jar("1.12.2"));
         let natives = root.join("data/natives/sess1");
@@ -388,20 +410,29 @@ mod tests {
 
     #[test]
     fn account_tokens_and_user_type() {
-        let ms = Account { kind: AccountKind::Microsoft, ..offline_account("M") };
+        let ms = Account {
+            kind: AccountKind::Microsoft,
+            ..offline_account("M")
+        };
         assert_eq!(user_type_for(&ms.kind), "msa");
         assert_ne!(access_token_for(&ms), "0");
         let off = offline_account("O");
         assert_eq!(user_type_for(&off.kind), "legacy");
         assert_eq!(access_token_for(&off), "0");
-        let yg = Account { kind: AccountKind::Yggdrasil, ..offline_account("Y") };
+        let yg = Account {
+            kind: AccountKind::Yggdrasil,
+            ..offline_account("Y")
+        };
         assert_eq!(user_type_for(&yg.kind), "mojang");
     }
 
     #[test]
     fn loader_version_naming_smoke() {
         // ensure Loader type usable here (instance naming for loader versions)
-        let l = Loader { kind: LoaderKind::Fabric, version: "0.16.0".into() };
+        let l = Loader {
+            kind: LoaderKind::Fabric,
+            version: "0.16.0".into(),
+        };
         assert_eq!(l.version, "0.16.0");
     }
 }

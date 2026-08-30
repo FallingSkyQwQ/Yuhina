@@ -508,6 +508,7 @@ pub(crate) mod testutil {
     }
 
     /// Core adapter stub that rejects every loader install (rollback tests).
+    #[allow(dead_code)]
     pub(crate) struct FailingLoaderCore;
 
     #[async_trait::async_trait]

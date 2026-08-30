@@ -61,7 +61,7 @@ impl JavaRepo {
     pub fn list(&self) -> anyhow::Result<Vec<JavaRuntime>> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare("SELECT * FROM java_runtimes ORDER BY added_at ASC")?;
-        let rows = stmt.query_map([], |r| java_from(r))?;
+        let rows = stmt.query_map([], java_from)?;
         let mut out = Vec::new();
         for row in rows {
             out.push(row?);

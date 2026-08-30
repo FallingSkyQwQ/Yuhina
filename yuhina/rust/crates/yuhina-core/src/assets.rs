@@ -66,7 +66,10 @@ impl AssetFile {
     pub fn to_download_item(&self, objects_dir: &std::path::Path) -> DownloadItem {
         DownloadItem {
             url: self.url.clone(),
-            target_path: objects_dir.join(&self.rel_path).to_string_lossy().to_string(),
+            target_path: objects_dir
+                .join(&self.rel_path)
+                .to_string_lossy()
+                .to_string(),
             sha1: Some(self.hash.clone()),
             size: Some(self.size),
         }
@@ -110,7 +113,10 @@ mod tests {
         let raw = load_fixture("assets_1.20.4.json");
         let idx = AssetIndex::parse("12", &raw).unwrap();
         assert_eq!(idx.objects.len(), 3811);
-        assert_eq!(idx.total_size, raw["totalSize"].as_u64().unwrap_or(idx.total_size));
+        assert_eq!(
+            idx.total_size,
+            raw["totalSize"].as_u64().unwrap_or(idx.total_size)
+        );
         // object path rule
         let (key, obj) = &idx.objects[0];
         assert_eq!(

@@ -8,7 +8,7 @@
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{params, Connection, OptionalExtension};
 
 use yuhina_api::{DownloadState, DownloadTask, NewsItem, YuhinaError, YuhinaErrorKind};
 
@@ -49,7 +49,7 @@ impl StoredTask {
         DownloadTask {
             id: self.id.clone(),
             title: self.title.clone(),
-            state: self.state.clone(),
+            state: self.state,
             total_bytes: self.total_bytes,
             done_bytes: self.done_bytes,
             speed_bps: 0,
@@ -74,8 +74,10 @@ impl Store {
             std::fs::create_dir_all(parent).map_err(io_err)?;
         }
         let conn = Connection::open(path).map_err(sql_err)?;
-        conn.pragma_update(None, "journal_mode", "WAL").map_err(sql_err)?;
-        conn.pragma_update(None, "foreign_keys", "ON").map_err(sql_err)?;
+        conn.pragma_update(None, "journal_mode", "WAL")
+            .map_err(sql_err)?;
+        conn.pragma_update(None, "foreign_keys", "ON")
+            .map_err(sql_err)?;
         let store = Self {
             conn: Arc::new(Mutex::new(conn)),
         };
@@ -86,7 +88,8 @@ impl Store {
     /// Opens an in-memory database (tests).
     pub fn in_memory() -> Result<Self, YuhinaError> {
         let conn = Connection::open_in_memory().map_err(sql_err)?;
-        conn.pragma_update(None, "foreign_keys", "ON").map_err(sql_err)?;
+        conn.pragma_update(None, "foreign_keys", "ON")
+            .map_err(sql_err)?;
         let store = Self {
             conn: Arc::new(Mutex::new(conn)),
         };
@@ -187,7 +190,7 @@ impl Store {
                         done_bytes, state, checksum_sha1, error, created_at, updated_at
                  FROM download_tasks WHERE id=?1",
                 [id],
-                |r| row_from(r),
+                row_from,
             )
             .optional()
             .map_err(sql_err)
@@ -203,9 +206,7 @@ impl Store {
                  FROM download_tasks ORDER BY created_at ASC",
             )
             .map_err(sql_err)?;
-        let rows = stmt
-            .query_map([], |r| row_from(r))
-            .map_err(sql_err)?;
+        let rows = stmt.query_map([], row_from).map_err(sql_err)?;
         collect_rows(rows)
     }
 
@@ -223,7 +224,7 @@ impl Store {
             )
             .map_err(sql_err)?;
         let rows = stmt
-            .query_map([state_str(state)], |r| row_from(r))
+            .query_map([state_str(state)], row_from)
             .map_err(sql_err)?;
         collect_rows(rows)
     }
@@ -303,11 +304,9 @@ impl Store {
     /// Newest `fetched_at` in the news cache, if any.
     pub fn latest_news_fetched_at(&self) -> Result<Option<i64>, YuhinaError> {
         self.lock()
-            .query_row(
-                "SELECT MAX(fetched_at) FROM news_cache",
-                [],
-                |r| r.get::<_, Option<i64>>(0),
-            )
+            .query_row("SELECT MAX(fetched_at) FROM news_cache", [], |r| {
+                r.get::<_, Option<i64>>(0)
+            })
             .map_err(sql_err)
     }
 
@@ -404,16 +403,30 @@ mod tests {
     #[test]
     fn task_crud_and_state_filter() {
         let store = Store::in_memory().unwrap();
-        store.insert_task(&sample("a", DownloadState::Running)).unwrap();
-        store.insert_task(&sample("b", DownloadState::Paused)).unwrap();
-        store.update_task("a", &DownloadState::Running, 40, None).unwrap();
+        store
+            .insert_task(&sample("a", DownloadState::Running))
+            .unwrap();
+        store
+            .insert_task(&sample("b", DownloadState::Paused))
+            .unwrap();
+        store
+            .update_task("a", &DownloadState::Running, 40, None)
+            .unwrap();
         store.set_task_total("a", 200).unwrap();
         let a = store.get_task("a").unwrap().unwrap();
         assert_eq!(a.done_bytes, 40);
         assert_eq!(a.total_bytes, 200);
-        assert_eq!(store.list_tasks_by_state(&DownloadState::Running).unwrap().len(), 1);
+        assert_eq!(
+            store
+                .list_tasks_by_state(&DownloadState::Running)
+                .unwrap()
+                .len(),
+            1
+        );
         assert_eq!(store.list_tasks().unwrap().len(), 2);
-        store.update_task("a", &DownloadState::Done, 200, None).unwrap();
+        store
+            .update_task("a", &DownloadState::Done, 200, None)
+            .unwrap();
         store.clear_finished_tasks().unwrap();
         assert!(store.get_task("a").unwrap().is_none());
         assert!(store.get_task("b").unwrap().is_some());

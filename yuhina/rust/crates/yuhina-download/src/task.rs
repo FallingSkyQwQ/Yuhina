@@ -4,20 +4,15 @@ use std::path::PathBuf;
 
 use yuhina_api::DownloadState;
 
-use crate::store::{StoredTask, now_ms};
+use crate::store::{now_ms, StoredTask};
 
 /// Queue priority. Higher value = popped first (启动类 > 库 > 资产).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub enum Priority {
     Asset,
+    #[default]
     Library,
     Launch,
-}
-
-impl Default for Priority {
-    fn default() -> Self {
-        Priority::Library
-    }
 }
 
 /// Classification of a download, persisted as the `kind` column.
@@ -45,6 +40,7 @@ impl TaskKind {
         }
     }
 
+    #[allow(clippy::should_implement_trait)]
     pub fn from_str(s: &str) -> TaskKind {
         match s {
             "instance" => TaskKind::Instance,
@@ -75,7 +71,12 @@ pub struct FileReq {
 }
 
 /// Maps a request to a persisted row (used when enqueueing a new task).
-pub fn row_from_req(id: String, req: &FileReq, state: DownloadState, created_at: u64) -> StoredTask {
+pub fn row_from_req(
+    id: String,
+    req: &FileReq,
+    state: DownloadState,
+    created_at: u64,
+) -> StoredTask {
     StoredTask {
         id,
         kind: req.kind.as_str().to_string(),
@@ -123,4 +124,3 @@ pub fn part_path(dest: &std::path::Path) -> PathBuf {
     s.push(".part");
     PathBuf::from(s)
 }
-

@@ -22,6 +22,6 @@ pub use manager::{
 };
 pub use mirror::rewrite_url;
 pub use news::{NewsService, DEFAULT_NEWS_RSS_URL};
-pub use store::{StoredTask, Store};
+pub use store::{Store, StoredTask};
 pub use task::{FileReq, Priority, TaskKind};
 pub use update::{check_launcher_update, compare_versions, DEFAULT_UPDATE_API_URL};

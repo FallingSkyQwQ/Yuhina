@@ -49,33 +49,23 @@ impl Db {
     }
 
     pub fn account_repo(&self) -> AccountRepo {
-        AccountRepo {
-            conn: self.conn(),
-        }
+        AccountRepo { conn: self.conn() }
     }
 
     pub fn java_repo(&self) -> JavaRepo {
-        JavaRepo {
-            conn: self.conn(),
-        }
+        JavaRepo { conn: self.conn() }
     }
 
     pub fn version_cache_repo(&self) -> VersionCacheRepo {
-        VersionCacheRepo {
-            conn: self.conn(),
-        }
+        VersionCacheRepo { conn: self.conn() }
     }
 
     pub fn instance_repo(&self) -> InstanceRepo {
-        InstanceRepo {
-            conn: self.conn(),
-        }
+        InstanceRepo { conn: self.conn() }
     }
 
     pub fn installed_mod_repo(&self) -> InstalledModRepo {
-        InstalledModRepo {
-            conn: self.conn(),
-        }
+        InstalledModRepo { conn: self.conn() }
     }
 
     fn migrate(&self) -> anyhow::Result<()> {

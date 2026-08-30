@@ -2,7 +2,7 @@
 
 use std::path::{Path, PathBuf};
 
-use yuhina_api::{LauncherConfig, LaunchArgs};
+use yuhina_api::{LaunchArgs, LauncherConfig};
 
 /// Resolved absolute paths derived from `LauncherConfig`.
 #[derive(Debug, Clone)]
@@ -42,17 +42,20 @@ impl CorePaths {
 
     /// Path of the client jar for `version_id`.
     pub fn client_jar(&self, version_id: &str) -> PathBuf {
-        self.version_dir(version_id).join(format!("{version_id}.jar"))
+        self.version_dir(version_id)
+            .join(format!("{version_id}.jar"))
     }
 
     /// Path of the version json for `version_id`.
     pub fn version_json(&self, version_id: &str) -> PathBuf {
-        self.version_dir(version_id).join(format!("{version_id}.json"))
+        self.version_dir(version_id)
+            .join(format!("{version_id}.json"))
     }
 
     /// Path of the log4j config for `version_id`.
     pub fn logging_config(&self, version_id: &str) -> PathBuf {
-        self.version_dir(version_id).join(format!("{version_id}.log"))
+        self.version_dir(version_id)
+            .join(format!("{version_id}.log"))
     }
 
     /// Full path of a library artifact given its maven-like relative path.
@@ -76,7 +79,9 @@ fn expand(p: &str) -> PathBuf {
     if path.is_absolute() {
         path
     } else {
-        std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")).join(path)
+        std::env::current_dir()
+            .unwrap_or_else(|_| PathBuf::from("."))
+            .join(path)
     }
 }
 
@@ -121,7 +126,11 @@ pub fn java_major_for_mc(mc_version: &str) -> u32 {
             17..=20 => {
                 if minor == 20 {
                     // 1.20.x: 1.20.4 uses 17, 1.20.5+ uses 21.
-                    if let Some(patch) = trimmed.split('.').nth(2).and_then(|p| p.parse::<u32>().ok()) {
+                    if let Some(patch) = trimmed
+                        .split('.')
+                        .nth(2)
+                        .and_then(|p| p.parse::<u32>().ok())
+                    {
                         if patch >= 5 {
                             return 21;
                         }

@@ -146,7 +146,10 @@ mod tests {
         use crate::testutil;
         let core: std::sync::Arc<dyn crate::CoreAdapter> = std::sync::Arc::new(testutil::DummyCore);
         let svc = LoaderService::new(core);
-        let rows = svc.available_loader_versions("1.20.4", LoaderKind::Fabric).await.unwrap();
+        let rows = svc
+            .available_loader_versions("1.20.4", LoaderKind::Fabric)
+            .await
+            .unwrap();
         assert_eq!(rows.len(), 1);
         assert_eq!(rows[0].kind, LoaderKind::Fabric);
         assert_eq!(rows[0].version, "0.16.0");

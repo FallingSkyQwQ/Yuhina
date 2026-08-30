@@ -4,12 +4,21 @@ mod common;
 
 use std::time::Duration;
 
-use common::{MockConfig, MockServer, fast_config, wait_for};
+use common::{fast_config, wait_for, MockConfig, MockServer};
 use yuhina_api::DownloadState;
 use yuhina_download::store::StoredTask;
-use yuhina_download::{DownloadManager, FileReq, Priority, TaskKind, Store, resume::resume_after_restart};
+use yuhina_download::{
+    resume::resume_after_restart, DownloadManager, FileReq, Priority, Store, TaskKind,
+};
 
-fn sample_row(id: &str, state: DownloadState, url: &str, dest: &str, done: u64, total: u64) -> StoredTask {
+fn sample_row(
+    id: &str,
+    state: DownloadState,
+    url: &str,
+    dest: &str,
+    done: u64,
+    total: u64,
+) -> StoredTask {
     StoredTask {
         id: id.into(),
         kind: "library".into(),
@@ -68,7 +77,10 @@ async fn running_task_is_requeued_and_finishes() {
     );
     // The resumed download completed with the Range request resuming at 1024.
     assert_eq!(std::fs::read(&dest).unwrap(), data);
-    assert!(server.requests().iter().any(|r| r.range.as_deref() == Some("bytes=1024-")));
+    assert!(server
+        .requests()
+        .iter()
+        .any(|r| r.range.as_deref() == Some("bytes=1024-")));
     mgr.shutdown();
     let _ = std::fs::remove_file(&dest);
 }
@@ -76,14 +88,31 @@ async fn running_task_is_requeued_and_finishes() {
 #[tokio::test]
 async fn paused_and_failed_tasks_are_not_requeued() {
     let db = Store::in_memory().unwrap();
-    let row_paused = sample_row("p1", DownloadState::Paused, "http://127.0.0.1:1/x", "/tmp/p1.bin", 10, 100);
-    let row_failed = sample_row("f1", DownloadState::Failed, "http://127.0.0.1:1/x", "/tmp/f1.bin", 0, 0);
+    let row_paused = sample_row(
+        "p1",
+        DownloadState::Paused,
+        "http://127.0.0.1:1/x",
+        "/tmp/p1.bin",
+        10,
+        100,
+    );
+    let row_failed = sample_row(
+        "f1",
+        DownloadState::Failed,
+        "http://127.0.0.1:1/x",
+        "/tmp/f1.bin",
+        0,
+        0,
+    );
     db.insert_task(&row_paused).unwrap();
     db.insert_task(&row_failed).unwrap();
 
     let mgr = DownloadManager::start(db, fast_config(1));
     let ids = resume_after_restart(&mgr).unwrap();
-    assert!(ids.is_empty(), "only Running tasks should be requeued: {ids:?}");
+    assert!(
+        ids.is_empty(),
+        "only Running tasks should be requeued: {ids:?}"
+    );
 
     let tasks = mgr.list_tasks().unwrap();
     let paused = tasks.iter().find(|t| t.id == "p1").unwrap();
@@ -97,7 +126,14 @@ async fn paused_and_failed_tasks_are_not_requeued() {
 async fn restore_keeps_progress_fields() {
     let db = Store::in_memory().unwrap();
     let dest = std::env::temp_dir().join(format!("yuhina-keep-{}.bin", uuid()));
-    let row = sample_row("keep-1", DownloadState::Running, "http://127.0.0.1:1/x", &dest.to_string_lossy(), 1234, 9999);
+    let row = sample_row(
+        "keep-1",
+        DownloadState::Running,
+        "http://127.0.0.1:1/x",
+        &dest.to_string_lossy(),
+        1234,
+        9999,
+    );
     db.insert_task(&row).unwrap();
 
     let mgr = DownloadManager::start(db, fast_config(1));
@@ -119,7 +155,14 @@ async fn restore_keeps_progress_fields() {
 async fn enqueue_restore_duplicate_is_safe() {
     let db = Store::in_memory().unwrap();
     let dest = std::env::temp_dir().join("dup.bin");
-    let row = sample_row("dup-1", DownloadState::Running, "http://127.0.0.1:1/x", &dest.to_string_lossy(), 0, 0);
+    let row = sample_row(
+        "dup-1",
+        DownloadState::Running,
+        "http://127.0.0.1:1/x",
+        &dest.to_string_lossy(),
+        0,
+        0,
+    );
     db.insert_task(&row).unwrap();
     let mgr = DownloadManager::start(db, fast_config(1));
     let _ = resume_after_restart(&mgr).unwrap();

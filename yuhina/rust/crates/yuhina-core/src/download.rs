@@ -34,7 +34,8 @@ pub trait Downloader: Send + Sync {
 
     /// Download `url` to `dest`. Fails (leaving no partial file) on network
     /// errors or sha1 mismatch.
-    async fn download(&self, url: &str, dest: &Path, sha1: Option<&str>) -> Result<(), YuhinaError>;
+    async fn download(&self, url: &str, dest: &Path, sha1: Option<&str>)
+        -> Result<(), YuhinaError>;
 
     /// Fetch a URL into memory (small payloads: manifest/json/meta).
     async fn fetch_bytes(&self, url: &str) -> Result<Vec<u8>, YuhinaError>;
@@ -82,7 +83,12 @@ impl Downloader for HttpDownloader {
         rewrite_url(&self.source, url)
     }
 
-    async fn download(&self, url: &str, dest: &Path, sha1: Option<&str>) -> Result<(), YuhinaError> {
+    async fn download(
+        &self,
+        url: &str,
+        dest: &Path,
+        sha1: Option<&str>,
+    ) -> Result<(), YuhinaError> {
         let url = self.rewrite(url);
         debug!(url, dest = %dest.display(), "download start");
         let resp = self
@@ -158,10 +164,7 @@ mod tests {
     #[test]
     fn sha1_hex_known_vector() {
         // echo -n "abc" | sha1sum
-        assert_eq!(
-            sha1_hex(b"abc"),
-            "a9993e364706816aba3e25717850c26c9cd0d89d"
-        );
+        assert_eq!(sha1_hex(b"abc"), "a9993e364706816aba3e25717850c26c9cd0d89d");
     }
 
     #[test]

@@ -121,7 +121,10 @@ fn json_body(body: &str) -> Value {
     serde_json::from_str(body).unwrap_or_else(|_| panic!("invalid json: {body}"))
 }
 
-async fn poll_until_done(svc: &AuthService, handle: &yuhina_api::MicrosoftLoginHandle) -> yuhina_api::Account {
+async fn poll_until_done(
+    svc: &AuthService,
+    handle: &yuhina_api::MicrosoftLoginHandle,
+) -> yuhina_api::Account {
     for _ in 0..200 {
         if let Some(acc) = svc
             .poll_microsoft_login(handle.clone())
@@ -144,7 +147,10 @@ async fn simulate_browser_redirect(details: &yuhina_auth::ms_auth::MsLoginDetail
         .unwrap();
     let client = reqwest::Client::new();
     let res = client
-        .get(format!("{}?code={code}&state={state}", details.redirect_uri))
+        .get(format!(
+            "{}?code={code}&state={state}",
+            details.redirect_uri
+        ))
         .send()
         .await
         .unwrap();
@@ -152,6 +158,7 @@ async fn simulate_browser_redirect(details: &yuhina_auth::ms_auth::MsLoginDetail
 }
 
 #[tokio::test]
+#[allow(clippy::await_holding_lock)]
 async fn ms_login_full_chain_mock() {
     let _lock = env_guard();
     unsafe {
@@ -186,22 +193,39 @@ async fn ms_login_full_chain_mock() {
     assert_eq!(account.uuid, "mc-profile-uuid-mock");
     assert!(account.is_active, "first account becomes active");
     assert!(account.expires_at.is_some());
-    assert_eq!(account.skin_url.as_deref(), Some("https://mock.example/skin.png"));
+    assert_eq!(
+        account.skin_url.as_deref(),
+        Some("https://mock.example/skin.png")
+    );
 
     // ---- assert the 5-step chain requests -------------------------------
     let token = capture_by_path(&captures, "/token");
     let params = form_params(&token.body);
-    assert_eq!(params.get("client_id").map(String::as_str), Some("mock-client-id"));
-    assert_eq!(params.get("grant_type").map(String::as_str), Some("authorization_code"));
-    assert_eq!(params.get("code").map(String::as_str), Some("auth-code-mock"));
-    assert_eq!(params.get("redirect_uri").map(String::as_str), Some(details.redirect_uri.as_str()));
+    assert_eq!(
+        params.get("client_id").map(String::as_str),
+        Some("mock-client-id")
+    );
+    assert_eq!(
+        params.get("grant_type").map(String::as_str),
+        Some("authorization_code")
+    );
+    assert_eq!(
+        params.get("code").map(String::as_str),
+        Some("auth-code-mock")
+    );
+    assert_eq!(
+        params.get("redirect_uri").map(String::as_str),
+        Some(details.redirect_uri.as_str())
+    );
     let verifier = params.get("code_verifier").expect("code_verifier present");
     assert!(verifier.len() >= 43 && verifier.len() <= 128);
 
     let xbl = capture_by_path(&captures, "/xbl");
     let xbl_body = json_body(&xbl.body);
     assert_eq!(
-        xbl.headers.get("x-xbl-contract-version").map(String::as_str),
+        xbl.headers
+            .get("x-xbl-contract-version")
+            .map(String::as_str),
         Some("1")
     );
     assert_eq!(
@@ -220,10 +244,15 @@ async fn ms_login_full_chain_mock() {
     let xsts = capture_by_path(&captures, "/xsts");
     let xsts_body = json_body(&xsts.body);
     assert_eq!(
-        xsts.headers.get("x-xbl-contract-version").map(String::as_str),
+        xsts.headers
+            .get("x-xbl-contract-version")
+            .map(String::as_str),
         Some("1")
     );
-    assert_eq!(xsts_body["Properties"]["SandboxId"].as_str(), Some("RETAIL"));
+    assert_eq!(
+        xsts_body["Properties"]["SandboxId"].as_str(),
+        Some("RETAIL")
+    );
     assert_eq!(
         xsts_body["Properties"]["UserTokens"][0].as_str(),
         Some("XBL-TOKEN-MOCK")
@@ -248,6 +277,7 @@ async fn ms_login_full_chain_mock() {
 }
 
 #[tokio::test]
+#[allow(clippy::await_holding_lock)]
 async fn ms_refresh_account_uses_refresh_token() {
     let _lock = env_guard();
     unsafe {
@@ -283,16 +313,28 @@ async fn ms_refresh_account_uses_refresh_token() {
         .collect();
     assert!(token_calls.len() >= 2);
     let last = form_params(&token_calls.last().unwrap().body);
-    assert_eq!(last.get("grant_type").map(String::as_str), Some("refresh_token"));
+    assert_eq!(
+        last.get("grant_type").map(String::as_str),
+        Some("refresh_token")
+    );
     assert_eq!(
         last.get("refresh_token").map(String::as_str),
         Some("MS-REFRESH-MOCK")
     );
     // The 5-step chain runs again after refresh.
-    assert!(captures.lock().unwrap().iter().filter(|c| c.path == "/profile").count() >= 2);
+    assert!(
+        captures
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|c| c.path == "/profile")
+            .count()
+            >= 2
+    );
 }
 
 #[tokio::test]
+#[allow(clippy::await_holding_lock)]
 async fn ms_callback_port_is_released_on_cancel() {
     let _lock = env_guard();
     unsafe {
@@ -327,10 +369,7 @@ async fn ms_callback_port_is_released_on_cancel() {
         }
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
-    assert!(
-        released,
-        "callback port {port} should be free after cancel"
-    );
+    assert!(released, "callback port {port} should be free after cancel");
 
     // Polling a cancelled handle errors cleanly.
     let err = svc
@@ -343,6 +382,7 @@ async fn ms_callback_port_is_released_on_cancel() {
 }
 
 #[tokio::test]
+#[allow(clippy::await_holding_lock)]
 async fn ms_poll_returns_error_on_bad_state() {
     let _lock = env_guard();
     unsafe {
@@ -375,7 +415,11 @@ async fn ms_poll_returns_error_on_bad_state() {
         .await
         .expect_err("state mismatch must fail");
     assert_eq!(err.kind, YuhinaErrorKind::Auth);
-    assert!(err.message.contains("state"), "message explains the cause: {}", err.message);
+    assert!(
+        err.message.contains("state"),
+        "message explains the cause: {}",
+        err.message
+    );
 
     svc.cancel_microsoft_login(handle).await.unwrap();
 }

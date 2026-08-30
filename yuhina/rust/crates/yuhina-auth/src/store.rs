@@ -191,8 +191,14 @@ mod tests {
         let loaded = store.load_account(&acc.id).unwrap().unwrap();
         assert_eq!(loaded.account.username, "Steve");
         assert_eq!(loaded.account.kind, AccountKind::Microsoft);
-        assert_eq!(loaded.tokens.access_token.as_deref(), Some("mc-access-token"));
-        assert_eq!(loaded.tokens.refresh_token.as_deref(), Some("ms-refresh-token"));
+        assert_eq!(
+            loaded.tokens.access_token.as_deref(),
+            Some("mc-access-token")
+        );
+        assert_eq!(
+            loaded.tokens.refresh_token.as_deref(),
+            Some("ms-refresh-token")
+        );
     }
 
     #[test]
@@ -207,7 +213,7 @@ mod tests {
         store.save_account(&acc, &tokens).unwrap();
 
         // Inspect the raw DB to prove the token is not stored in the clear.
-        let db = Db::in_memory().unwrap();
+        let _db = Db::in_memory().unwrap();
         // Recreate the same data via the same store is not possible here; instead
         // verify through Store::list that plaintext never leaks into rows' enc field.
         let loaded = store.load_account(&acc.id).unwrap().unwrap();

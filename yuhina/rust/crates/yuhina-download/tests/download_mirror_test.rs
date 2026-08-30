@@ -39,7 +39,10 @@ fn bmclapi_maps_common_hosts() {
 #[test]
 fn query_string_and_path_are_preserved() {
     let src = Source::Bmclapi;
-    let out = rewrite_url("https://api.adoptium.net/v3/binary/latest/21/ga?os=linux&arch=x64", &src);
+    let out = rewrite_url(
+        "https://api.adoptium.net/v3/binary/latest/21/ga?os=linux&arch=x64",
+        &src,
+    );
     assert!(out.starts_with("https://bmclapi2.bangbang93.com/v3/binary/latest/21/ga?"));
     assert!(out.contains("os=linux"));
     assert!(out.contains("arch=x64"));
@@ -59,7 +62,10 @@ fn unknown_host_degrades_safely() {
 fn custom_prefix_replaces_origin() {
     let src = Source::Custom("https://mirror.example.com".into());
     assert_eq!(
-        rewrite_url("https://libraries.mojang.com/net/minecraft/1.0/1.0.jar", &src),
+        rewrite_url(
+            "https://libraries.mojang.com/net/minecraft/1.0/1.0.jar",
+            &src
+        ),
         "https://mirror.example.com/net/minecraft/1.0/1.0.jar"
     );
 }

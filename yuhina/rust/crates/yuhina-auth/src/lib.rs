@@ -254,25 +254,22 @@ impl AuthService {
             .store
             .get_active()?
             .ok_or_else(YuhinaError::not_logged_in)?;
-        let (access_token, user_type) = match stored.account.kind {
-            AccountKind::Offline => ("0".to_string(), "legacy".to_string()),
-            AccountKind::Microsoft => (
-                stored
-                    .tokens
-                    .access_token
-                    .clone()
-                    .ok_or_else(|| YuhinaError::auth_expired("token missing; please refresh."))?,
-                "msa".to_string(),
-            ),
-            AccountKind::Yggdrasil => (
-                stored
-                    .tokens
-                    .access_token
-                    .clone()
-                    .ok_or_else(|| YuhinaError::auth_expired("token missing; please refresh."))?,
-                "mojang".to_string(),
-            ),
-        };
+        let (access_token, user_type) =
+            match stored.account.kind {
+                AccountKind::Offline => ("0".to_string(), "legacy".to_string()),
+                AccountKind::Microsoft => (
+                    stored.tokens.access_token.clone().ok_or_else(|| {
+                        YuhinaError::auth_expired("token missing; please refresh.")
+                    })?,
+                    "msa".to_string(),
+                ),
+                AccountKind::Yggdrasil => (
+                    stored.tokens.access_token.clone().ok_or_else(|| {
+                        YuhinaError::auth_expired("token missing; please refresh.")
+                    })?,
+                    "mojang".to_string(),
+                ),
+            };
         Ok(AccountAuth {
             username: stored.account.username,
             uuid: stored.account.uuid,

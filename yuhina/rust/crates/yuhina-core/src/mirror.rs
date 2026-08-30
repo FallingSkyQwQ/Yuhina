@@ -29,8 +29,14 @@ fn rewrite_bmclapi(url: &str) -> String {
             "https://piston-meta.mojang.com/",
             format!("{BMCLAPI_HOST}/"),
         ),
-        ("https://launchermeta.mojang.com/", format!("{BMCLAPI_HOST}/")),
-        ("https://piston-data.mojang.com/", format!("{BMCLAPI_HOST}/")),
+        (
+            "https://launchermeta.mojang.com/",
+            format!("{BMCLAPI_HOST}/"),
+        ),
+        (
+            "https://piston-data.mojang.com/",
+            format!("{BMCLAPI_HOST}/"),
+        ),
         (
             "https://libraries.minecraft.net/",
             format!("{BMCLAPI_HOST}/libraries/"),

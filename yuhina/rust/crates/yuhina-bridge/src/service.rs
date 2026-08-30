@@ -12,7 +12,7 @@ use tokio::sync::broadcast;
 
 use yuhina_api::{
     Account, AppEvent, CreateInstanceRequest, DownloadProgressEvent, DownloadState, DownloadTask,
-    GameLogEntry, GameOutput, GameSession, InstanceDetail, InstanceSummary, InstalledMod,
+    GameLogEntry, GameOutput, GameSession, InstalledMod, InstanceDetail, InstanceSummary,
     JavaRuntime, LauncherConfig, Loader, MicrosoftLoginHandle, ModConflict, ModUpdate,
     ModrinthProject, ModrinthVersion, NewsItem, Result, SearchResult, VersionMeta, YuhinaError,
 };
@@ -46,7 +46,10 @@ impl YuhinaService {
 
         // Shared download store + manager (resumes unfinished persisted tasks).
         let store = Store::open(&paths.db_path)?;
-        let download = Arc::new(DownloadManager::start(store.clone(), ManagerConfig::default()));
+        let download = Arc::new(DownloadManager::start(
+            store.clone(),
+            ManagerConfig::default(),
+        ));
         for t in store.list_tasks()? {
             if matches!(
                 t.state,
@@ -57,8 +60,7 @@ impl YuhinaService {
         }
 
         // Instance manager over the same SQLite file + core adapter.
-        let db = yuhina_db::Db::new(&paths.db_path)
-            .map_err(|e| YuhinaError::io(e.to_string()))?;
+        let db = yuhina_db::Db::new(&paths.db_path).map_err(|e| YuhinaError::io(e.to_string()))?;
         let core_adapter: Arc<dyn CoreAdapter> = Arc::new(core.clone());
         let downloader: Arc<dyn yuhina_core::download::Downloader> = core.downloader();
         let instances = InstanceManager::new(db, core_adapter, downloader, paths.game_root.clone());
@@ -359,7 +361,11 @@ impl YuhinaService {
         r
     }
 
-    pub async fn install_mod_file(&self, instance_id: String, path: String) -> Result<InstalledMod> {
+    pub async fn install_mod_file(
+        &self,
+        instance_id: String,
+        path: String,
+    ) -> Result<InstalledMod> {
         let r = self.instances.install_mod_file(instance_id, path).await;
         if r.is_ok() {
             let _ = self.events_tx.send(AppEvent::InstancesChanged);
@@ -395,7 +401,11 @@ impl YuhinaService {
         self.instances.export_modpack(instance_id, dest_path).await
     }
 
-    pub async fn import_modpack(&self, mrpack_path: String, name: String) -> Result<InstanceSummary> {
+    pub async fn import_modpack(
+        &self,
+        mrpack_path: String,
+        name: String,
+    ) -> Result<InstanceSummary> {
         let r = self.instances.import_modpack(mrpack_path, name).await;
         if r.is_ok() {
             let _ = self.events_tx.send(AppEvent::InstancesChanged);
@@ -439,7 +449,7 @@ impl YuhinaService {
     }
 
     pub async fn clear_finished_tasks(&self) -> Result<()> {
-        self.download.clear_finished().map_err(|e| e)
+        self.download.clear_finished()
     }
 
     /// Global download progress stream (throttled to 100ms by the manager).

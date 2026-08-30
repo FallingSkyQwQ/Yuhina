@@ -9,10 +9,10 @@ use std::path::Path;
 use tracing::info;
 use yuhina_api::YuhinaError;
 
-use crate::assets::{AssetIndex, dedup_by_hash, plan_assets};
+use crate::assets::{dedup_by_hash, plan_assets, AssetIndex};
 use crate::config::CorePaths;
-use crate::download::{DownloadItem, Downloader, sha1_file};
-use crate::libraries::{Features, Platform, resolve_libraries};
+use crate::download::{sha1_file, DownloadItem, Downloader};
+use crate::libraries::{resolve_libraries, Features, Platform};
 use crate::manifest::VersionManifest;
 
 /// The complete plan of files needed to run a version.
@@ -148,9 +148,15 @@ mod tests {
         let vj = load_fixture("1.20.4.json");
         let m = VersionManifest::parse(&vj).unwrap();
         let (paths, root) = paths();
-        let platform = Platform { os: "linux".into(), arch: "x86_64".into() };
+        let platform = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
         let mut plan = build_game_file_plan(&m, &platform, &paths);
-        assert_eq!(plan.client.target_path, paths.client_jar("1.20.4").to_string_lossy());
+        assert_eq!(
+            plan.client.target_path,
+            paths.client_jar("1.20.4").to_string_lossy()
+        );
         assert!(plan.client.url.starts_with("https://"));
         assert!(plan.libraries.len() > 40, "libs {}", plan.libraries.len());
         // assets plan

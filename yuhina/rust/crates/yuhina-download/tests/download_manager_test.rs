@@ -5,9 +5,9 @@ mod common;
 
 use std::time::Duration;
 
-use common::{MockConfig, MockServer, fast_config, wait_for};
+use common::{fast_config, wait_for, MockConfig, MockServer};
 use yuhina_api::{DownloadState, Source};
-use yuhina_download::{DownloadManager, FileReq, ManagerConfig, Priority, TaskKind, rewrite_url};
+use yuhina_download::{rewrite_url, DownloadManager, FileReq, ManagerConfig, Priority, TaskKind};
 
 fn sha1_hex(data: &[u8]) -> String {
     use sha1::Digest;
@@ -52,12 +52,20 @@ async fn downloads_and_verifies_sha1() {
     let dest = std::env::temp_dir().join(format!("yuhina-test-{}.bin", uuid()));
 
     let id = mgr
-        .enqueue(req(mirror_url(&server.base_url, "/file.bin"), dest.clone(), Some(sha1_hex(&data))))
+        .enqueue(req(
+            mirror_url(&server.base_url, "/file.bin"),
+            dest.clone(),
+            Some(sha1_hex(&data)),
+        ))
         .unwrap();
 
     assert!(
         wait_for(
-            || mgr.list_tasks().unwrap().iter().any(|t| t.id == id && t.state == DownloadState::Done),
+            || mgr
+                .list_tasks()
+                .unwrap()
+                .iter()
+                .any(|t| t.id == id && t.state == DownloadState::Done),
             Duration::from_secs(10)
         )
         .await
@@ -86,12 +94,20 @@ async fn resumes_from_partial_file_with_range() {
     std::fs::write(&part, &data[..2048]).unwrap();
 
     let id = mgr
-        .enqueue(req(mirror_url(&server.base_url, "/resume.jar"), dest.clone(), None))
+        .enqueue(req(
+            mirror_url(&server.base_url, "/resume.jar"),
+            dest.clone(),
+            None,
+        ))
         .unwrap();
 
     assert!(
         wait_for(
-            || mgr.list_tasks().unwrap().iter().any(|t| t.id == id && t.state == DownloadState::Done),
+            || mgr
+                .list_tasks()
+                .unwrap()
+                .iter()
+                .any(|t| t.id == id && t.state == DownloadState::Done),
             Duration::from_secs(10)
         )
         .await
@@ -100,10 +116,15 @@ async fn resumes_from_partial_file_with_range() {
     assert!(!part.exists());
 
     // The server must have received a Range request resuming from byte 2048.
-    let ranged = server.requests().iter().any(|r| {
-        r.range.as_deref() == Some("bytes=2048-")
-    });
-    assert!(ranged, "expected a Range request resuming from 2048, got {:?}", server.requests());
+    let ranged = server
+        .requests()
+        .iter()
+        .any(|r| r.range.as_deref() == Some("bytes=2048-"));
+    assert!(
+        ranged,
+        "expected a Range request resuming from 2048, got {:?}",
+        server.requests()
+    );
     mgr.shutdown();
     let _ = std::fs::remove_file(&dest);
 }
@@ -120,10 +141,16 @@ async fn retries_then_succeeds_on_server_error() {
     let mgr = DownloadManager::start(db, fast_config(2));
     let dest = std::env::temp_dir().join(format!("yuhina-retry-{}.bin", uuid()));
 
-    let id = mgr.enqueue(req(server.url("/retry.bin"), dest.clone(), None)).unwrap();
+    let id = mgr
+        .enqueue(req(server.url("/retry.bin"), dest.clone(), None))
+        .unwrap();
     assert!(
         wait_for(
-            || mgr.list_tasks().unwrap().iter().any(|t| t.id == id && t.state == DownloadState::Done),
+            || mgr
+                .list_tasks()
+                .unwrap()
+                .iter()
+                .any(|t| t.id == id && t.state == DownloadState::Done),
             Duration::from_secs(10)
         )
         .await
@@ -143,10 +170,16 @@ async fn retries_after_mid_stream_drop_and_resumes() {
     let mgr = DownloadManager::start(db, fast_config(2));
     let dest = std::env::temp_dir().join(format!("yuhina-drop-{}.bin", uuid()));
 
-    let id = mgr.enqueue(req(server.url("/drop.bin"), dest.clone(), None)).unwrap();
+    let id = mgr
+        .enqueue(req(server.url("/drop.bin"), dest.clone(), None))
+        .unwrap();
     assert!(
         wait_for(
-            || mgr.list_tasks().unwrap().iter().any(|t| t.id == id && t.state == DownloadState::Done),
+            || mgr
+                .list_tasks()
+                .unwrap()
+                .iter()
+                .any(|t| t.id == id && t.state == DownloadState::Done),
             Duration::from_secs(10)
         )
         .await
@@ -174,7 +207,11 @@ async fn checksum_mismatch_fails_and_cleans_part() {
     let dest = std::env::temp_dir().join(format!("yuhina-bad-{}.bin", uuid()));
 
     let id = mgr
-        .enqueue(req(server.url("/bad.bin"), dest.clone(), Some("deadbeef".into())))
+        .enqueue(req(
+            server.url("/bad.bin"),
+            dest.clone(),
+            Some("deadbeef".into()),
+        ))
         .unwrap();
 
     assert!(
@@ -251,10 +288,14 @@ async fn pause_resume_cancel() {
 
     // Task 1: pause mid-way, then resume.
     let dest1 = std::env::temp_dir().join(format!("yuhina-pause-{}.bin", uuid()));
-    let id1 = mgr.enqueue(req(server.url("/p.bin"), dest1.clone(), None)).unwrap();
+    let id1 = mgr
+        .enqueue(req(server.url("/p.bin"), dest1.clone(), None))
+        .unwrap();
     // Task 2: cancel after starting.
     let dest2 = std::env::temp_dir().join(format!("yuhina-cancel-{}.bin", uuid()));
-    let id2 = mgr.enqueue(req(server.url("/p.bin"), dest2.clone(), None)).unwrap();
+    let id2 = mgr
+        .enqueue(req(server.url("/p.bin"), dest2.clone(), None))
+        .unwrap();
 
     // Wait for both to be Running, then pause #1 and cancel #2.
     assert!(
@@ -326,7 +367,7 @@ async fn progress_events_are_throttled() {
     let server = MockServer::start(MockConfig {
         data: data.clone(),
         delay: Some(Duration::from_millis(4)),
-        chunk: 1 * 1024,
+        chunk: 1024,
         ..Default::default()
     });
     let db = temp_db();
@@ -339,7 +380,9 @@ async fn progress_events_are_throttled() {
     let mut rx = mgr.subscribe();
     let dest = std::env::temp_dir().join(format!("yuhina-throttle-{}.bin", uuid()));
 
-    let id = mgr.enqueue(req(server.url("/t.bin"), dest.clone(), None)).unwrap();
+    let id = mgr
+        .enqueue(req(server.url("/t.bin"), dest.clone(), None))
+        .unwrap();
 
     let mut running = 0usize;
     let mut saw_done = false;

@@ -143,11 +143,10 @@ fn handle(inner: Arc<Inner>, request: tiny_http::Request) {
         .iter()
         .find(|h| h.field.equiv("Range"))
         .map(|h| h.value.as_str().to_string());
-    inner
-        .requests
-        .lock()
-        .unwrap()
-        .push(RequestInfo { path: path.clone(), range: range.clone() });
+    inner.requests.lock().unwrap().push(RequestInfo {
+        path: path.clone(),
+        range: range.clone(),
+    });
 
     let active = inner.active.fetch_add(1, Ordering::SeqCst) + 1;
     inner.max_active.fetch_max(active, Ordering::SeqCst);
@@ -211,11 +210,10 @@ fn range_response(cfg: &MockConfig, range: &Option<String>) -> (u16, Vec<Header>
     }
     let body = data[start..].to_vec();
     let status = if start > 0 { 206 } else { 200 };
-    let mut headers = vec![Header::from_bytes(
-        &b"Content-Length"[..],
-        body.len().to_string().as_bytes(),
-    )
-    .unwrap()];
+    let mut headers =
+        vec![
+            Header::from_bytes(&b"Content-Length"[..], body.len().to_string().as_bytes()).unwrap(),
+        ];
     if status == 206 {
         headers.push(
             Header::from_bytes(

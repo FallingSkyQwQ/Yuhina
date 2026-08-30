@@ -67,11 +67,7 @@ pub enum RuleAction {
 
 /// Whether a rule set permits loading on the given platform + features.
 /// An absent `rules` array means "always allow".
-pub fn matches_rules(
-    rules: &[Rule],
-    platform: &Platform,
-    features: &Features,
-) -> bool {
+pub fn matches_rules(rules: &[Rule], platform: &Platform, features: &Features) -> bool {
     if rules.is_empty() {
         return true;
     }
@@ -81,11 +77,7 @@ pub fn matches_rules(
             .os
             .as_ref()
             .map(|os| {
-                let name_ok = os
-                    .name
-                    .as_deref()
-                    .map(|n| n == platform.os)
-                    .unwrap_or(true);
+                let name_ok = os.name.as_deref().map(|n| n == platform.os).unwrap_or(true);
                 let arch_ok = os
                     .arch
                     .as_deref()
@@ -184,13 +176,16 @@ impl Library {
         if self.natives.is_some() {
             return true;
         }
-        if self.name.split(':').nth(3).is_some_and(|c| c.starts_with("natives-")) {
+        if self
+            .name
+            .split(':')
+            .nth(3)
+            .is_some_and(|c| c.starts_with("natives-"))
+        {
             return true;
         }
         if let Some(artifact) = self.downloads.as_ref().and_then(|d| d.artifact.as_ref()) {
-            return artifact
-                .path
-                .contains(&format!("natives-{}", platform.os));
+            return artifact.path.contains(&format!("natives-{}", platform.os));
         }
         false
     }
@@ -199,7 +194,8 @@ impl Library {
     /// Native libs resolve through `classifiers`, others through `artifact`.
     pub fn artifact_for(&self, platform: &Platform) -> Option<Artifact> {
         if let Some(classifier) = self.native_classifier(platform) {
-            if let Some(classifiers) = self.downloads.as_ref().and_then(|d| d.classifiers.as_ref()) {
+            if let Some(classifiers) = self.downloads.as_ref().and_then(|d| d.classifiers.as_ref())
+            {
                 return classifiers.get(&classifier).cloned();
             }
             // Legacy: build classifier path from maven coords.
@@ -228,22 +224,25 @@ impl Library {
         if self.natives.is_some() {
             return None;
         }
-        self.downloads.as_ref().and_then(|d| d.artifact.clone()).or_else(|| {
-            // Legacy library without downloads: derive path from name + url.
-            let (g, a, v) = self.coords();
-            let rel = format!("{}/{}/{}/{}-{}.jar", g.replace('.', "/"), a, v, a, v);
-            let url = self
-                .url
-                .as_deref()
-                .unwrap_or("https://libraries.minecraft.net/");
-            let url = format!("{}/{}", url.trim_end_matches('/'), rel);
-            Some(Artifact {
-                path: rel,
-                sha1: None,
-                size: None,
-                url,
+        self.downloads
+            .as_ref()
+            .and_then(|d| d.artifact.clone())
+            .or_else(|| {
+                // Legacy library without downloads: derive path from name + url.
+                let (g, a, v) = self.coords();
+                let rel = format!("{}/{}/{}/{}-{}.jar", g.replace('.', "/"), a, v, a, v);
+                let url = self
+                    .url
+                    .as_deref()
+                    .unwrap_or("https://libraries.minecraft.net/");
+                let url = format!("{}/{}", url.trim_end_matches('/'), rel);
+                Some(Artifact {
+                    path: rel,
+                    sha1: None,
+                    size: None,
+                    url,
+                })
             })
-        })
     }
 }
 
@@ -310,7 +309,11 @@ pub fn resolve_libraries(
 
 /// Build the classpath string (libraries separated by platform separator),
 /// appending `client_jar` last.
-pub fn build_classpath(libraries: &[ResolvedLibrary], libraries_dir: &std::path::Path, client_jar: &std::path::Path) -> String {
+pub fn build_classpath(
+    libraries: &[ResolvedLibrary],
+    libraries_dir: &std::path::Path,
+    client_jar: &std::path::Path,
+) -> String {
     let sep = std::path::MAIN_SEPARATOR.to_string();
     let mut entries: Vec<String> = Vec::new();
     for lib in libraries {
@@ -363,10 +366,21 @@ mod tests {
             features: None,
         };
         // linux: allow_linux matches (true) then disallow_windows doesn't match → allowed
-        assert!(matches_rules(&[allow_linux.clone(), disallow_windows.clone()], &linux(), &no_features()));
+        assert!(matches_rules(
+            &[allow_linux.clone(), disallow_windows.clone()],
+            &linux(),
+            &no_features()
+        ));
         // windows: allow_linux no match (stays false), disallow_windows matches → disallowed
-        let windows = Platform { os: "windows".into(), arch: "x86_64".into() };
-        assert!(!matches_rules(&[allow_linux, disallow_windows], &windows, &no_features()));
+        let windows = Platform {
+            os: "windows".into(),
+            arch: "x86_64".into(),
+        };
+        assert!(!matches_rules(
+            &[allow_linux, disallow_windows],
+            &windows,
+            &no_features()
+        ));
         // empty rules → allow
         assert!(matches_rules(&[], &linux(), &no_features()));
     }
@@ -382,8 +396,14 @@ mod tests {
             }),
             features: None,
         };
-        let mac_arm = Platform { os: "osx".into(), arch: "arm64".into() };
-        let mac_x64 = Platform { os: "osx".into(), arch: "x86_64".into() };
+        let mac_arm = Platform {
+            os: "osx".into(),
+            arch: "arm64".into(),
+        };
+        let mac_x64 = Platform {
+            os: "osx".into(),
+            arch: "x86_64".into(),
+        };
         let rules = [arm];
         assert!(matches_rules(&rules, &mac_arm, &no_features()));
         assert!(!matches_rules(&rules, &mac_x64, &no_features()));
@@ -400,7 +420,14 @@ mod tests {
             }),
         };
         let rules = [rule];
-        assert!(matches_rules(&rules, &linux(), &Features { has_custom_resolution: Some(true), is_demo_user: None }));
+        assert!(matches_rules(
+            &rules,
+            &linux(),
+            &Features {
+                has_custom_resolution: Some(true),
+                is_demo_user: None
+            }
+        ));
         assert!(!matches_rules(&rules, &linux(), &no_features()));
     }
 
@@ -438,7 +465,9 @@ mod tests {
             a.path,
             "com/paulscode/codecjorbis/20101023/codecjorbis-20101023.jar"
         );
-        assert!(a.url.starts_with("https://libraries.minecraft.net/com/paulscode"));
+        assert!(a
+            .url
+            .starts_with("https://libraries.minecraft.net/com/paulscode"));
     }
 
     #[test]
@@ -447,10 +476,18 @@ mod tests {
         let libs: Vec<Library> = serde_json::from_value(vj["libraries"].clone()).unwrap();
         let resolved = resolve_libraries(&libs, &linux(), &no_features());
         // 1.20.4 has 88 raw libraries; resolved (client, linux x64) should be fewer.
-        assert!(resolved.len() > 40 && resolved.len() < 88, "resolved {}", resolved.len());
+        assert!(
+            resolved.len() > 40 && resolved.len() < 88,
+            "resolved {}",
+            resolved.len()
+        );
         assert!(resolved.iter().any(|l| l.is_native));
         // classpath must contain client jar appended
-        let cp = build_classpath(&resolved, std::path::Path::new("/g/libs"), std::path::Path::new("/g/v/1.20.4.jar"));
+        let cp = build_classpath(
+            &resolved,
+            std::path::Path::new("/g/libs"),
+            std::path::Path::new("/g/v/1.20.4.jar"),
+        );
         assert!(cp.ends_with("/g/v/1.20.4.jar"));
         assert!(cp.contains("org/lwjgl/lwjgl/3.3.2/lwjgl-3.3.2.jar"));
         // natives jars are excluded from classpath

@@ -34,8 +34,14 @@ pub fn parse_version(s: &str) -> Option<(u64, u64, u64)> {
         .unwrap_or(s);
     let mut parts = core.split('.');
     let major = parts.next()?.trim().parse().ok()?;
-    let minor = parts.next().map(|x| x.trim().parse().unwrap_or(0)).unwrap_or(0);
-    let patch = parts.next().map(|x| x.trim().parse().unwrap_or(0)).unwrap_or(0);
+    let minor = parts
+        .next()
+        .map(|x| x.trim().parse().unwrap_or(0))
+        .unwrap_or(0);
+    let patch = parts
+        .next()
+        .map(|x| x.trim().parse().unwrap_or(0))
+        .unwrap_or(0);
     Some((major, minor, patch))
 }
 

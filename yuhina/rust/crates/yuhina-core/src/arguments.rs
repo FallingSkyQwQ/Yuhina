@@ -6,7 +6,7 @@
 use serde_json::Value;
 use yuhina_api::LogLevel;
 
-use crate::libraries::{Features, Platform, matches_rules};
+use crate::libraries::{matches_rules, Features, Platform};
 
 /// A single argument entry: either a literal string or a rule-gated value.
 #[derive(Debug, Clone)]
@@ -42,10 +42,7 @@ fn parse_entries(arr: &Value) -> Vec<ArgEntry> {
                     .get("rules")
                     .and_then(|r| serde_json::from_value(r.clone()).ok())
                     .unwrap_or_default();
-                let value = item
-                    .get("value")
-                    .map(parse_arg_value)
-                    .unwrap_or_default();
+                let value = item.get("value").map(parse_arg_value).unwrap_or_default();
                 out.push(ArgEntry::Ruled { rules, value });
             }
             _ => {}
@@ -117,8 +114,14 @@ impl ArgTokens {
             "launcher_version" => self.launcher_version.clone(),
             "classpath" => self.classpath.clone(),
             "library_directory" => self.library_directory.clone(),
-            "resolution_width" => self.resolution_width.clone().unwrap_or_else(|| "854".into()),
-            "resolution_height" => self.resolution_height.clone().unwrap_or_else(|| "480".into()),
+            "resolution_width" => self
+                .resolution_width
+                .clone()
+                .unwrap_or_else(|| "854".into()),
+            "resolution_height" => self
+                .resolution_height
+                .clone()
+                .unwrap_or_else(|| "480".into()),
             "game_assets" => self.game_assets.clone(),
             _ => return None,
         })
@@ -198,8 +201,11 @@ pub fn build_legacy_game_args(raw: &str, tokens: &ArgTokens) -> Vec<String> {
 /// Detect a warn/error level from a Minecraft log line for classification.
 pub fn classify_level(line: &str) -> LogLevel {
     let l = line.to_lowercase();
-    if l.contains("fatal") || l.contains("exception") || l.contains("error")
-        || l.contains("[error]") || l.starts_with("error")
+    if l.contains("fatal")
+        || l.contains("exception")
+        || l.contains("error")
+        || l.contains("[error]")
+        || l.starts_with("error")
     {
         LogLevel::Error
     } else if l.contains("warn") || l.contains("[warn]") {
@@ -240,8 +246,14 @@ mod tests {
     #[test]
     fn substitution_basic_and_unknown() {
         let t = tokens();
-        assert_eq!(t.substitute("--username ${auth_player_name}"), "--username Steve");
-        assert_eq!(t.substitute("--version ${version_name}"), "--version 1.20.4");
+        assert_eq!(
+            t.substitute("--username ${auth_player_name}"),
+            "--username Steve"
+        );
+        assert_eq!(
+            t.substitute("--version ${version_name}"),
+            "--version 1.20.4"
+        );
         // unknown token left intact
         assert_eq!(t.substitute("${unknown}"), "${unknown}");
         // empty
@@ -286,14 +298,32 @@ mod tests {
           ]
         }"#;
         let v: Value = serde_json::from_str(json).unwrap();
-        let linux = Platform { os: "linux".into(), arch: "x86_64".into() };
-        let f_res = Features { has_custom_resolution: Some(true), is_demo_user: None };
+        let linux = Platform {
+            os: "linux".into(),
+            arch: "x86_64".into(),
+        };
+        let f_res = Features {
+            has_custom_resolution: Some(true),
+            is_demo_user: None,
+        };
         let game = build_arguments(&v, &linux, &f_res, ArgumentMode::Game, &tokens());
         assert_eq!(
             game,
-            vec!["--username", "Steve", "--version", "1.20.4", "--width", "1920", "--height", "1080"]
+            vec![
+                "--username",
+                "Steve",
+                "--version",
+                "1.20.4",
+                "--width",
+                "1920",
+                "--height",
+                "1080"
+            ]
         );
-        let f_nores = Features { has_custom_resolution: Some(false), is_demo_user: None };
+        let f_nores = Features {
+            has_custom_resolution: Some(false),
+            is_demo_user: None,
+        };
         let game2 = build_arguments(&v, &linux, &f_nores, ArgumentMode::Game, &tokens());
         assert_eq!(game2, vec!["--username", "Steve", "--version", "1.20.4"]);
         // jvm on linux: no osx rule

@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 use tokio::process::{Child, Command};
-use tokio::sync::{Mutex, broadcast};
+use tokio::sync::{broadcast, Mutex};
 use tokio::task::JoinHandle;
 use yuhina_api::{
     GameLogEntry, GameOutput, GameSession, GameState, LogLevel, YuhinaError, YuhinaErrorKind,
@@ -49,7 +49,13 @@ impl GameManager {
     }
 
     /// Spawn the java subprocess and start streaming logs.
-    pub async fn spawn(&self, cmd: LaunchCommand, instance_id: &str, log_path: &Path, game_dir: &Path) -> Result<GameSession, YuhinaError> {
+    pub async fn spawn(
+        &self,
+        cmd: LaunchCommand,
+        instance_id: &str,
+        log_path: &Path,
+        game_dir: &Path,
+    ) -> Result<GameSession, YuhinaError> {
         let session_id = uuid::Uuid::new_v4().to_string();
         let started_at = crate::now_millis() as u64;
 
@@ -84,12 +90,7 @@ impl GameManager {
             let session_id = session_id.clone();
             tokio::spawn(async move {
                 monitor_and_stream(
-                    &mut child,
-                    session_id,
-                    state,
-                    output_tx,
-                    &log_path,
-                    &game_dir,
+                    &mut child, session_id, state, output_tx, &log_path, &game_dir,
                 )
                 .await;
             })
@@ -106,7 +107,10 @@ impl GameManager {
             game_dir,
             task,
         });
-        self.sessions.lock().await.insert(session_id.clone(), proc.clone());
+        self.sessions
+            .lock()
+            .await
+            .insert(session_id.clone(), proc.clone());
 
         Ok(GameSession {
             session_id,
@@ -119,9 +123,9 @@ impl GameManager {
 
     pub async fn stop(&self, session_id: &str) -> Result<(), YuhinaError> {
         let sessions = self.sessions.lock().await;
-        let proc = sessions
-            .get(session_id)
-            .ok_or_else(|| YuhinaError::new(YuhinaErrorKind::InvalidInstance, "session not found"))?;
+        let proc = sessions.get(session_id).ok_or_else(|| {
+            YuhinaError::new(YuhinaErrorKind::InvalidInstance, "session not found")
+        })?;
         // The monitor task holds the child; signal through a separate mechanism:
         // we keep the child inside the task, so request a graceful shutdown via
         // a dedicated signal. For simplicity the monitor task registers the
@@ -144,9 +148,9 @@ impl GameManager {
 
     pub async fn get(&self, session_id: &str) -> Result<GameSession, YuhinaError> {
         let sessions = self.sessions.lock().await;
-        let proc = sessions
-            .get(session_id)
-            .ok_or_else(|| YuhinaError::new(YuhinaErrorKind::InvalidInstance, "session not found"))?;
+        let proc = sessions.get(session_id).ok_or_else(|| {
+            YuhinaError::new(YuhinaErrorKind::InvalidInstance, "session not found")
+        })?;
         let state = proc.state.lock().await.clone();
         Ok(GameSession {
             session_id: proc.session_id.clone(),
@@ -192,7 +196,10 @@ impl Default for GameManager {
 }
 
 async fn is_running(state: &Mutex<GameState>) -> bool {
-    matches!(*state.lock().await, GameState::Running | GameState::Starting)
+    matches!(
+        *state.lock().await,
+        GameState::Running | GameState::Starting
+    )
 }
 
 /// Stream child output into the broadcast channel + log file, then resolve
@@ -390,7 +397,10 @@ pub fn read_game_log(path: &Path, after_index: u64) -> Result<Vec<GameLogEntry>,
 fn split_log_line(line: &str) -> (LogLevel, String) {
     if let Some(rest) = line.strip_prefix('[') {
         if let Some(end) = rest.find("] ") {
-            return (classify_level(&rest[end + 2..]), rest[end + 2..].to_string());
+            return (
+                classify_level(&rest[end + 2..]),
+                rest[end + 2..].to_string(),
+            );
         }
     }
     (classify_level(line), line.to_string())
@@ -417,7 +427,11 @@ mod tests {
         let log_path = dir.path().join("logs/s1/game.log");
         // Use `sh` as a fake game process (no java dependency).
         let cmd = LaunchCommand {
-            java_bin: if cfg!(windows) { "cmd".into() } else { "sh".into() },
+            java_bin: if cfg!(windows) {
+                "cmd".into()
+            } else {
+                "sh".into()
+            },
             args: if cfg!(windows) {
                 vec!["/C".to_string(), "echo hello & exit /b 0".to_string()]
             } else {
@@ -425,7 +439,10 @@ mod tests {
             },
             cwd: dir.path().to_path_buf(),
         };
-        let session = mgr.spawn(cmd, "inst-1", &log_path, dir.path()).await.unwrap();
+        let session = mgr
+            .spawn(cmd, "inst-1", &log_path, dir.path())
+            .await
+            .unwrap();
         assert!(session.pid > 0);
 
         let mut rx = mgr.subscribe(&session.session_id).unwrap();
@@ -460,7 +477,11 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let log_path = dir.path().join("logs/s2/game.log");
         let cmd = LaunchCommand {
-            java_bin: if cfg!(windows) { "cmd".into() } else { "sh".into() },
+            java_bin: if cfg!(windows) {
+                "cmd".into()
+            } else {
+                "sh".into()
+            },
             args: if cfg!(windows) {
                 vec!["/C".into(), "exit /b 3".into()]
             } else {
@@ -468,7 +489,10 @@ mod tests {
             },
             cwd: dir.path().to_path_buf(),
         };
-        let session = mgr.spawn(cmd, "inst-2", &log_path, dir.path()).await.unwrap();
+        let session = mgr
+            .spawn(cmd, "inst-2", &log_path, dir.path())
+            .await
+            .unwrap();
         // wait for termination
         for _ in 0..50 {
             let s = mgr.get(&session.session_id).await.unwrap();

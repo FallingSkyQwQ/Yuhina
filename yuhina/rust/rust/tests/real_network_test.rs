@@ -20,7 +20,10 @@ async fn modrinth_real_search() {
     assert!(res.total > 0, "expected sodium hits");
     assert!(!res.hits.is_empty());
     let top = &res.hits[0];
-    let detail = client.get_project(&top.project_id).await.expect("project detail");
+    let detail = client
+        .get_project(&top.project_id)
+        .await
+        .expect("project detail");
     assert_eq!(detail.project_id, top.project_id);
 }
 
@@ -33,7 +36,10 @@ async fn fabric_loader_versions_live() {
     use yuhina_instance::CoreAdapter;
 
     let core: Arc<dyn CoreAdapter> = Arc::new(instance_common::StubCore);
-    let versions = core.resolve_loader_versions("1.20.4", LoaderKind::Fabric).await.unwrap();
+    let versions = core
+        .resolve_loader_versions("1.20.4", LoaderKind::Fabric)
+        .await
+        .unwrap();
     assert!(!versions.is_empty(), "fabric loader versions for 1.20.4");
 }
 

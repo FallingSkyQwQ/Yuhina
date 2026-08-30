@@ -58,7 +58,9 @@ impl VersionManifestList {
 }
 
 /// Fetch the manifest through a `Downloader` (mirror-aware).
-pub async fn fetch_version_list(downloader: &dyn Downloader) -> Result<VersionManifestList, YuhinaError> {
+pub async fn fetch_version_list(
+    downloader: &dyn Downloader,
+) -> Result<VersionManifestList, YuhinaError> {
     let bytes = downloader.fetch_bytes(VERSION_MANIFEST_URL).await?;
     let value: Value = serde_json::from_slice(&bytes)
         .map_err(|e| YuhinaError::internal(format!("parse manifest json: {e}")))?;
@@ -101,7 +103,10 @@ mod tests {
         let raw = load_fixture("version_manifest_v2.json");
         let list = VersionManifestList::parse(&raw).unwrap();
         assert!(list.versions.len() > 500, "count {}", list.versions.len());
-        assert_eq!(list.latest.release, raw["latest"]["release"].as_str().unwrap());
+        assert_eq!(
+            list.latest.release,
+            raw["latest"]["release"].as_str().unwrap()
+        );
         let meta = list.to_meta();
         assert_eq!(meta.len(), list.versions.len());
         assert!(meta.iter().any(|m| m.is_latest_release));

@@ -10,7 +10,7 @@ pub use yuhina_api::{
     Account, AccountKind, AppEvent, ConflictKind, ConflictSeverity, CreateInstanceRequest,
     DownloadProgressEvent, DownloadState, DownloadTask, GameLogEntry, GameOutput, GameSession,
     GameState, InstalledMod, InstanceDetail, InstanceSummary, JavaRuntime, JavaSelection,
-    JavaSource, LauncherConfig, LaunchArgs, Loader, LoaderKind, LogLevel, MicrosoftLoginHandle,
+    JavaSource, LaunchArgs, LauncherConfig, Loader, LoaderKind, LogLevel, MicrosoftLoginHandle,
     ModConflict, ModUpdate, ModrinthDependency, ModrinthFile, ModrinthProject, ModrinthVersion,
     NewsItem, SearchResult, Source, VersionMeta, YuhinaError, YuhinaErrorKind,
 };

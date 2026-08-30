@@ -39,9 +39,7 @@ fn unique_mod_dest(mods_dir: &Path, file_name: &str, sha1: &str) -> YuhinaResult
     loop {
         let name = format!("{stem}-{n}{ext}");
         let candidate = mods_dir.join(&name);
-        if !candidate.exists()
-            || crate::sha1_hex_file(&candidate).ok().as_deref() == Some(sha1)
-        {
+        if !candidate.exists() || crate::sha1_hex_file(&candidate).ok().as_deref() == Some(sha1) {
             return Ok(candidate);
         }
         n += 1;
@@ -87,7 +85,7 @@ impl ModFileService {
         if let Some(existing) = repo.get_by_sha1(instance_id, &sha1)? {
             return Ok(existing);
         }
-let meta = modmeta::parse_mod_metadata(src);
+        let meta = modmeta::parse_mod_metadata(src);
         let file_name = src
             .file_name()
             .map(|n| n.to_string_lossy().to_string())
@@ -100,8 +98,9 @@ let meta = modmeta::parse_mod_metadata(src);
         // older row's file on disk is never clobbered by different content.
         let dest = unique_mod_dest(&mods_dir, &file_name, &sha1)?;
         if dest != src {
-            std::fs::copy(src, &dest)
-                .map_err(|e| YuhinaError::io(format!("copy {} -> {}: {e}", src.display(), dest.display())))?;
+            std::fs::copy(src, &dest).map_err(|e| {
+                YuhinaError::io(format!("copy {} -> {}: {e}", src.display(), dest.display()))
+            })?;
         }
         let file_name = dest
             .file_name()
@@ -279,7 +278,6 @@ let meta = modmeta::parse_mod_metadata(src);
 mod tests {
     use super::*;
     use std::fs::File;
-    use yuhina_db::Db;
 
     use crate::instance::InstanceService;
     use crate::testutil;

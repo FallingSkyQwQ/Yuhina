@@ -16,7 +16,8 @@ use crate::download::Downloader;
 pub const FABRIC_MAVEN: &str = "https://maven.fabricmc.net";
 pub const FORGE_MAVEN: &str = "https://maven.minecraftforge.net";
 pub const NEOFORGE_MAVEN: &str = "https://maven.neoforged.net/releases";
-pub const QUILT_INSTALLER_URL: &str = "https://quiltmc.org/api/v1/download-latest-installer/Quilt-Installer";
+pub const QUILT_INSTALLER_URL: &str =
+    "https://quiltmc.org/api/v1/download-latest-installer/Quilt-Installer";
 
 /// A fully-resolved loader installation plan.
 #[derive(Debug, Clone)]
@@ -42,7 +43,11 @@ pub fn fabric_versions(value: &Value) -> Vec<String> {
         .as_array()
         .map(|arr| {
             arr.iter()
-                .filter_map(|v| v.get("loader").and_then(|l| l.get("version")).and_then(Value::as_str))
+                .filter_map(|v| {
+                    v.get("loader")
+                        .and_then(|l| l.get("version"))
+                        .and_then(Value::as_str)
+                })
                 .map(String::from)
                 .collect()
         })
@@ -55,7 +60,11 @@ pub fn quilt_versions(value: &Value) -> Vec<String> {
         .as_array()
         .map(|arr| {
             arr.iter()
-                .filter_map(|v| v.get("loader").and_then(|l| l.get("version")).and_then(Value::as_str))
+                .filter_map(|v| {
+                    v.get("loader")
+                        .and_then(|l| l.get("version"))
+                        .and_then(Value::as_str)
+                })
                 .map(String::from)
                 .collect()
         })
@@ -69,7 +78,9 @@ pub fn forge_versions(value: &Value, mc: &str) -> Vec<String> {
         return Vec::new();
     };
     let prefix = format!("{mc}-");
-    let recommended = promos.get(&format!("{prefix}recommended")).and_then(Value::as_str);
+    let recommended = promos
+        .get(&format!("{prefix}recommended"))
+        .and_then(Value::as_str);
     let mut versions = Vec::new();
     if let Some(r) = recommended {
         versions.push(r.to_string());
@@ -149,7 +160,9 @@ pub fn resolve_loader(
     match kind {
         LoaderKind::Fabric => {
             let versions = fabric_versions(fabric_loader_meta);
-            let version = version.map(str::to_string).unwrap_or_else(|| versions.first().cloned().unwrap_or_else(|| "0.16.0".into()));
+            let version = version
+                .map(str::to_string)
+                .unwrap_or_else(|| versions.first().cloned().unwrap_or_else(|| "0.16.0".into()));
             let installer = latest_fabric_installer(fabric_installer_meta);
             let display = format!("{mc}-fabric-{version}");
             Ok(LoaderChoice {
@@ -164,7 +177,9 @@ pub fn resolve_loader(
         }
         LoaderKind::Quilt => {
             let versions = quilt_versions(quilt_meta);
-            let version = version.map(str::to_string).unwrap_or_else(|| versions.first().cloned().unwrap_or_else(|| "0.20.0".into()));
+            let version = version
+                .map(str::to_string)
+                .unwrap_or_else(|| versions.first().cloned().unwrap_or_else(|| "0.20.0".into()));
             let display = format!("{mc}-quilt-{version}");
             Ok(LoaderChoice {
                 mc_version: mc.into(),
@@ -186,15 +201,21 @@ pub fn resolve_loader(
         }
         LoaderKind::Forge => {
             let versions = forge_versions(forge_promos, mc);
-            let version = version.map(str::to_string).or_else(|| versions.first().cloned())
-                .ok_or_else(|| YuhinaError::loader_not_installed(format!("no forge version for MC {mc}")))?;
+            let version = version
+                .map(str::to_string)
+                .or_else(|| versions.first().cloned())
+                .ok_or_else(|| {
+                    YuhinaError::loader_not_installed(format!("no forge version for MC {mc}"))
+                })?;
             let installer_filename = format!("forge-{mc}-{version}-installer.jar");
             let display = format!("{mc}-forge-{version}");
             Ok(LoaderChoice {
                 mc_version: mc.into(),
                 kind,
                 loader_version: version.clone(),
-                installer_url: format!("{FORGE_MAVEN}/net/minecraftforge/forge/{mc}-{version}/{installer_filename}"),
+                installer_url: format!(
+                    "{FORGE_MAVEN}/net/minecraftforge/forge/{mc}-{version}/{installer_filename}"
+                ),
                 installer_filename,
                 install_args: vec!["--installServer".into()],
                 display,
@@ -202,15 +223,21 @@ pub fn resolve_loader(
         }
         LoaderKind::NeoForge => {
             let versions = neoforge_versions(neoforge_xml, mc);
-            let version = version.map(str::to_string).or_else(|| versions.first().cloned())
-                .ok_or_else(|| YuhinaError::loader_not_installed(format!("no neoforge version for MC {mc}")))?;
+            let version = version
+                .map(str::to_string)
+                .or_else(|| versions.first().cloned())
+                .ok_or_else(|| {
+                    YuhinaError::loader_not_installed(format!("no neoforge version for MC {mc}"))
+                })?;
             let installer_filename = format!("neoforge-{version}-installer.jar");
             let display = format!("{mc}-neoforge-{version}");
             Ok(LoaderChoice {
                 mc_version: mc.into(),
                 kind,
                 loader_version: version.clone(),
-                installer_url: format!("{NEOFORGE_MAVEN}/net/neoforged/neoforge/{version}/{installer_filename}"),
+                installer_url: format!(
+                    "{NEOFORGE_MAVEN}/net/neoforged/neoforge/{version}/{installer_filename}"
+                ),
                 installer_filename,
                 install_args: vec!["--installServer".into()],
                 display,
@@ -277,7 +304,13 @@ pub async fn install_loader(
     let args: Vec<String> = choice
         .install_args
         .iter()
-        .map(|a| if a == "GAME_DIR" { game_dir.to_string_lossy().to_string() } else { a.clone() })
+        .map(|a| {
+            if a == "GAME_DIR" {
+                game_dir.to_string_lossy().to_string()
+            } else {
+                a.clone()
+            }
+        })
         .collect();
     let result = run_installer(java_bin, &installer_path, &args, game_dir).await?;
     let _ = std::fs::remove_file(&installer_path);
@@ -339,16 +372,38 @@ mod tests {
 
     #[test]
     fn resolve_fabric_plan() {
-        let c = resolve_loader("1.20.4", LoaderKind::Fabric, None, &fabric_meta(), &fabric_installer(), &quilt_meta(), &forge_promos(), &neoforge_xml()).unwrap();
+        let c = resolve_loader(
+            "1.20.4",
+            LoaderKind::Fabric,
+            None,
+            &fabric_meta(),
+            &fabric_installer(),
+            &quilt_meta(),
+            &forge_promos(),
+            &neoforge_xml(),
+        )
+        .unwrap();
         assert_eq!(c.kind, LoaderKind::Fabric);
-        assert!(c.installer_url.starts_with("https://maven.fabricmc.net/net/fabricmc/fabric-installer/"));
+        assert!(c
+            .installer_url
+            .starts_with("https://maven.fabricmc.net/net/fabricmc/fabric-installer/"));
         assert!(c.install_args.contains(&"-loader".to_string()));
         assert_eq!(c.display, format!("1.20.4-fabric-{}", c.loader_version));
     }
 
     #[test]
     fn resolve_quilt_plan() {
-        let c = resolve_loader("1.20.4", LoaderKind::Quilt, None, &fabric_meta(), &fabric_installer(), &quilt_meta(), &forge_promos(), &neoforge_xml()).unwrap();
+        let c = resolve_loader(
+            "1.20.4",
+            LoaderKind::Quilt,
+            None,
+            &fabric_meta(),
+            &fabric_installer(),
+            &quilt_meta(),
+            &forge_promos(),
+            &neoforge_xml(),
+        )
+        .unwrap();
         assert_eq!(c.kind, LoaderKind::Quilt);
         assert_eq!(c.installer_url, QUILT_INSTALLER_URL);
         assert!(c.install_args.iter().any(|a| a == "server"));
@@ -356,24 +411,59 @@ mod tests {
 
     #[test]
     fn resolve_forge_plan() {
-        let c = resolve_loader("1.20.4", LoaderKind::Forge, None, &fabric_meta(), &fabric_installer(), &quilt_meta(), &forge_promos(), &neoforge_xml()).unwrap();
+        let c = resolve_loader(
+            "1.20.4",
+            LoaderKind::Forge,
+            None,
+            &fabric_meta(),
+            &fabric_installer(),
+            &quilt_meta(),
+            &forge_promos(),
+            &neoforge_xml(),
+        )
+        .unwrap();
         assert_eq!(c.loader_version, "49.2.0");
-        assert!(c.installer_url.contains("forge-1.20.4-49.2.0-installer.jar"));
+        assert!(c
+            .installer_url
+            .contains("forge-1.20.4-49.2.0-installer.jar"));
         assert_eq!(c.install_args, vec!["--installServer"]);
         assert_eq!(c.display, "1.20.4-forge-49.2.0");
     }
 
     #[test]
     fn resolve_neoforge_plan() {
-        let c = resolve_loader("1.20.4", LoaderKind::NeoForge, None, &fabric_meta(), &fabric_installer(), &quilt_meta(), &forge_promos(), &neoforge_xml()).unwrap();
+        let c = resolve_loader(
+            "1.20.4",
+            LoaderKind::NeoForge,
+            None,
+            &fabric_meta(),
+            &fabric_installer(),
+            &quilt_meta(),
+            &forge_promos(),
+            &neoforge_xml(),
+        )
+        .unwrap();
         assert!(c.loader_version.starts_with("20.4."));
-        assert!(c.installer_url.contains(&format!("{}/neoforge-{}-installer.jar", c.loader_version, c.loader_version)));
+        assert!(c.installer_url.contains(&format!(
+            "{}/neoforge-{}-installer.jar",
+            c.loader_version, c.loader_version
+        )));
         assert_eq!(c.install_args, vec!["--installServer"]);
     }
 
     #[test]
     fn explicit_version_wins() {
-        let c = resolve_loader("1.20.4", LoaderKind::Forge, Some("49.0.51"), &fabric_meta(), &fabric_installer(), &quilt_meta(), &forge_promos(), &neoforge_xml()).unwrap();
+        let c = resolve_loader(
+            "1.20.4",
+            LoaderKind::Forge,
+            Some("49.0.51"),
+            &fabric_meta(),
+            &fabric_installer(),
+            &quilt_meta(),
+            &forge_promos(),
+            &neoforge_xml(),
+        )
+        .unwrap();
         assert_eq!(c.loader_version, "49.0.51");
     }
 
@@ -391,7 +481,14 @@ mod tests {
             let mut perm = std::fs::metadata(&script).unwrap().permissions();
             perm.set_mode(0o755);
             std::fs::set_permissions(&script, perm).unwrap();
-            let res = rt.block_on(run_installer(&script, dir.path().join("dummy.jar").as_path(), &["-jar".into()], dir.path())).unwrap();
+            let res = rt
+                .block_on(run_installer(
+                    &script,
+                    dir.path().join("dummy.jar").as_path(),
+                    &["-jar".into()],
+                    dir.path(),
+                ))
+                .unwrap();
             assert!(res.success);
             assert!(res.stdout.contains("INSTALLED"));
         }

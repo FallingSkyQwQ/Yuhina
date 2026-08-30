@@ -9,17 +9,19 @@ use std::path::Path;
 use std::sync::{Arc, RwLock};
 
 use serde_json::Value;
-use tokio::sync::{Mutex, broadcast};
+use tokio::sync::{broadcast, Mutex};
+use tracing::info;
 use yuhina_api::{
     Account, AppEvent, GameLogEntry, GameOutput, GameSession, InstanceDetail, InstanceSummary,
     JavaRuntime, JavaSource, LauncherConfig, Loader, LoaderKind, VersionMeta, YuhinaError,
     YuhinaErrorKind, YuhinaResult,
 };
-use tracing::info;
 use yuhina_db::Db;
 
 use crate::download::{Downloader, HttpDownloader};
-use crate::java::{detect_java, install_java_from_adoptium, is_java_executable, java_bin_in_home, scan_system};
+use crate::java::{
+    detect_java, install_java_from_adoptium, is_java_executable, java_bin_in_home, scan_system,
+};
 use crate::loader::{install_loader, resolve_loader};
 use crate::orchestrate::{add_assets, build_game_file_plan, ensure_downloaded};
 use crate::version::{fetch_version_list, get_version_json, VersionJsonCache};
@@ -40,9 +42,9 @@ pub mod version;
 
 // Convenience re-exports for downstream consumers (bridge, instance).
 pub use crate::config::CorePaths;
-pub use crate::libraries::{Features, Platform, resolve_libraries};
+pub use crate::launch::{build_classpath_for, build_launch_command, LaunchCommand, LaunchInput};
+pub use crate::libraries::{resolve_libraries, Features, Platform};
 pub use crate::manifest::VersionManifest;
-pub use crate::launch::{LaunchCommand, LaunchInput, build_classpath_for, build_launch_command};
 pub use crate::process::GameManager;
 pub use yuhina_api::GameState;
 
@@ -72,7 +74,8 @@ impl YuhinaCore {
         let paths = CorePaths::from_config(&config);
         let db = Db::new(&paths.db_path)?;
         let events = broadcast::channel(256).0;
-        let downloader: Arc<dyn Downloader> = Arc::new(HttpDownloader::new(config.download_source.clone()));
+        let downloader: Arc<dyn Downloader> =
+            Arc::new(HttpDownloader::new(config.download_source.clone()));
         Ok(Self {
             config: Arc::new(RwLock::new(config)),
             paths,
@@ -135,7 +138,8 @@ impl YuhinaCore {
     }
 
     pub fn get_version_list(&self) -> Vec<VersionMeta> {
-        self.with_db(|db| Ok(db.version_cache_repo().list()?)).unwrap_or_default()
+        self.with_db(|db| Ok(db.version_cache_repo().list()?))
+            .unwrap_or_default()
     }
 
     /// Load the full version manifest (json) for `id`, using cache or URL.
@@ -158,9 +162,14 @@ impl YuhinaCore {
 
         // fetch asset index if we have a url
         if !manifest.asset_index.url.is_empty() {
-            if let Ok(bytes) = self.downloader().fetch_bytes(&manifest.asset_index.url).await {
+            if let Ok(bytes) = self
+                .downloader()
+                .fetch_bytes(&manifest.asset_index.url)
+                .await
+            {
                 if let Ok(v) = serde_json::from_slice::<Value>(&bytes) {
-                    if let Ok(idx) = crate::assets::AssetIndex::parse(&manifest.asset_index.id, &v) {
+                    if let Ok(idx) = crate::assets::AssetIndex::parse(&manifest.asset_index.id, &v)
+                    {
                         add_assets(&mut plan, &idx, &self.paths.assets_objects_dir);
                     }
                 }
@@ -185,20 +194,22 @@ impl YuhinaCore {
         let rt = tokio::runtime::Handle::try_current();
         if rt.is_ok() {
             tokio::task::block_in_place(move || {
-                tokio::runtime::Handle::current()
-                    .block_on(async move {
-                        let db = core.db.lock().await;
-                        for j in found {
-                            let repo = db.java_repo();
-                            if repo.get_by_path(&j.path)?.is_none() {
-                                repo.insert(&j)?;
-                            }
+                tokio::runtime::Handle::current().block_on(async move {
+                    let db = core.db.lock().await;
+                    for j in found {
+                        let repo = db.java_repo();
+                        if repo.get_by_path(&j.path)?.is_none() {
+                            repo.insert(&j)?;
                         }
-                        Ok(())
-                    })
+                    }
+                    Ok(())
+                })
             })
         } else {
-            let db = self.db.try_lock().map_err(|_| YuhinaError::internal("db locked"))?;
+            let db = self
+                .db
+                .try_lock()
+                .map_err(|_| YuhinaError::internal("db locked"))?;
             for j in found {
                 let repo = db.java_repo();
                 if repo.get_by_path(&j.path)?.is_none() {
@@ -241,7 +252,8 @@ impl YuhinaCore {
     pub async fn install_java(&self, major: u32) -> YuhinaResult<JavaRuntime> {
         let platform = Platform::detect();
         let dest = self.paths.data_dir.join("java");
-        let (bin, info) = install_java_from_adoptium(self.downloader().as_ref(), major, &dest, &platform).await?;
+        let (bin, info) =
+            install_java_from_adoptium(self.downloader().as_ref(), major, &dest, &platform).await?;
         let java = JavaRuntime {
             id: uuid::Uuid::new_v4().to_string(),
             path: bin.to_string_lossy().to_string(),
@@ -271,10 +283,11 @@ impl YuhinaCore {
     pub fn select_java(&self, java: &yuhina_api::JavaSelection) -> YuhinaResult<JavaRuntime> {
         let all = self.list_java_runtimes();
         match java {
-            yuhina_api::JavaSelection::Manual(path) => all
-                .into_iter()
-                .find(|j| j.path == *path)
-                .ok_or_else(|| YuhinaError::java_not_found(format!("java at {path} not registered"))),
+            yuhina_api::JavaSelection::Manual(path) => {
+                all.into_iter().find(|j| j.path == *path).ok_or_else(|| {
+                    YuhinaError::java_not_found(format!("java at {path} not registered"))
+                })
+            }
             yuhina_api::JavaSelection::Auto(major) => {
                 let need = if *major > 0 { *major } else { 21 };
                 all.iter()
@@ -296,7 +309,11 @@ impl YuhinaCore {
         self.launch_instance_with(instance_id, &account).await
     }
 
-    pub async fn launch_instance_with(&self, instance_id: &str, account: &Account) -> YuhinaResult<GameSession> {
+    pub async fn launch_instance_with(
+        &self,
+        instance_id: &str,
+        account: &Account,
+    ) -> YuhinaResult<GameSession> {
         let detail = self.instance_detail(instance_id).await?;
         let summary = &detail.summary;
         if !summary.is_installed {
@@ -315,16 +332,23 @@ impl YuhinaCore {
         }
         std::fs::create_dir_all(&session_natives)
             .map_err(|e| YuhinaError::io(format!("mkdir natives: {e}")))?;
-        let resolved = resolve_libraries(&manifest.libraries, &platform, &Features {
-            has_custom_resolution: None,
-            is_demo_user: None,
-        });
+        let resolved = resolve_libraries(
+            &manifest.libraries,
+            &platform,
+            &Features {
+                has_custom_resolution: None,
+                is_demo_user: None,
+            },
+        );
         crate::launch::extract_natives(&resolved, &self.paths.libraries_dir, &session_natives)?;
 
         let game_dir = Path::new(&detail.game_dir);
         let client_jar = self.paths.client_jar(&summary.mc_version);
         let classpath = build_classpath_for(&resolved, &self.paths, &client_jar);
-        let launch_args = detail.launch_args.clone().unwrap_or_else(|| self.config().launch_args.clone());
+        let launch_args = detail
+            .launch_args
+            .clone()
+            .unwrap_or_else(|| self.config().launch_args.clone());
         let version_name = loader_version_name(summary, &manifest);
         let input = LaunchInput {
             java_bin,
@@ -344,9 +368,17 @@ impl YuhinaCore {
             platform,
         };
         let cmd = build_launch_command(&input);
-        let log_path = self.paths.session_log_path(&uuid::Uuid::new_v4().to_string());
-        let session = self.games.spawn(cmd, instance_id, &log_path, game_dir).await?;
-        self.logs_registry.lock().await.insert(session.session_id.clone(), log_path);
+        let log_path = self
+            .paths
+            .session_log_path(&uuid::Uuid::new_v4().to_string());
+        let session = self
+            .games
+            .spawn(cmd, instance_id, &log_path, game_dir)
+            .await?;
+        self.logs_registry
+            .lock()
+            .await
+            .insert(session.session_id.clone(), log_path);
         let _ = self.events.send(AppEvent::InstancesChanged);
         Ok(session)
     }
@@ -360,9 +392,12 @@ impl YuhinaCore {
 
     async fn instance_detail(&self, id: &str) -> YuhinaResult<InstanceDetail> {
         let db = self.db.lock().await;
-        db.instance_repo()
-            .get_detail(id)?
-            .ok_or_else(|| YuhinaError::new(YuhinaErrorKind::InvalidInstance, format!("instance {id} not found")))
+        db.instance_repo().get_detail(id)?.ok_or_else(|| {
+            YuhinaError::new(
+                YuhinaErrorKind::InvalidInstance,
+                format!("instance {id} not found"),
+            )
+        })
     }
 
     pub async fn stop_game(&self, session_id: &str) -> YuhinaResult<()> {
@@ -377,12 +412,19 @@ impl YuhinaCore {
         self.games.list().await
     }
 
-    pub fn subscribe_game_output(&self, session_id: &str) -> Option<broadcast::Receiver<GameOutput>> {
+    pub fn subscribe_game_output(
+        &self,
+        session_id: &str,
+    ) -> Option<broadcast::Receiver<GameOutput>> {
         self.games.subscribe(session_id)
     }
 
     pub fn get_game_logs(&self, session_id: &str, after_index: u64) -> Vec<GameLogEntry> {
-        let path = self.logs_registry.try_lock().ok().and_then(|m| m.get(session_id).cloned())
+        let path = self
+            .logs_registry
+            .try_lock()
+            .ok()
+            .and_then(|m| m.get(session_id).cloned())
             .or_else(|| self.games.log_path(session_id));
         let Some(path) = path else {
             return Vec::new();
@@ -392,9 +434,9 @@ impl YuhinaCore {
 
     pub fn open_game_dir(&self, instance_id: &str) -> YuhinaResult<()> {
         let detail = self.with_db(|db| {
-            db.instance_repo()
-                .get_detail(instance_id)?
-                .ok_or_else(|| YuhinaError::new(YuhinaErrorKind::InvalidInstance, "instance not found"))
+            db.instance_repo().get_detail(instance_id)?.ok_or_else(|| {
+                YuhinaError::new(YuhinaErrorKind::InvalidInstance, "instance not found")
+            })
         })?;
         open_dir(Path::new(&detail.game_dir))
     }
@@ -404,22 +446,35 @@ impl YuhinaCore {
     // -----------------------------------------------------------------
 
     /// Resolve available loader versions for `mc` (for C's picker UI).
-    pub async fn resolve_loader_versions(&self, mc: &str, kind: LoaderKind) -> YuhinaResult<Vec<String>> {
+    pub async fn resolve_loader_versions(
+        &self,
+        mc: &str,
+        kind: LoaderKind,
+    ) -> YuhinaResult<Vec<String>> {
         let dl = self.downloader();
         match kind {
             LoaderKind::Fabric => {
-                let bytes = dl.fetch_bytes(&format!("https://meta.fabricmc.net/v2/versions/loader/{mc}")).await?;
-                let v: Value = serde_json::from_slice(&bytes).map_err(|e| YuhinaError::internal(e.to_string()))?;
+                let bytes = dl
+                    .fetch_bytes(&format!(
+                        "https://meta.fabricmc.net/v2/versions/loader/{mc}"
+                    ))
+                    .await?;
+                let v: Value = serde_json::from_slice(&bytes)
+                    .map_err(|e| YuhinaError::internal(e.to_string()))?;
                 Ok(crate::loader::fabric_versions(&v))
             }
             LoaderKind::Quilt => {
-                let bytes = dl.fetch_bytes(&format!("https://meta.quiltmc.org/v3/versions/loader/{mc}")).await?;
-                let v: Value = serde_json::from_slice(&bytes).map_err(|e| YuhinaError::internal(e.to_string()))?;
+                let bytes = dl
+                    .fetch_bytes(&format!("https://meta.quiltmc.org/v3/versions/loader/{mc}"))
+                    .await?;
+                let v: Value = serde_json::from_slice(&bytes)
+                    .map_err(|e| YuhinaError::internal(e.to_string()))?;
                 Ok(crate::loader::quilt_versions(&v))
             }
             LoaderKind::Forge => {
                 let bytes = dl.fetch_bytes("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").await?;
-                let v: Value = serde_json::from_slice(&bytes).map_err(|e| YuhinaError::internal(e.to_string()))?;
+                let v: Value = serde_json::from_slice(&bytes)
+                    .map_err(|e| YuhinaError::internal(e.to_string()))?;
                 Ok(crate::loader::forge_versions(&v, mc))
             }
             LoaderKind::NeoForge => {
@@ -433,7 +488,11 @@ impl YuhinaCore {
     /// Low-level loader installation for an instance. Downloads the installer,
     /// runs it in the game dir with a matched Java, updates the instance's
     /// loader fields + installed flag on success. Returns the installed loader.
-    pub async fn install_loader_for_instance(&self, instance_id: &str, loader: &Loader) -> YuhinaResult<Loader> {
+    pub async fn install_loader_for_instance(
+        &self,
+        instance_id: &str,
+        loader: &Loader,
+    ) -> YuhinaResult<Loader> {
         let detail = self.instance_detail(instance_id).await?;
         let mc = detail.summary.mc_version.clone();
         let java = self.select_java(&detail.java)?;
@@ -442,27 +501,84 @@ impl YuhinaCore {
         // fetch meta to resolve the plan
         let choice = match loader.kind {
             LoaderKind::Fabric => {
-                let meta: Value = serde_json::from_slice(&dl.fetch_bytes(&format!("https://meta.fabricmc.net/v2/versions/loader/{mc}")).await?).map_err(YuhinaError::from)?;
-                let inst: Value = serde_json::from_slice(&dl.fetch_bytes("https://meta.fabricmc.net/v2/versions/installer").await?).map_err(YuhinaError::from)?;
-                resolve_loader(&mc, loader.kind.clone(), Some(&loader.version), &meta, &inst, &Value::Null, &Value::Null, "")?
+                let meta: Value = serde_json::from_slice(
+                    &dl.fetch_bytes(&format!(
+                        "https://meta.fabricmc.net/v2/versions/loader/{mc}"
+                    ))
+                    .await?,
+                )
+                .map_err(YuhinaError::from)?;
+                let inst: Value = serde_json::from_slice(
+                    &dl.fetch_bytes("https://meta.fabricmc.net/v2/versions/installer")
+                        .await?,
+                )
+                .map_err(YuhinaError::from)?;
+                resolve_loader(
+                    &mc,
+                    loader.kind,
+                    Some(&loader.version),
+                    &meta,
+                    &inst,
+                    &Value::Null,
+                    &Value::Null,
+                    "",
+                )?
             }
             LoaderKind::Quilt => {
-                let meta: Value = serde_json::from_slice(&dl.fetch_bytes(&format!("https://meta.quiltmc.org/v3/versions/loader/{mc}")).await?).map_err(YuhinaError::from)?;
-                resolve_loader(&mc, loader.kind.clone(), Some(&loader.version), &Value::Null, &Value::Null, &meta, &Value::Null, "")?
+                let meta: Value = serde_json::from_slice(
+                    &dl.fetch_bytes(&format!("https://meta.quiltmc.org/v3/versions/loader/{mc}"))
+                        .await?,
+                )
+                .map_err(YuhinaError::from)?;
+                resolve_loader(
+                    &mc,
+                    loader.kind,
+                    Some(&loader.version),
+                    &Value::Null,
+                    &Value::Null,
+                    &meta,
+                    &Value::Null,
+                    "",
+                )?
             }
             LoaderKind::Forge => {
                 let meta: Value = serde_json::from_slice(&dl.fetch_bytes("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").await?).map_err(YuhinaError::from)?;
-                resolve_loader(&mc, loader.kind.clone(), Some(&loader.version), &Value::Null, &Value::Null, &Value::Null, &meta, "")?
+                resolve_loader(
+                    &mc,
+                    loader.kind,
+                    Some(&loader.version),
+                    &Value::Null,
+                    &Value::Null,
+                    &Value::Null,
+                    &meta,
+                    "",
+                )?
             }
             LoaderKind::NeoForge => {
                 let xml = String::from_utf8_lossy(&dl.fetch_bytes("https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml").await?).to_string();
-                resolve_loader(&mc, loader.kind.clone(), Some(&loader.version), &Value::Null, &Value::Null, &Value::Null, &Value::Null, &xml)?
+                resolve_loader(
+                    &mc,
+                    loader.kind,
+                    Some(&loader.version),
+                    &Value::Null,
+                    &Value::Null,
+                    &Value::Null,
+                    &Value::Null,
+                    &xml,
+                )?
             }
         };
 
         let game_dir = Path::new(&detail.game_dir);
         let loader_dir = self.paths.data_dir.join("loaders");
-        let result = install_loader(dl.as_ref(), Path::new(&java.path), game_dir, &loader_dir, &choice).await?;
+        let result = install_loader(
+            dl.as_ref(),
+            Path::new(&java.path),
+            game_dir,
+            &loader_dir,
+            &choice,
+        )
+        .await?;
         if !result.success {
             return Err(YuhinaError::new(
                 YuhinaErrorKind::LoaderNotInstalled,
@@ -474,8 +590,17 @@ impl YuhinaCore {
         }
         // mark instance installed + record loader
         let db = self.db.lock().await;
-        db.instance_repo()
-            .update(instance_id, None, None, Some(Some(loader)), None, None, None, Some(true), None)?;
+        db.instance_repo().update(
+            instance_id,
+            None,
+            None,
+            Some(Some(loader)),
+            None,
+            None,
+            None,
+            Some(true),
+            None,
+        )?;
         drop(db);
         let _ = self.events.send(AppEvent::InstancesChanged);
         info!(instance_id, loader = %loader.version, "loader installed");
@@ -527,25 +652,47 @@ impl VersionJsonCache for YuhinaCore {
             if let Ok(db) = self.db.try_lock() {
                 let meta = VersionMeta {
                     id: id.to_string(),
-                    version_type: value.get("type").and_then(Value::as_str).unwrap_or("release").to_string(),
-                    release_time: value.get("releaseTime").and_then(Value::as_str).unwrap_or_default().to_string(),
+                    version_type: value
+                        .get("type")
+                        .and_then(Value::as_str)
+                        .unwrap_or("release")
+                        .to_string(),
+                    release_time: value
+                        .get("releaseTime")
+                        .and_then(Value::as_str)
+                        .unwrap_or_default()
+                        .to_string(),
                     url: String::new(),
                     is_latest_release: false,
                     is_latest_snapshot: false,
                 };
-                let _ = db.version_cache_repo().upsert(&meta, Some(&value.to_string()));
+                let _ = db
+                    .version_cache_repo()
+                    .upsert(&meta, Some(&value.to_string()));
             }
         }
     }
 
     fn get_version_url(&self, id: &str) -> Option<String> {
-        self.db.try_lock().ok()?.version_cache_repo().get(id).ok().flatten().map(|r| r.meta.url)
+        self.db
+            .try_lock()
+            .ok()?
+            .version_cache_repo()
+            .get(id)
+            .ok()
+            .flatten()
+            .map(|r| r.meta.url)
     }
 }
 
 fn loader_version_name(summary: &InstanceSummary, manifest: &VersionManifest) -> String {
     match &summary.loader {
-        Some(l) => format!("{}-{}-{}", summary.mc_version, loader_kind_tag(&l.kind), l.version),
+        Some(l) => format!(
+            "{}-{}-{}",
+            summary.mc_version,
+            loader_kind_tag(&l.kind),
+            l.version
+        ),
         None => manifest.id.clone(),
     }
 }
@@ -614,7 +761,11 @@ mod tests {
     #[test]
     fn core_constructs_with_paths() {
         let core = test_core();
-        assert!(core.paths().versions_dir.to_string_lossy().contains("versions"));
+        assert!(core
+            .paths()
+            .versions_dir
+            .to_string_lossy()
+            .contains("versions"));
     }
 
     #[tokio::test]
@@ -642,7 +793,10 @@ mod tests {
             name: "n".into(),
             icon: "🎮".into(),
             mc_version: "1.20.4".into(),
-            loader: Some(Loader { kind: LoaderKind::Fabric, version: "0.16.0".into() }),
+            loader: Some(Loader {
+                kind: LoaderKind::Fabric,
+                version: "0.16.0".into(),
+            }),
             is_installed: true,
             last_launched_at: None,
             mod_count: 0,
@@ -673,7 +827,9 @@ mod tests {
         let j = core.add_manual_java("/usr/bin/java".into());
         // may fail if java missing; assert only when it succeeds
         if let Ok(java) = j {
-            let selected = core.select_java(&JavaSelection::Manual(java.path.clone())).unwrap();
+            let selected = core
+                .select_java(&JavaSelection::Manual(java.path.clone()))
+                .unwrap();
             assert_eq!(selected.id, java.id);
         }
     }
