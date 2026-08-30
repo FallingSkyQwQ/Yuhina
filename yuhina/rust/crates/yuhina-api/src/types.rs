@@ -26,7 +26,7 @@ pub struct LauncherConfig {
     pub auto_update: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Default)]
 pub struct LaunchArgs {
     pub min_memory_mb: u32,
     pub max_memory_mb: u32,

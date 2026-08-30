@@ -266,28 +266,40 @@ pub struct DropServer {
     pub base_url: String,
     thread: Option<JoinHandle<()>>,
     served: Arc<AtomicUsize>,
+    stop: Arc<AtomicBool>,
 }
 
 impl DropServer {
     pub fn start(data: Vec<u8>, drop_at: usize) -> Self {
         let listener = TcpListener::bind("127.0.0.1:0").expect("bind drop server");
+        listener.set_nonblocking(true).expect("set nonblocking");
         let port = listener.local_addr().expect("addr").port();
         let data = Arc::new(data);
         let served = Arc::new(AtomicUsize::new(0));
+        let stop = Arc::new(AtomicBool::new(false));
         let t_data = Arc::clone(&data);
         let t_served = Arc::clone(&served);
+        let t_stop = Arc::clone(&stop);
         let thread = std::thread::spawn(move || {
-            for stream in listener.incoming() {
-                let Ok(stream) = stream else { break };
-                let data = Arc::clone(&t_data);
-                let served = t_served.fetch_add(1, Ordering::SeqCst);
-                std::thread::spawn(move || serve_one(stream, data, served == 0, drop_at));
+            while !t_stop.load(Ordering::SeqCst) {
+                match listener.accept() {
+                    Ok((stream, _)) => {
+                        let data = Arc::clone(&t_data);
+                        let served = t_served.fetch_add(1, Ordering::SeqCst);
+                        std::thread::spawn(move || serve_one(stream, data, served == 0, drop_at));
+                    }
+                    Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
+                        std::thread::sleep(Duration::from_millis(5));
+                    }
+                    Err(_) => break,
+                }
             }
         });
         Self {
             base_url: format!("http://127.0.0.1:{port}"),
             thread: Some(thread),
             served,
+            stop,
         }
     }
 
@@ -303,6 +315,7 @@ impl DropServer {
 impl Drop for DropServer {
     fn drop(&mut self) {
         if let Some(t) = self.thread.take() {
+            self.stop.store(true, Ordering::SeqCst);
             let _ = t.join();
         }
     }
