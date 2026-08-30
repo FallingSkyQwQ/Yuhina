@@ -36,7 +36,6 @@ impl Crypto {
             let key = file_get_or_create(data_dir)?;
             return Ok(Crypto { key });
         }
-        let dir = data_dir.to_path_buf();
         let (tx, rx) = std::sync::mpsc::channel();
         std::thread::spawn(move || {
             let _ = tx.send(keyring_get_or_create());
