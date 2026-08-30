@@ -1,11 +1,7 @@
-//! Shared types and error model for Yuhina.
-//!
-//! This crate is the FFI contract layer (see `docs/api-contract.md`).
-//! Every other crate (db/core/download/instance/auth/bridge) depends on it.
-//! Type and field names must match the contract exactly — do not rename.
+//! Shared types and error model for Yuhina (api-contract.md §1–§2).
 
 pub mod error;
 pub mod types;
 
-pub use error::{YuhinaError, YuhinaErrorKind, YuhinaResult};
+pub use error::{YuhinaError, YuhinaErrorKind, Result, YuhinaResult};
 pub use types::*;

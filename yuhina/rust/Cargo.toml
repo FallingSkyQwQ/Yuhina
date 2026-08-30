@@ -8,6 +8,7 @@ members = [
     "crates/yuhina-instance",
     "crates/yuhina-auth",
     "crates/yuhina-bridge",
+    "rust",
 ]
 
 [workspace.package]
@@ -27,5 +28,13 @@ rusqlite = { version = "0.32", features = ["bundled"] }
 zip = { version = "2", default-features = false, features = ["deflate"] }
 sha1 = "0.10"
 md-5 = "0.10"
-keyring = "3"
+keyring = { version = "3", features = ["windows-native", "sync-secret-service", "crypto-rust"] }
 tiny_http = "0.12"
+url = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+getrandom = "0.2"
+sha2 = "0.10"
+base64 = "0.22"
+hex = "0.4"
+aes-gcm = "0.10"
+open = "5"

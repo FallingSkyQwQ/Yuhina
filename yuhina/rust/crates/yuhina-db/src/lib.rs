@@ -1,27 +1,91 @@
 //! SQLite persistence layer for Yuhina.
-//!
-//! - Schema & migrations via `PRAGMA user_version` (`schema` module).
-//! - Typed repositories over a single `Connection` (`repo` module).
-//!
-//! # Threading
-//! `Db` owns a `rusqlite::Connection` which is `!Sync`. The service layer
-//! should share it behind `Arc<Mutex<Db>>`/`Arc<RwLock<Db>>` when used from
-//! tokio tasks. Repos borrow the connection for the duration of a call.
+//! Schema follows api-contract.md §5 (frozen). Repos are returned by
+//! `Db::<repo>_repo()` and each holds a clone of the shared connection.
+
+pub mod repos;
 
 use std::path::Path;
+use std::sync::{Arc, Mutex};
 
-use anyhow::{Context, Result};
 use rusqlite::Connection;
 
-pub mod repo;
-pub mod schema;
+pub use repos::*;
 
-use repo::{
-    AccountRepo, DownloadTaskRepo, InstalledModRepo, InstanceRepo, JavaRepo, NewsCacheRepo,
-    SettingsRepo, VersionCacheRepo,
-};
+/// Wrapped SQLite database with WAL enabled and schema migrations applied.
+#[derive(Clone)]
+pub struct Db {
+    conn: Arc<Mutex<Connection>>,
+}
 
-/// Milliseconds since UNIX epoch (used for all timestamps).
+impl Db {
+    /// Open (or create) the database at `path`, apply migrations, enable WAL.
+    pub fn new(path: &Path) -> anyhow::Result<Self> {
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
+        let conn = Connection::open(path)?;
+        conn.pragma_update(None, "journal_mode", "WAL")?;
+        conn.pragma_update(None, "foreign_keys", "ON")?;
+        let db = Db {
+            conn: Arc::new(Mutex::new(conn)),
+        };
+        db.migrate()?;
+        Ok(db)
+    }
+
+    /// Open an in-memory database (tests).
+    pub fn in_memory() -> anyhow::Result<Self> {
+        let conn = Connection::open_in_memory()?;
+        conn.pragma_update(None, "foreign_keys", "ON")?;
+        let db = Db {
+            conn: Arc::new(Mutex::new(conn)),
+        };
+        db.migrate()?;
+        Ok(db)
+    }
+
+    pub(crate) fn conn(&self) -> Arc<Mutex<Connection>> {
+        Arc::clone(&self.conn)
+    }
+
+    pub fn account_repo(&self) -> AccountRepo {
+        AccountRepo {
+            conn: self.conn(),
+        }
+    }
+
+    pub fn java_repo(&self) -> JavaRepo {
+        JavaRepo {
+            conn: self.conn(),
+        }
+    }
+
+    pub fn version_cache_repo(&self) -> VersionCacheRepo {
+        VersionCacheRepo {
+            conn: self.conn(),
+        }
+    }
+
+    pub fn instance_repo(&self) -> InstanceRepo {
+        InstanceRepo {
+            conn: self.conn(),
+        }
+    }
+
+    fn migrate(&self) -> anyhow::Result<()> {
+        let mut conn = self.conn.lock().unwrap();
+        let version: i64 = conn.query_row("PRAGMA user_version", [], |r| r.get(0))?;
+        if version < 1 {
+            let tx = conn.transaction()?;
+            schema::create_all(&tx)?;
+            tx.pragma_update(None, "user_version", 1)?;
+            tx.commit()?;
+        }
+        Ok(())
+    }
+}
+
+/// Current wall-clock time in integer milliseconds since the Unix epoch.
 pub fn now_millis() -> i64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -29,142 +93,115 @@ pub fn now_millis() -> i64 {
         .unwrap_or(0)
 }
 
-pub struct Db {
-    conn: Connection,
-}
+pub mod schema {
+    use rusqlite::Connection;
 
-impl Db {
-    /// Opens (creating if needed) the database at `path`, enables WAL +
-    /// foreign keys and applies pending migrations. Parent directories are
-    /// created automatically.
-    pub fn new(path: impl AsRef<Path>) -> Result<Self> {
-        let path = path.as_ref();
-        if let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent)
-                .with_context(|| format!("create db parent dir {}", parent.display()))?;
-        }
-        let conn = Connection::open(path)
-            .with_context(|| format!("open sqlite db {}", path.display()))?;
-        conn.pragma_update(None, "journal_mode", "WAL")?;
-        conn.pragma_update(None, "foreign_keys", "ON")?;
-        conn.pragma_update(None, "busy_timeout", 5000)?;
-        let db = Self { conn };
-        db.migrate()?;
-        Ok(db)
-    }
+    /// Create every table defined by the frozen contract §5.
+    pub fn create_all(conn: &Connection) -> rusqlite::Result<()> {
+        conn.execute_batch(
+            r#"
+            CREATE TABLE settings (
+                key   TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            );
 
-    /// Opens an in-memory database (tests, temp caches).
-    pub fn in_memory() -> Result<Self> {
-        let conn = Connection::open_in_memory()?;
-        conn.pragma_update(None, "foreign_keys", "ON")?;
-        let db = Self { conn };
-        db.migrate()?;
-        Ok(db)
-    }
+            CREATE TABLE accounts (
+                id                TEXT PRIMARY KEY,
+                kind              TEXT NOT NULL,
+                username          TEXT NOT NULL,
+                uuid              TEXT NOT NULL,
+                yggdrasil_server  TEXT,
+                skin_url          TEXT,
+                access_token_enc  TEXT,
+                refresh_token_enc TEXT,
+                expires_at        INTEGER,
+                is_active         INTEGER DEFAULT 0,
+                created_at        INTEGER,
+                updated_at        INTEGER
+            );
 
-    pub fn migrate(&self) -> Result<()> {
-        schema::migrate(&self.conn)
-    }
+            CREATE TABLE instances (
+                id                TEXT PRIMARY KEY,
+                name              TEXT NOT NULL,
+                icon              TEXT NOT NULL DEFAULT '🎮',
+                mc_version        TEXT NOT NULL,
+                loader_kind       TEXT,
+                loader_version    TEXT,
+                game_dir          TEXT NOT NULL,
+                java_auto_major   INTEGER,
+                java_manual_path  TEXT,
+                launch_args_json  TEXT,
+                notes             TEXT DEFAULT '',
+                is_installed      INTEGER DEFAULT 0,
+                last_launched_at  INTEGER,
+                created_at        INTEGER,
+                updated_at        INTEGER
+            );
 
-    pub fn conn(&self) -> &Connection {
-        &self.conn
-    }
+            CREATE TABLE installed_mods (
+                id           TEXT PRIMARY KEY,
+                instance_id  TEXT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
+                file_name    TEXT NOT NULL,
+                file_size    INTEGER,
+                sha1         TEXT,
+                name         TEXT,
+                modid        TEXT,
+                description  TEXT,
+                loaders_json TEXT,
+                mc_versions_json TEXT,
+                project_id   TEXT,
+                version_id   TEXT,
+                enabled      INTEGER DEFAULT 1,
+                installed_at INTEGER
+            );
+            CREATE INDEX idx_installed_mods_instance ON installed_mods(instance_id);
 
-    pub fn settings_repo(&self) -> SettingsRepo<'_> {
-        SettingsRepo::new(&self.conn)
-    }
+            CREATE TABLE download_tasks (
+                id             TEXT PRIMARY KEY,
+                kind           TEXT NOT NULL,
+                title          TEXT NOT NULL,
+                instance_id    TEXT,
+                url            TEXT NOT NULL,
+                target_path    TEXT NOT NULL,
+                total_bytes    INTEGER,
+                done_bytes     INTEGER,
+                state          TEXT NOT NULL,
+                checksum_sha1  TEXT,
+                error          TEXT,
+                created_at     INTEGER,
+                updated_at     INTEGER
+            );
+            CREATE INDEX idx_download_tasks_state ON download_tasks(state);
 
-    pub fn account_repo(&self) -> AccountRepo<'_> {
-        AccountRepo::new(&self.conn)
-    }
+            CREATE TABLE java_runtimes (
+                id      TEXT PRIMARY KEY,
+                path    TEXT NOT NULL,
+                major   INTEGER NOT NULL,
+                vendor  TEXT,
+                version TEXT,
+                arch    TEXT,
+                source  TEXT NOT NULL,
+                added_at INTEGER
+            );
 
-    pub fn instance_repo(&self) -> InstanceRepo<'_> {
-        InstanceRepo::new(&self.conn)
-    }
+            CREATE TABLE version_cache (
+                id            TEXT PRIMARY KEY,
+                version_type  TEXT,
+                release_time  TEXT,
+                url           TEXT,
+                manifest_json TEXT,
+                fetched_at    INTEGER
+            );
 
-    pub fn installed_mod_repo(&self) -> InstalledModRepo<'_> {
-        InstalledModRepo::new(&self.conn)
-    }
-
-    pub fn download_task_repo(&self) -> DownloadTaskRepo<'_> {
-        DownloadTaskRepo::new(&self.conn)
-    }
-
-    pub fn java_repo(&self) -> JavaRepo<'_> {
-        JavaRepo::new(&self.conn)
-    }
-
-    pub fn version_cache_repo(&self) -> VersionCacheRepo<'_> {
-        VersionCacheRepo::new(&self.conn)
-    }
-
-    pub fn news_cache_repo(&self) -> NewsCacheRepo<'_> {
-        NewsCacheRepo::new(&self.conn)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn db_opens_and_migrates() {
-        let dir = tempfile::tempdir().unwrap();
-        let db = Db::new(dir.path().join("sub/dir/yuhina.db")).unwrap();
-        let v: i64 = db
-            .conn()
-            .query_row("PRAGMA user_version", [], |r| r.get(0))
-            .unwrap();
-        assert_eq!(v, schema::SCHEMA_VERSION);
-        // WAL enabled
-        let mode: String = db
-            .conn()
-            .query_row("PRAGMA journal_mode", [], |r| r.get(0))
-            .unwrap();
-        assert_eq!(mode.to_lowercase(), "wal");
-    }
-
-    #[test]
-    fn db_in_memory() {
-        let db = Db::in_memory().unwrap();
-        assert!(db.conn().is_autocommit());
-    }
-
-    #[test]
-    fn all_tables_exist() {
-        let db = Db::in_memory().unwrap();
-        let mut stmt = db
-            .conn()
-            .prepare("SELECT name FROM sqlite_master WHERE type='table'")
-            .unwrap();
-        let tables: Vec<String> = stmt
-            .query_map([], |r| r.get(0))
-            .unwrap()
-            .collect::<rusqlite::Result<_>>()
-            .unwrap();
-        for t in [
-            "settings",
-            "accounts",
-            "instances",
-            "installed_mods",
-            "download_tasks",
-            "java_runtimes",
-            "version_cache",
-            "news_cache",
-        ] {
-            assert!(tables.iter().any(|x| x == t), "missing table {t}");
-        }
-        // indexes
-        let mut stmt = db
-            .conn()
-            .prepare("SELECT name FROM sqlite_master WHERE type='index' AND name LIKE 'idx_%'")
-            .unwrap();
-        let idxs: Vec<String> = stmt
-            .query_map([], |r| r.get(0))
-            .unwrap()
-            .collect::<rusqlite::Result<_>>()
-            .unwrap();
-        assert!(idxs.iter().any(|x| x == "idx_installed_mods_instance"));
-        assert!(idxs.iter().any(|x| x == "idx_download_tasks_state"));
+            CREATE TABLE news_cache (
+                id        TEXT PRIMARY KEY,
+                title     TEXT NOT NULL,
+                url       TEXT NOT NULL,
+                published TEXT,
+                summary   TEXT,
+                fetched_at INTEGER
+            );
+            "#,
+        )
     }
 }

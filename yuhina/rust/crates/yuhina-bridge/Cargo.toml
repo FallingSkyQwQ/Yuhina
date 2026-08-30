@@ -1,0 +1,21 @@
+[package]
+name = "yuhina-bridge"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+yuhina-api = { path = "../yuhina-api" }
+yuhina-db = { path = "../yuhina-db" }
+yuhina-core = { path = "../yuhina-core" }
+yuhina-download = { path = "../yuhina-download" }
+yuhina-instance = { path = "../yuhina-instance" }
+yuhina-auth = { path = "../yuhina-auth" }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dependencies.flutter_rust_bridge]
+version = "2"
+
+[dev-dependencies]

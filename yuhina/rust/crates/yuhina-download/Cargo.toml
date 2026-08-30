@@ -1,0 +1,25 @@
+[package]
+name = "yuhina-download"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+yuhina-api = { path = "../yuhina-api" }
+tokio = { workspace = true }
+tokio-stream = "0.1"
+reqwest = { workspace = true, features = ["stream"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+sha1 = { workspace = true }
+tracing = { workspace = true }
+uuid = { version = "1.26.0", features = ["v4"] }
+url = "2.5.8"
+quick-xml = "0.42.0"
+rusqlite = { workspace = true, features = ["bundled"] }
+
+[dev-dependencies]
+sha1.workspace = true
+tempfile = "3.27.0"
+tiny_http.workspace = true
+uuid = { version = "1.26.0", features = ["v4"] }
