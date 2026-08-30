@@ -45,7 +45,7 @@ RequestExecutionLevel admin
 SetCompressor /SOLID lzma
 
 !ifdef APP_ICON
-  !if exists "${APP_ICON}"
+  !if /FILEEXISTS "${APP_ICON}"
     Icon "${APP_ICON}"
     UninstallIcon "${APP_ICON}"
   !endif
