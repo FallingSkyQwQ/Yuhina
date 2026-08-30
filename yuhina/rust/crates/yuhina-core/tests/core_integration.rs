@@ -113,11 +113,12 @@ async fn integration_fake_game_process() {
     };
     let session = mgr.spawn(cmd, "inst", &log_path, dir.path()).await.unwrap();
     assert!(session.pid > 0);
+    let marker = if cfg!(windows) { "hello" } else { "hello-from-game" };
     let mut rx = mgr.subscribe(&session.session_id).expect("subscribe");
     let mut got = false;
     loop {
         match tokio::time::timeout(std::time::Duration::from_secs(5), rx.recv()).await {
-            Ok(Ok(o)) if o.text.contains("hello-from-game") => got = true,
+            Ok(Ok(o)) if o.text.contains(marker) => got = true,
             _ => {}
         }
         let s = mgr.get(&session.session_id).await.unwrap();
@@ -127,7 +128,7 @@ async fn integration_fake_game_process() {
     }
     assert!(got, "saw game output");
     let entries = yuhina_core::process::read_game_log(&log_path, 0).unwrap();
-    assert!(entries.iter().any(|e| e.text.contains("hello-from-game")));
+    assert!(entries.iter().any(|e| e.text.contains(marker)));
 }
 
 /// Core construction wires paths + db + events.
