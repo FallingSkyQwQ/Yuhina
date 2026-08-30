@@ -1,0 +1,133 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: yuhina
+
+jobs:
+  release:
+    name: Release (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from pubspec.yaml
+        id: version
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          VERSION="$(grep -E '^version:' yuhina/pubspec.yaml | head -1 | sed -E 's/^version:[[:space:]]*//' | cut -d+ -f1)"
+          echo "VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Validate tag matches pubspec version
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          EXPECTED="v${{ steps.version.outputs.version }}"
+          ACTUAL="${{ github.ref_name }}"
+          echo "Expected tag: $EXPECTED, actual: $ACTUAL"
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::Tag $ACTUAL does not match pubspec version v${{ steps.version.outputs.version }}"
+            exit 1
+          fi
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: yuhina/rust
+
+      - name: Install Rust toolchain (stable)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Set up Flutter (stable)
+        uses: subosito/flutter-action@v5
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install Linux build deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev ninja-build pkg-config clang cmake \
+            liblzma-dev libfuse2t64 file xvfb
+
+      - name: Enable desktop platform
+        run: flutter config --enable-linux-desktop --enable-windows-desktop
+
+      - name: flutter pub get
+        run: flutter pub get
+
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: flutter build linux --release
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: flutter build windows --release
+
+      - name: Package Linux (tar.gz + AppImage)
+        if: runner.os == 'Linux'
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: bash build/linux/package_linux.sh "${{ steps.version.outputs.version }}"
+
+      - name: Install NSIS
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: choco install nsis -y --no-progress
+
+      - name: Package Windows (zip + NSIS installer)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+        run: powershell -ExecutionPolicy Bypass -File build/windows/package_windows.ps1 -Version "${{ steps.version.outputs.version }}"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: yuhina-${{ steps.version.outputs.version }}-${{ matrix.os }}
+          path: build/dist/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish draft release
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: List artifacts
+        shell: bash
+        run: find artifacts -type f
+
+      - name: Create GitHub release (draft)
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: artifacts/**/*

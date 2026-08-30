@@ -35,12 +35,14 @@
 
 ## 2. 里程碑勾选
 
-- [ ] **M0 地基**：Cargo workspace 构建通过；FRB 集成 + codegen 跑通；db schema 合入；`ci.yml` 绿。
+> **Agent F 状态快照（2026-08-30）**：工具链已就绪（Rust 1.97.1 + Flutter 3.47.2 stable + `flutter_rust_bridge_codegen 2.13.0`，与本机 Cargo.lock 锁定版本一致）；`cargo build --workspace` 本地通过；`ci.yml` / `release.yml` / Linux&Windows 打包脚本已交付（分支 `feature/f-ci`，未验证 CI 全绿，因 FRB `flutter_rust_bridge.yaml` 尚由 Agent E 创建，codegen 契约校验依赖它）。M0 的「CI 绿」待 E 合入后验证，因此**不勾选**。
+
+- [ ] **M0 地基**：Cargo workspace 构建通过（✅ F 已验证）；FRB 集成 + codegen 跑通（⏳ 待 E 提供 `flutter_rust_bridge.yaml` 与 wrapper）；db schema 合入；`ci.yml` 绿（⏳ 待验证）。
 - [ ] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志。
 - [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功。
 - [ ] **M3 账号**：真实微软账号与 LittleSkin 账号登录并启动成功。
 - [ ] **M4 UI 收口**：手工 E2E 清单（§3）全过。
-- [ ] **M5 发布**：tag → 双平台安装包/便携包自动发布到 GitHub Release。
+- [ ] **M5 发布**：tag → 双平台安装包/便携包自动发布到 GitHub Release（⏳ workflow 已写，首次真 tag 验证待 M5）。
 
 ## 3. 手工 E2E 清单（M4 执行）
 
@@ -90,3 +92,13 @@
 - 单一版本来源：`yuhina/pubspec.yaml` `version:`（如 `0.1.0+1`）。tag 格式 `v0.1.0`。
 - 自更新产物 URL 模板：`https://github.com/FallingSkyQwQ/Yuhina/releases/latest/download/yuhina-{ver}-{os}-{arch}.{ext}`。
 - Agent B `check_launcher_update` 与该模板对齐。
+
+## 7. CI/CD 使用说明（Agent F 补充）
+
+- **分支**：`main` 受保护；新功能走 `feature/<agent>-<slug>`，PR 触发 `ci.yml` 全量校验（fmt/clippy/test/codegen 契约/analyze/test）。
+- **代码生成契约**：`ci.yml` 会用 `flutter_rust_bridge_codegen generate` 复跑，若与已提交生成物不一致则 CI 红。Agent E 必须把生成的 Dart/Rust 绑定**提交进仓库**，并保证本机 `flutter_rust_bridge_codegen` 版本与 `rust/Cargo.lock` 中 `flutter_rust_bridge` 版本一致（当前 2.13.0）。CI 自动按 Cargo.lock 安装同版本 codegen，本机需手动对齐。
+- **版本号**：发版时打 `v<major.minor.patch>`（取自 `pubspec.yaml version`，忽略 `+build`）。`release.yml` 会校验 tag 与 pubspec 一致，不一致直接失败。
+- **发布产物命名**：`yuhina-{ver}-linux-x64.tar.gz` / `.AppImage`，`yuhina-{ver}-windows-x64.zip` / `-setup.exe`（见 §6 模板，`{os}` 即 `linux`/`windows`）。发布为 **draft**，需人工确认后公开。
+- **慢测**：`#[ignore]` 测试不进 `cargo test --workspace`（默认排除），按 §4 清单本地执行。
+- **已知依赖**：FRB `flutter_rust_bridge.yaml` 由 Agent E 创建后才能让 `ci.yml` 的 codegen 契约步骤绿；在本机 E 合入前 CI 会因此红，属预期。
+- **图标**：Linux 打包脚本会自动寻找 `yuhina/assets/icon.png`（无则生成占位图）；Windows 用 `yuhina/assets/icon.ico`（无则用 NSIS 默认图标）。E 提供正式图标后打包产物即自动使用。
