@@ -432,7 +432,11 @@ mod tests {
     fn java_bin_path_detection() {
         let home = tempfile::tempdir().unwrap();
         std::fs::create_dir_all(home.path().join("bin")).unwrap();
-        let bin = home.path().join("bin/java");
+        let bin = if cfg!(windows) {
+            home.path().join("bin/java.exe")
+        } else {
+            home.path().join("bin/java")
+        };
         std::fs::write(&bin, "#!/bin/sh\nexit 0\n").unwrap();
         #[cfg(unix)]
         {
