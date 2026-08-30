@@ -136,9 +136,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instancesInstalled => 'Installed';
 
   @override
-  String instancesLastLaunched(Object time) {
-    return 'Last launched $time';
-  }
+  String get instancesLastLaunched => 'Last launched';
 
   @override
   String get instancesNeverLaunched => 'Never launched';
@@ -149,9 +147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String instancesSize(Object size) {
-    return '$size';
-  }
+  String get instancesSize => 'Size';
 
   @override
   String get instanceNameLabel => 'Name';

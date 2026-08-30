@@ -353,8 +353,8 @@ abstract class AppLocalizations {
   /// No description provided for @instancesLastLaunched.
   ///
   /// In en, this message translates to:
-  /// **'Last launched {time}'**
-  String instancesLastLaunched(Object time);
+  /// **'Last launched'**
+  String get instancesLastLaunched;
 
   /// No description provided for @instancesNeverLaunched.
   ///
@@ -371,8 +371,8 @@ abstract class AppLocalizations {
   /// No description provided for @instancesSize.
   ///
   /// In en, this message translates to:
-  /// **'{size}'**
-  String instancesSize(Object size);
+  /// **'Size'**
+  String get instancesSize;
 
   /// No description provided for @instanceNameLabel.
   ///

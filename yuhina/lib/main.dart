@@ -1,16 +1,27 @@
+// App entrypoint: boot the FFI service, then start the UI.
+//
+// `YuhinaService.newInstance` constructs the whole Rust service layer over
+// `~/.yuhina/yuhina.db` and wires the event streams, so the UI can render
+// against the real backend immediately.
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+import 'app.dart';
+import 'core/bridge_provider.dart';
+import 'src/rust/frb_generated.dart';
+import 'src/rust/service.dart';
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
-    );
-  }
+  await RustLib.init();
+  final service = await YuhinaService.newInstance(config: defaultLauncherConfig());
+
+  runApp(
+    ProviderScope(
+      overrides: [serviceProvider.overrideWithValue(service)],
+      child: const YuhinaApp(),
+    ),
+  );
 }

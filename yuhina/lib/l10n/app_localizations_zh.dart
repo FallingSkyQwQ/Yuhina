@@ -136,9 +136,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get instancesInstalled => '已安装';
 
   @override
-  String instancesLastLaunched(Object time) {
-    return '上次启动 $time';
-  }
+  String get instancesLastLaunched => '上次启动';
 
   @override
   String get instancesNeverLaunched => '从未启动';
@@ -149,9 +147,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String instancesSize(Object size) {
-    return '$size';
-  }
+  String get instancesSize => '大小';
 
   @override
   String get instanceNameLabel => '名称';

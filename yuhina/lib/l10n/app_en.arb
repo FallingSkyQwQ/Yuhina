@@ -1,13 +1,11 @@
 {
   "@@locale": "en",
   "appTitle": "Yuhina Launcher",
-
   "navHome": "Home",
   "navInstances": "Instances",
   "navDownloads": "Downloads",
   "settings": "Settings",
   "logs": "Logs",
-
   "commonCancel": "Cancel",
   "commonConfirm": "Confirm",
   "commonDelete": "Delete",
@@ -24,7 +22,6 @@
   "commonCopy": "Copy",
   "commonName": "Name",
   "commonOpen": "Open",
-
   "homeQuickLaunch": "Quick Launch",
   "homeNews": "News",
   "homeNewsUnavailable": "News unavailable",
@@ -32,7 +29,6 @@
   "homeNoAccount": "Not signed in",
   "homeNoVersion": "No cached version list",
   "homeFetchVersions": "Fetch versions",
-
   "instancesTitle": "Instances",
   "instancesNew": "New instance",
   "instancesPlay": "Play",
@@ -46,10 +42,10 @@
   "instancesEmpty": "No instances yet. Create one to get started.",
   "instancesNotInstalled": "Not installed",
   "instancesInstalled": "Installed",
-  "instancesLastLaunched": "Last launched {time}",
+  "instancesLastLaunched": "Last launched",
   "instancesNeverLaunched": "Never launched",
   "instancesModCount": "{count} mods",
-  "instancesSize": "{size}",
+  "instancesSize": "Size",
   "instanceNameLabel": "Name",
   "instanceIconLabel": "Icon",
   "instanceMcVersionLabel": "Minecraft version",
@@ -72,7 +68,6 @@
   "instanceWindowHeight": "Window height",
   "instanceLogs": "Game logs",
   "instanceLaunch": "Launch",
-
   "modsTitle": "Mods",
   "modsEnabled": "Enabled",
   "modsDisabled": "Disabled",
@@ -91,7 +86,6 @@
   "modsNoResults": "No results",
   "modsLoadingResults": "Searching…",
   "modsDownloadCount": "{count} downloads",
-
   "downloadsTitle": "Downloads",
   "downloadsPause": "Pause",
   "downloadsResume": "Resume",
@@ -106,7 +100,6 @@
   "downloadsStateFailed": "Failed",
   "downloadsStateCanceled": "Canceled",
   "downloadsSpeed": "{speed}/s",
-
   "settingsTitle": "Settings",
   "settingsAccounts": "Accounts",
   "settingsMirrors": "Mirrors & sources",
@@ -143,7 +136,6 @@
   "settingsAboutText": "Yuhina launcher, version {version}",
   "settingsUpdateAvailable": "Update available: {version}",
   "settingsUpToDate": "Up to date",
-
   "logsTitle": "Game logs",
   "logsLevel": "Level",
   "logsLevelInfo": "Info",
@@ -157,7 +149,6 @@
   "logsStateRunning": "Running",
   "logsStateStopped": "Stopped",
   "logsStateCrashed": "Crashed",
-
   "authMicrosoftHint": "A browser window will open. Sign in there, then return here.",
   "authMicrosoftWaiting": "Waiting for authorization…",
   "authMicrosoftCancel": "Cancel login",
@@ -168,7 +159,6 @@
   "authYggdrasilLittleSkin": "LittleSkin",
   "authLoginButton": "Sign in",
   "authLoginSuccess": "Signed in as {name}",
-
   "errorNetwork": "Network error",
   "errorHttp": "HTTP error {status}",
   "errorAuth": "Authentication failed",

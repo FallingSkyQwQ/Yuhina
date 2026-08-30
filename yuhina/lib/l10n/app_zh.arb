@@ -1,13 +1,11 @@
 {
   "@@locale": "zh",
   "appTitle": "Yuhina 启动器",
-
   "navHome": "首页",
   "navInstances": "实例",
   "navDownloads": "下载",
   "settings": "设置",
   "logs": "日志",
-
   "commonCancel": "取消",
   "commonConfirm": "确定",
   "commonDelete": "删除",
@@ -24,7 +22,6 @@
   "commonCopy": "复制",
   "commonName": "名称",
   "commonOpen": "打开",
-
   "homeQuickLaunch": "快速启动",
   "homeNews": "资讯",
   "homeNewsUnavailable": "资讯加载失败",
@@ -32,7 +29,6 @@
   "homeNoAccount": "未登录",
   "homeNoVersion": "暂无版本列表缓存",
   "homeFetchVersions": "获取版本列表",
-
   "instancesTitle": "实例库",
   "instancesNew": "新建实例",
   "instancesPlay": "启动",
@@ -46,10 +42,10 @@
   "instancesEmpty": "还没有实例，点击右上角新建一个吧。",
   "instancesNotInstalled": "未安装",
   "instancesInstalled": "已安装",
-  "instancesLastLaunched": "上次启动 {time}",
+  "instancesLastLaunched": "上次启动",
   "instancesNeverLaunched": "从未启动",
   "instancesModCount": "{count} 个 Mod",
-  "instancesSize": "{size}",
+  "instancesSize": "大小",
   "instanceNameLabel": "名称",
   "instanceIconLabel": "图标",
   "instanceMcVersionLabel": "Minecraft 版本",
@@ -72,7 +68,6 @@
   "instanceWindowHeight": "窗口高度",
   "instanceLogs": "游戏日志",
   "instanceLaunch": "启动游戏",
-
   "modsTitle": "Mod 管理",
   "modsEnabled": "已启用",
   "modsDisabled": "已停用",
@@ -91,7 +86,6 @@
   "modsNoResults": "没有结果",
   "modsLoadingResults": "搜索中…",
   "modsDownloadCount": "{count} 次下载",
-
   "downloadsTitle": "下载中心",
   "downloadsPause": "暂停",
   "downloadsResume": "恢复",
@@ -106,7 +100,6 @@
   "downloadsStateFailed": "失败",
   "downloadsStateCanceled": "已取消",
   "downloadsSpeed": "{speed}/s",
-
   "settingsTitle": "设置",
   "settingsAccounts": "账号",
   "settingsMirrors": "镜像与源",
@@ -143,7 +136,6 @@
   "settingsAboutText": "Yuhina 启动器，版本 {version}",
   "settingsUpdateAvailable": "有新版本：{version}",
   "settingsUpToDate": "已是最新版本",
-
   "logsTitle": "游戏日志",
   "logsLevel": "级别",
   "logsLevelInfo": "信息",
@@ -157,7 +149,6 @@
   "logsStateRunning": "运行中",
   "logsStateStopped": "已停止",
   "logsStateCrashed": "已崩溃",
-
   "authMicrosoftHint": "浏览器窗口即将打开，请在浏览器中登录后返回此界面。",
   "authMicrosoftWaiting": "等待授权…",
   "authMicrosoftCancel": "取消登录",
@@ -168,7 +159,6 @@
   "authYggdrasilLittleSkin": "LittleSkin",
   "authLoginButton": "登录",
   "authLoginSuccess": "已登录 {name}",
-
   "errorNetwork": "网络错误",
   "errorHttp": "HTTP 错误 {status}",
   "errorAuth": "认证失败",
