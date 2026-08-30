@@ -83,22 +83,43 @@ tar -C "$STAGE" -czf "$TARBALL" .
 echo ">> $TARBALL ($(du -h "$TARBALL" | cut -f1))"
 
 # ---------------------------------------------------------------------------
-# 2. AppImage
+# 2. AppImage (best-effort: if tooling cannot be fetched, the portable
+#    tar.gz above is still a valid release artifact)
 # ---------------------------------------------------------------------------
 echo ">> Building AppImage"
 LINUXDEPLOY="${LINUXDEPLOY:-$TOOLS/linuxdeploy-x86_64.AppImage}"
 APPIMAGETOOL="${APPIMAGETOOL:-$TOOLS/appimagetool-x86_64.AppImage}"
 
-if [ "${LINUXDEPLOY:-}" = "$TOOLS/linuxdeploy-x86_64.AppImage" ] && [ ! -f "$LINUXDEPLOY" ]; then
-  fetch_tool "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage" "$LINUXDEPLOY"
-fi
-if [ "${APPIMAGETOOL:-}" = "$TOOLS/appimagetool-x86_64.AppImage" ] && [ ! -f "$APPIMAGETOOL" ]; then
-  fetch_tool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" "$APPIMAGETOOL"
-fi
+fetch_optional() {
+  local url="$1" dest="$2" name="$3"
+  if [ -f "$dest" ]; then return 0; fi
+  echo ">> downloading $name"
+  local attempt=0 ok=0
+  for attempt in 1 2 3; do
+    if curl -L --fail --retry 3 --retry-all-errors -o "$dest" "$url"; then
+      ok=1; break
+    fi
+    echo ">> attempt $attempt failed; retrying in 5s..."
+    sleep 5; rm -f "$dest"
+  done
+  [ "$ok" = "1" ] && [ -s "$dest" ] && chmod +x "$dest"
+}
 
-# linuxdeploy GTK plugin (also auto-fetched by linuxdeploy when --plugin gtk is used)
-if [ ! -f "$TOOLS/linuxdeploy-plugin-gtk-x86_64.AppImage" ]; then
-  fetch_tool "https://github.com/linuxdeploy/linuxdeploy-plugin-gtk/releases/download/continuous/linuxdeploy-plugin-gtk-x86_64.AppImage" "$TOOLS/linuxdeploy-plugin-gtk-x86_64.AppImage"
+if ! fetch_optional \
+    "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage" \
+    "$LINUXDEPLOY" "linuxdeploy"; then
+  echo "::warning::linuxdeploy download failed; skipping AppImage (tar.gz still shipped)"
+  echo ">> Done (AppImage skipped)."
+  ls -lh "$TARBALL"
+  exit 0
+fi
+if ! fetch_optional \
+    "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" \
+    "$APPIMAGETOOL" "appimagetool"; then
+  echo "::warning::appimagetool download failed; skipping AppImage (tar.gz still shipped)"
+  echo ">> Done (AppImage skipped)."
+  ls -lh "$TARBALL"
+  exit 0
 fi
 export PATH="$TOOLS:$PATH"
 
@@ -158,8 +179,7 @@ cp "$ICON_SRC" "$APPDIR/usr/share/icons/hicolor/256x256/apps/yuhina.png"
 run_appimage "$LINUXDEPLOY" \
   --appdir "$APPDIR" \
   --desktop-file "$APPDIR/usr/share/applications/yuhina.desktop" \
-  --icon-file "$ICON_SRC" \
-  --plugin gtk
+  --icon-file "$ICON_SRC"
 
 APPIMAGE="$DIST/$BASE_NAME.AppImage"
 run_appimage "$APPIMAGETOOL" "$APPDIR" "$APPIMAGE"

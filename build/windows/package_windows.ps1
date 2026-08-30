@@ -56,7 +56,7 @@ Write-Host '>> Building NSIS installer'
 $Makensis = Get-Command makensis.exe -ErrorAction SilentlyContinue
 if (-not $Makensis) {
     $Candidates = @(
-        "$env:ProgramFiles(x86)\NSIS\makensis.exe",
+        "${env:ProgramFiles(x86)}\NSIS\makensis.exe",
         "$env:ProgramFiles\NSIS\makensis.exe",
         "$env:LOCALAPPDATA\NSIS\makensis.exe"
     )
