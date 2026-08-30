@@ -28,17 +28,33 @@ impl Crypto {
     /// Obtain the key from the OS keyring, falling back to `secret.key`.
     /// Set `YUHINA_CRYPTO_NO_KEYRING=1` to force the file backend (tests,
     /// headless environments).
+    ///
+    /// The keyring lookup runs on a worker thread with a hard timeout so a
+    /// missing/stalled SecretService (dbus) can never block app startup.
     pub fn new(data_dir: &Path) -> Result<Self> {
         if std::env::var("YUHINA_CRYPTO_NO_KEYRING").as_deref() == Ok("1") {
             let key = file_get_or_create(data_dir)?;
             return Ok(Crypto { key });
         }
-        match keyring_get_or_create() {
-            Ok(key) => Ok(Crypto { key }),
-            Err(keyring_err) => {
+        let dir = data_dir.to_path_buf();
+        let (tx, rx) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            let _ = tx.send(keyring_get_or_create());
+        });
+        const KEYRING_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(3);
+        match rx.recv_timeout(KEYRING_TIMEOUT) {
+            Ok(Ok(key)) => Ok(Crypto { key }),
+            Ok(Err(keyring_err)) => {
                 tracing::warn!(
                     "keyring unavailable ({}), falling back to local secret.key",
                     keyring_err
+                );
+                let key = file_get_or_create(data_dir)?;
+                Ok(Crypto { key })
+            }
+            Err(_) => {
+                tracing::warn!(
+                    "keyring lookup timed out after {KEYRING_TIMEOUT:?}; falling back to local secret.key"
                 );
                 let key = file_get_or_create(data_dir)?;
                 Ok(Crypto { key })

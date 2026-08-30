@@ -58,6 +58,15 @@ static void my_application_activate(GApplication* application) {
   fl_dart_project_set_dart_entrypoint_arguments(
       project, self->dart_entrypoint_arguments);
 
+  // Linux defaults to Skia: it has the broadest GPU/driver compatibility,
+  // which matters on the wide range of machines a launcher runs on. Impeller
+  // (OpenGLES) can produce a blank/gray window on problematic drivers, so it
+  // is opt-in via YUHINA_ENABLE_IMPELLER=1.
+  const char* impeller = g_getenv("YUHINA_ENABLE_IMPELLER");
+  gboolean use_impeller =
+      impeller != NULL && (g_strcmp0(impeller, "1") == 0 || g_ascii_strcasecmp(impeller, "true") == 0);
+  fl_dart_project_set_enable_impeller(project, use_impeller);
+
   FlView* view = fl_view_new(project);
   GdkRGBA background_color;
   // Background defaults to black, override it here if necessary, e.g. #00000000
