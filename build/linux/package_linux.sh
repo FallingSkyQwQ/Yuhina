@@ -80,6 +80,7 @@ printf 'yuhina-%s\n' "$VERSION" > "$STAGE/VERSION"
 
 TARBALL="$DIST/$BASE_NAME.tar.gz"
 tar -C "$STAGE" -czf "$TARBALL" .
+rm -rf "$STAGE"
 echo ">> $TARBALL ($(du -h "$TARBALL" | cut -f1))"
 
 # ---------------------------------------------------------------------------
@@ -183,6 +184,7 @@ run_appimage "$LINUXDEPLOY" \
 
 APPIMAGE="$DIST/$BASE_NAME.AppImage"
 run_appimage "$APPIMAGETOOL" "$APPDIR" "$APPIMAGE"
+rm -rf "$APPDIR"
 echo ">> $APPIMAGE ($(du -h "$APPIMAGE" | cut -f1))"
 
 echo ">> Done."
