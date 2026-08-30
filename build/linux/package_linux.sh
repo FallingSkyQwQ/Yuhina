@@ -41,7 +41,20 @@ fetch_tool() {
   local url="$1" dest="$2"
   if [ ! -f "$dest" ]; then
     echo ">> downloading $(basename "$dest")"
-    curl -L --fail --retry 3 -o "$dest" "$url"
+    local attempt=0 ok=0
+    for attempt in 1 2 3 4 5; do
+      if curl -L --fail --retry 5 --retry-all-errors --retry-delay 3 -o "$dest" "$url"; then
+        ok=1
+        break
+      fi
+      echo ">> attempt $attempt failed; retrying in 5s..."
+      sleep 5
+      rm -f "$dest"
+    done
+    if [ "$ok" != "1" ] || [ ! -s "$dest" ]; then
+      echo "::error::failed to download $url" >&2
+      exit 1
+    fi
   fi
   chmod +x "$dest"
 }

@@ -89,6 +89,8 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         working-directory: ${{ github.workspace }}
+        env:
+          NO_FUSE: "1"
         run: bash build/linux/package_linux.sh "${{ steps.version.outputs.version }}"
 
       - name: Install NSIS

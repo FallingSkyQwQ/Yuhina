@@ -55,8 +55,18 @@ Write-Host ">> $Zip"
 Write-Host '>> Building NSIS installer'
 $Makensis = Get-Command makensis.exe -ErrorAction SilentlyContinue
 if (-not $Makensis) {
-    Write-Error 'makensis not found. Install NSIS (choco install nsis -y) and ensure it is on PATH.'
-    exit 1
+    $Candidates = @(
+        "$env:ProgramFiles(x86)\NSIS\makensis.exe",
+        "$env:ProgramFiles\NSIS\makensis.exe",
+        "$env:LOCALAPPDATA\NSIS\makensis.exe"
+    )
+    $Found = $Candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ($Found) {
+        $Makensis = Get-Item $Found
+    } else {
+        Write-Error 'makensis not found. Install NSIS (choco install nsis -y).'
+        exit 1
+    }
 }
 
 $SetupExe = Join-Path $Dist "$BaseName-setup.exe"
