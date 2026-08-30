@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yuhina/features/instances/instances_page.dart';
@@ -7,6 +9,12 @@ import 'helpers/fake_service.dart';
 import 'helpers/pump.dart';
 
 void main() {
+  // Goldens are generated on Linux; font rasterization differs across
+  // platforms, so pixel comparison only holds on the reference platform.
+  if (Platform.isWindows || Platform.isMacOS) {
+    return;
+  }
+
   Future<void> pumpInstances(WidgetTester tester, {Brightness brightness = Brightness.light}) async {
     await tester.binding.setSurfaceSize(const Size(900, 700));
     addTearDown(() => tester.binding.setSurfaceSize(null));
