@@ -129,14 +129,26 @@ impl MsAuth {
             CallbackResult::Error(msg) => return Err(YuhinaError::auth(msg)),
         };
 
-        let session = self
+        let session = match self
             .exchange_code(
                 &handle.client_id,
                 &code,
                 &handle.verifier,
                 &handle.redirect_uri,
             )
-            .await?;
+            .await
+        {
+            Ok(s) => s,
+            Err(e) => {
+                // Always tear down the login (loopback server + handle) on
+                // failure, otherwise the port leaks until an explicit cancel.
+                let mut logins = self.logins.lock().await;
+                if let Some(mut h) = logins.remove(handle_id) {
+                    h.server.stop();
+                }
+                return Err(e);
+            }
+        };
         let account = build_ms_account(&session, false);
 
         let mut login = logins.remove(handle_id).unwrap();
@@ -448,10 +460,10 @@ fn urlencode(s: &str) -> String {
 fn map_token_error(status: u16, body: &TokenResponse) -> YuhinaError {
     let error = body.error.clone().unwrap_or_default();
     let description = body.error_description.clone().unwrap_or_default();
-    let is_refresh_issue = matches!(
-        error.as_str(),
-        "invalid_grant" | "interaction_required" | "invalid_request"
-    ) || description.contains("AADSTS70008")
+    // Only the refresh-specific AADSTS codes reliably mean "token expired or
+    // revoked". A bare `invalid_grant` is ambiguous (e.g. a bad auth code in
+    // the exchange step) and must not be classified as an expiry.
+    let is_refresh_issue = description.contains("AADSTS70008")
         || description.contains("AADSTS700082")
         || description.contains("AADSTS7000215");
     if status == 400 && is_refresh_issue {
