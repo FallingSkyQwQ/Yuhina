@@ -56,11 +56,11 @@ jobs:
         if: runner.os == 'Linux'
         run: flutter config --enable-linux-desktop
 
-      - name: Install Linux test deps (xvfb)
+      - name: Install Linux test deps (xvfb, dbus for keyring)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb
+          sudo apt-get install -y xvfb libdbus-1-dev
 
       - name: cargo fmt --check
         working-directory: yuhina/rust

@@ -31,13 +31,20 @@ pub fn is_java_executable(path: &Path) -> bool {
     if cfg!(windows) {
         path.exists()
     } else {
-        // must be executable
-        use std::os::unix::fs::PermissionsExt;
-        path.exists()
-            && path
-                .metadata()
-                .map(|m| m.permissions().mode() & 0o111 != 0)
-                .unwrap_or(false)
+        // must be executable (unix-only permission bit)
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            path.exists()
+                && path
+                    .metadata()
+                    .map(|m| m.permissions().mode() & 0o111 != 0)
+                    .unwrap_or(false)
+        }
+        #[cfg(not(unix))]
+        {
+            path.exists()
+        }
     }
 }
 
