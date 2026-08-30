@@ -9,9 +9,9 @@
 //!   - a virtual X display (run under `xvfb-run`)
 //!
 //! Run with:
-//!   cd rust && xvfb-run -a cargo test --test real_launch -- --ignored --nocapture
+//!   cd rust && xvfb-run -a cargo test --test real_launch_test -- --ignored --nocapture
 //!
-//! It is excluded from `cargo test --workspace` (marked `#[ignore]`).
+//! Reuse downloaded files between runs by setting `YUHINA_M1_ROOT=/path`.
 
 use std::path::PathBuf;
 use std::sync::Arc;
