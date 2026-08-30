@@ -1,0 +1,26 @@
+[package]
+name = "yuhina-instance"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+yuhina-api = { path = "../yuhina-api" }
+yuhina-db = { path = "../yuhina-db" }
+yuhina-core = { path = "../yuhina-core" }
+yuhina-download = { path = "../yuhina-download" }
+tokio = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+zip = { workspace = true }
+sha1 = { workspace = true }
+tracing = { workspace = true }
+toml = "1.1.4"
+async-trait = "0.1.92"
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+axum = "0.8.9"
+tempfile = "3.27.0"
+tiny_http.workspace = true

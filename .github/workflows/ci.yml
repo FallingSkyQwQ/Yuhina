@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: yuhina
+
+jobs:
+  build:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: yuhina/rust
+
+      - name: Install Rust toolchain (stable, rustfmt + clippy)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Install flutter_rust_bridge_codegen (pinned to Cargo.lock)
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          FRB_VERSION="$(grep -A2 '^name = "flutter_rust_bridge"$' yuhina/rust/Cargo.lock | awk -F'"' '/^version =/{print $2}' | head -1)"
+          if [ -z "$FRB_VERSION" ]; then
+            echo "::error::flutter_rust_bridge version not found in yuhina/rust/Cargo.lock"
+            exit 1
+          fi
+          echo "Installing flutter_rust_bridge_codegen@$FRB_VERSION"
+          cargo install flutter_rust_bridge_codegen --version "$FRB_VERSION" --locked
+
+      - name: Set up Flutter (stable)
+        uses: subosito/flutter-action@v5
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Linux desktop
+        if: runner.os == 'Linux'
+        run: flutter config --enable-linux-desktop
+
+      - name: Install Linux test deps (xvfb)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - name: cargo fmt --check
+        working-directory: yuhina/rust
+        run: cargo fmt --check
+
+      - name: cargo clippy --workspace -- -D warnings
+        working-directory: yuhina/rust
+        run: cargo clippy --workspace -- -D warnings
+
+      - name: cargo test --workspace
+        working-directory: yuhina/rust
+        run: cargo test --workspace
+
+      - name: flutter pub get
+        run: flutter pub get
+
+      - name: FRB codegen (contract check)
+        shell: bash
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Verify codegen produced no diff
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code
+
+      - name: flutter analyze
+        run: flutter analyze
+
+      - name: flutter test
+        run: flutter test
+
+      - name: Integration smoke test (Linux, if integration_test present)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          if [ -d integration_test ]; then
+            xvfb-run -a flutter test integration_test
+          else
+            echo "integration_test/ not present yet, skipping"
+          fi

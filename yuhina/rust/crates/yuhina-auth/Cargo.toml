@@ -1,0 +1,27 @@
+[package]
+name = "yuhina-auth"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+yuhina-api = { path = "../yuhina-api" }
+yuhina-db = { path = "../yuhina-db" }
+tokio = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+md-5 = { workspace = true }
+keyring = { workspace = true }
+tiny_http = { workspace = true }
+tracing = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+getrandom.workspace = true
+sha2.workspace = true
+base64.workspace = true
+hex.workspace = true
+aes-gcm.workspace = true
+open.workspace = true
+url = "2.5.8"
+
+[dev-dependencies]
