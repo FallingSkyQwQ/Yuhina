@@ -113,7 +113,11 @@ async fn integration_fake_game_process() {
     };
     let session = mgr.spawn(cmd, "inst", &log_path, dir.path()).await.unwrap();
     assert!(session.pid > 0);
-    let marker = if cfg!(windows) { "hello" } else { "hello-from-game" };
+    let marker = if cfg!(windows) {
+        "hello"
+    } else {
+        "hello-from-game"
+    };
     let mut rx = mgr.subscribe(&session.session_id).expect("subscribe");
     let mut got = false;
     loop {
