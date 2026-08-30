@@ -140,10 +140,8 @@ impl YuhinaError {
     }
 }
 
-pub type Result<T> = std::result::Result<T, YuhinaError>;
-
 /// Convenience alias used across crates (e.g. `YuhinaResult<T>`).
-pub type YuhinaResult<T> = Result<T>;
+pub type YuhinaResult<T> = std::result::Result<T, YuhinaError>;
 
 impl From<anyhow::Error> for YuhinaError {
     fn from(err: anyhow::Error) -> Self {
