@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:yuhina/l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,11 +49,7 @@ class YuhinaApp extends ConsumerWidget {
       themeMode: themeMode,
       theme: buildAppTheme(seed: seed, brightness: Brightness.light),
       darkTheme: buildAppTheme(seed: seed, brightness: Brightness.dark),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: locale.startsWith('zh') ? const Locale('zh') : const Locale('en'),
       routerConfig: appRouter,

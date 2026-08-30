@@ -2,25 +2,15 @@
 //
 // The window is shown immediately with a branded splash so the user never
 // stares at an empty frame while the Rust service layer boots. The service is
-// constructed in the background (with a hard timeout); on failure the splash
-// turns into an error screen with a retry action.
+// constructed in the background (see `startupProvider` in bridge_provider.dart)
+// with a hard timeout; on failure the splash turns into an error screen with a
+// retry action.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/bridge_provider.dart';
-import 'src/rust/frb_generated.dart';
-import 'src/rust/service.dart';
-
-/// Boots RustLib + the YuhinaService. Runs once per app launch; `ref.invalidate`
-/// re-runs it from the error screen.
-final startupProvider = FutureProvider<YuhinaService>((ref) async {
-  await RustLib.init();
-  final service = await YuhinaService.newInstance(config: defaultLauncherConfig())
-      .timeout(const Duration(seconds: 25));
-  return service;
-});
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,10 +30,7 @@ class StartupGate extends ConsumerWidget {
     return boot.when(
       loading: () => const BootSplash(),
       error: (e, st) => BootError(message: '$e'),
-      data: (service) => ProviderScope(
-        overrides: [serviceProvider.overrideWithValue(service)],
-        child: const YuhinaApp(),
-      ),
+      data: (_) => const YuhinaApp(),
     );
   }
 }

@@ -1,20 +1,29 @@
-// The single YuhinaService instance handed over from main().
+// The single YuhinaService instance for the whole app.
 //
-// `main()` calls `YuhinaService.newInstance` (which initializes RustLib's
-// runtime + the Rust service layer) and overrides this provider so every page
-// reaches the same FFI facade. Tests override it with a fake/mock.
+// `startupProvider` boots RustLib + the Rust service layer; `serviceProvider`
+// derives its value from it. The UI gates on `startupProvider` (splash / error)
+// before any page reads the service, so `requireValue` is only ever observed in
+// the ready state. Tests override `serviceProvider` with a fake/mock.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../src/rust/api.dart';
+import '../src/rust/frb_generated.dart';
 import '../src/rust/service.dart';
 import '../src/rust/third_party/yuhina_api/types.dart';
 
-final serviceProvider = Provider<YuhinaService>(
-  (ref) => throw UnimplementedError(
-    'serviceProvider must be overridden in main() (or a test override).',
-  ),
-);
+/// Boots RustLib + the YuhinaService. Runs once per app launch; `ref.invalidate`
+/// re-runs it from the error screen.
+final startupProvider = FutureProvider<YuhinaService>((ref) async {
+  await RustLib.init();
+  final service = await YuhinaService.newInstance(config: defaultLauncherConfig())
+      .timeout(const Duration(seconds: 25));
+  return service;
+});
+
+final serviceProvider = Provider<YuhinaService>((ref) {
+  return ref.watch(startupProvider).requireValue;
+});
 
 /// Default boot configuration. data_dir/game_root use `~/` which the Rust
 /// CorePaths expands on first use.
