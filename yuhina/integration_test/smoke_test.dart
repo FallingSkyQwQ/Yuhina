@@ -16,7 +16,19 @@ Future<void> main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('smoke: service init + config roundtrip + events', (tester) async {
+    // Ensure the FFI cdylib exists (built by `cargo build -p yuhina-bridge
+    // --release` if the CI packaging step has not already produced it).
     final dylib = File('rust/target/release/libyuhina_bridge.so');
+    if (!dylib.existsSync()) {
+      final build = await Process.run(
+        'cargo',
+        ['build', '-p', 'yuhina-bridge', '--release'],
+        workingDirectory: 'rust',
+      );
+      if (build.exitCode != 0) {
+        throw StateError('cargo build -p yuhina-bridge --release failed:\n${build.stderr}');
+      }
+    }
     if (dylib.existsSync()) {
       await RustLib.init(externalLibrary: ExternalLibrary.open(dylib.path));
     } else {

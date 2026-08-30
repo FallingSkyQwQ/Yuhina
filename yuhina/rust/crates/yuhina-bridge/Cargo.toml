@@ -20,4 +20,9 @@ tracing = { workspace = true }
 reqwest = { workspace = true }
 flutter_rust_bridge= "=2.13.0"
 
+# The `frb` proc-macro emits `#[cfg(frb_expand)]` for codegen expansion; declare
+# it so normal builds (and `clippy -D warnings`) treat it as expected.
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ["cfg(frb_expand)"] }
+
 [dev-dependencies]

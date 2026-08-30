@@ -37,6 +37,8 @@
 
 > **Agent F 状态快照（2026-08-30）**：工具链已就绪（Rust 1.97.1 + Flutter 3.47.2 stable + `flutter_rust_bridge_codegen 2.13.0`，与本机 Cargo.lock 锁定版本一致）；`cargo build --workspace` 本地通过；`ci.yml` / `release.yml` / Linux&Windows 打包脚本已交付（分支 `feature/f-ci`，未验证 CI 全绿，因 FRB `flutter_rust_bridge.yaml` 尚由 Agent E 创建，codegen 契约校验依赖它）。M0 的「CI 绿」待 E 合入后验证，因此**不勾选**。
 
+> **Agent E 状态快照（2026-08-30）**：`yuhina/flutter_rust_bridge.yaml` + `YuhinaService` 门面（api-contract §3 全方法）已交付并提交生成物（分支 `feature/e-ui`）；`flutter analyze` 零问题、`flutter test` 全绿（含首页/实例库浅深 golden）、`cargo test --workspace` 仍全绿、`integration_test/smoke_test.dart` 本机通过（service init + config 往返 + 事件流，未启动游戏）。M0 的「FRB 集成 + codegen 跑通」「CI 绿」两项的 E 侧阻塞已解除，仍需 F 侧验证 CI。
+
 - [ ] **M0 地基**：Cargo workspace 构建通过（✅ F 已验证）；FRB 集成 + codegen 跑通（⏳ 待 E 提供 `flutter_rust_bridge.yaml` 与 wrapper）；db schema 合入；`ci.yml` 绿（⏳ 待验证）。
 - [ ] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志。
 - [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功。
