@@ -74,6 +74,30 @@ set_target_properties(${BINARY_NAME}
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# === Rust bridge (yuhina-bridge cdylib) ===
+# Build the Rust service layer and bundle its cdylib so the FFI can be loaded
+# at runtime from the bundle's lib/ directory.
+set(RUST_CRATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../rust")
+set(CARGO_TARGET_DIR "${RUST_CRATE_DIR}/target")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(RUST_PROFILE "debug")
+  set(RUST_BUILD_TYPE "")
+else()
+  set(RUST_PROFILE "release")
+  set(RUST_BUILD_TYPE "--release")
+endif()
+set(YUHINA_BRIDGE_LIB "${CARGO_TARGET_DIR}/${RUST_PROFILE}/libyuhina_bridge.so")
+
+add_custom_command(
+  OUTPUT "${YUHINA_BRIDGE_LIB}"
+  COMMAND cargo build ${RUST_BUILD_TYPE} -p yuhina-bridge
+  WORKING_DIRECTORY "${RUST_CRATE_DIR}"
+  COMMENT "Building yuhina-bridge (Rust cdylib)"
+  VERBATIM
+)
+add_custom_target(rust_bridge ALL DEPENDS "${YUHINA_BRIDGE_LIB}")
+add_dependencies(${BINARY_NAME} rust_bridge)
+
 
 # === Installation ===
 # By default, "installing" just makes a relocatable bundle in the build
@@ -98,6 +122,9 @@ install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}
   COMPONENT Runtime)
 
 install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
+install(FILES "${YUHINA_BRIDGE_LIB}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
   COMPONENT Runtime)
 
 foreach(bundled_library ${PLUGIN_BUNDLED_LIBRARIES})
