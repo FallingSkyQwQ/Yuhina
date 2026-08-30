@@ -68,6 +68,7 @@ if (-not $Makensis) {
         exit 1
     }
 }
+$MakensisPath = if ($Makensis -is [System.Management.Automation.CommandInfo]) { $Makensis.Source } else { $Makensis.FullName }
 
 $SetupExe = Join-Path $Dist "$BaseName-setup.exe"
 if (Test-Path $SetupExe) { Remove-Item $SetupExe -Force }
@@ -82,7 +83,7 @@ if (Test-Path $Icon) {
     $NsisArgs += "/DAPP_ICON=$Icon"
 }
 
-& $Makensis.Source $NsisArgs (Join-Path $PSScriptRoot 'installer.nsi')
+& $MakensisPath $NsisArgs (Join-Path $PSScriptRoot 'installer.nsi')
 
 if ($LASTEXITCODE -ne 0) {
     Write-Error "makensis failed with exit code $LASTEXITCODE"
