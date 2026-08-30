@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/bridge_provider.dart';
+import 'l10n/app_localizations.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,12 @@ void main() {
 }
 
 /// Decides between splash / error / real app based on service boot state.
+///
+/// Wraps every state in a minimal [MaterialApp] so the splash / error screens
+/// get a `Directionality` + theme (they render `Icon`, `Text`, buttons and a
+/// progress indicator, all of which require an ancestor [MaterialApp] or
+/// [Directionality]). The real app is itself a `MaterialApp.router`, which
+/// nests fine as the `home`.
 class StartupGate extends ConsumerWidget {
   const StartupGate({super.key});
 
@@ -27,10 +35,18 @@ class StartupGate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final boot = ref.watch(startupProvider);
 
-    return boot.when(
-      loading: () => const BootSplash(),
-      error: (e, st) => BootError(message: '$e'),
-      data: (_) => const YuhinaApp(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateTitle: (_) => 'Yuhina',
+      theme: buildAppTheme(seed: 0x6C5CE7, brightness: Brightness.light),
+      darkTheme: buildAppTheme(seed: 0x6C5CE7, brightness: Brightness.dark),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: boot.when(
+        loading: () => const BootSplash(),
+        error: (e, st) => BootError(message: '$e'),
+        data: (_) => const YuhinaApp(),
+      ),
     );
   }
 }

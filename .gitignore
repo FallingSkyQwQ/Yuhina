@@ -14,3 +14,6 @@ target/
 
 # Logs
 *.log
+
+# Locally packaged release artifacts
+build/dist/
