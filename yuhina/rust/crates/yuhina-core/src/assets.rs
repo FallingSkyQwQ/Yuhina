@@ -45,10 +45,13 @@ impl AssetIndex {
         })
     }
 
-    /// The on-disk object path for a hash: `objects/<first2>/<rest>`.
+    /// The on-disk object path for a hash, relative to the assets objects
+    /// directory: `<first2>/<full hash>` (the full on-disk path is
+    /// `<assetsDir>/objects/<first2>/<full hash>`). The filename is the whole
+    /// hash — Minecraft resolves assets by the full hash name.
     pub fn object_rel_path(hash: &str) -> String {
-        let (a, b) = hash.split_at(hash.len().min(2));
-        format!("objects/{a}/{b}")
+        let (a, _b) = hash.split_at(hash.len().min(2));
+        format!("{a}/{hash}")
     }
 }
 
@@ -121,7 +124,7 @@ mod tests {
         let (key, obj) = &idx.objects[0];
         assert_eq!(
             AssetIndex::object_rel_path(&obj.hash),
-            format!("objects/{}/{}", &obj.hash[..2], &obj.hash[2..])
+            format!("{}/{}", &obj.hash[..2], obj.hash)
         );
         assert!(key.starts_with("icons/") || key.contains('/'));
     }
@@ -144,7 +147,8 @@ mod tests {
 
     #[test]
     fn object_rel_path_edge() {
-        assert_eq!(AssetIndex::object_rel_path("abc"), "objects/ab/c");
-        assert_eq!(AssetIndex::object_rel_path("a"), "objects/a/");
+        // full hash kept as filename; first 2 chars become the directory
+        assert_eq!(AssetIndex::object_rel_path("abc"), "ab/abc");
+        assert_eq!(AssetIndex::object_rel_path("a"), "a/a");
     }
 }

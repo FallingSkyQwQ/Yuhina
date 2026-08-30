@@ -6,7 +6,7 @@
 
 use std::path::Path;
 
-use tracing::info;
+use tracing::{info, warn};
 use yuhina_api::YuhinaError;
 
 use crate::assets::{dedup_by_hash, plan_assets, AssetIndex};
@@ -82,6 +82,11 @@ pub fn add_assets(plan: &mut GameFilePlan, index: &AssetIndex, objects_dir: &Pat
 /// Download all missing files from the plan. Already-present files whose
 /// sha1 matches (or which have no sha1) are skipped. Returns the count of
 /// files actually downloaded.
+///
+/// The logging config is best-effort: some mirrors (e.g. BMCLAPI) do not
+/// carry it, and the launch command never references it (the engine resolves
+/// jvm tokens but has no `${path}` substitution), so a missing config must
+/// not block the launch.
 pub async fn ensure_downloaded(
     downloader: &dyn Downloader,
     plan: &GameFilePlan,
@@ -89,9 +94,6 @@ pub async fn ensure_downloaded(
     let mut downloaded = 0u32;
     let mut items: Vec<&DownloadItem> = plan.libraries.iter().collect();
     items.push(&plan.client);
-    if let Some(l) = &plan.logging {
-        items.push(l);
-    }
     items.extend(plan.assets.iter());
 
     for item in items {
@@ -99,13 +101,48 @@ pub async fn ensure_downloaded(
         if file_ok(path, item.sha1.as_deref()) {
             continue;
         }
-        downloader
-            .download(&item.url, path, item.sha1.as_deref())
-            .await
-            .map_err(|e| {
-                YuhinaError::download_failed(format!("download {}: {e}", item.target_path))
-            })?;
+        // Per-file retries: a single flaky connection must not abort the
+        // whole install (already-downloaded files are skipped on re-run).
+        let mut last_err = None;
+        for attempt in 1..=3 {
+            match downloader
+                .download(&item.url, path, item.sha1.as_deref())
+                .await
+            {
+                Ok(()) => {
+                    last_err = None;
+                    break;
+                }
+                Err(e) if attempt < 3 => {
+                    last_err = Some(e);
+                    warn!(url = %item.url, attempt, "download failed, retrying: {last_err:?}");
+                    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+                }
+                Err(e) => {
+                    last_err = Some(e);
+                    break;
+                }
+            }
+        }
+        if let Some(e) = last_err {
+            return Err(YuhinaError::download_failed(format!(
+                "download {}: {e}",
+                item.target_path
+            )));
+        }
         downloaded += 1;
+    }
+
+    if let Some(l) = &plan.logging {
+        let path = Path::new(&l.target_path);
+        if !file_ok(path, l.sha1.as_deref()) {
+            match downloader.download(&l.url, path, l.sha1.as_deref()).await {
+                Ok(()) => downloaded += 1,
+                Err(e) => {
+                    warn!(url = %l.url, "logging config unavailable (optional): {e}");
+                }
+            }
+        }
     }
     info!(downloaded, "game files ensured");
     Ok(downloaded)

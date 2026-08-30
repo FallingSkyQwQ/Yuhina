@@ -38,7 +38,7 @@
 > **整合收尾状态快照（2026-08-30，main 分支）**：全部 Agent（A 核心 / B 下载 / C 实例 / D 账号 / E UI / F CI）已合入本地 `main`（`94c23d8` 整合 merge）。最终验证：`cargo test --workspace` 198 passed / 0 failed（29 套件）；`cargo clippy --workspace --all-targets -- -D warnings` **0 warning**（`254a0e0` 清理 55 条）；`cargo fmt --check` 通过；`flutter analyze` 0 问题；`flutter test` 18/18（含 golden）；`flutter_rust_bridge_codegen generate` 后 `git diff` 为空（契约可复现）。**尚未 push 到 GitHub，M1/M2/M3/M5 需真实网络与手动验证。**
 
 - [x] **M0 地基**：Cargo workspace 构建通过；FRB 集成 + codegen 跑通且可复现；db schema 合入；clippy/fmt/test 门禁本地全绿（CI 真跑待 push 后验证）。
-- [ ] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志（需 Java + 真实下载，未验证）。
+- [x] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志。验证于 2026-08-30（`feature/m1-real-launch`，本地 `main` 派生）：MC **1.21.1**（release，非最新）经 **BMCLAPI 镜像** 完成 client jar + libraries + ~3888 个 assets（约 785MB）；Java **21.0.12.1**（Eclipse Adoptium JRE，`install_java(21)` 自动下载；`vendor` 参数修正后可用）；离线账号 `Tester`（标准 `OfflinePlayer:Tester` UUID）；`xvfb-run` 虚拟显示下 `launch_instance_with` 启动到主菜单。关键日志证据：`Setting user: Tester`、`Backend library: LWJGL version 3.3.3+5`、`Reloading ResourceManager: vanilla`、`Sound engine started`、`Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas`。`stop_game` SIGTERM 后 JVM 以 143 退出（预期）。集成测试：`rust/rust/tests/real_launch_test.rs`（`#[ignore]`，`xvfb-run -a cargo test --test real_launch_test -- --ignored --nocapture`，可设 `YUHINA_M1_ROOT` 复用下载缓存）。
 - [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功（mock 测试已绿，真实 Modrinth 联调未做）。
 - [ ] **M3 账号**：真实微软账号（client_id `ff0aea8c-…79b`）与 LittleSkin 账号登录并启动成功（mock 测试已绿，真实联调未做）。
 - [ ] **M4 UI 收口**：手工 E2E 清单（§3）全过（widget/golden/冒烟测试已绿，真机手工清单未执行）。

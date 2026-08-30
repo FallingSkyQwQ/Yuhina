@@ -167,6 +167,15 @@ impl YuhinaCore {
                 .fetch_bytes(&manifest.asset_index.url)
                 .await
             {
+                // persist the index json so the game can load assets at launch
+                // (`<assetsDir>/indexes/<id>.json`); missing it makes the game
+                // log "Can't open the resource index file".
+                let idx_path = self.paths.assets_dir.join("indexes");
+                let _ = std::fs::create_dir_all(&idx_path);
+                let _ = std::fs::write(
+                    idx_path.join(format!("{}.json", manifest.asset_index.id)),
+                    &bytes,
+                );
                 if let Ok(v) = serde_json::from_slice::<Value>(&bytes) {
                     if let Ok(idx) = crate::assets::AssetIndex::parse(&manifest.asset_index.id, &v)
                     {

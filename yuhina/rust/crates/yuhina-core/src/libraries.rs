@@ -307,14 +307,20 @@ pub fn resolve_libraries(
     out
 }
 
-/// Build the classpath string (libraries separated by platform separator),
-/// appending `client_jar` last.
+/// Classpath separator for the current platform (`:` on unix, `;` on
+/// windows). Note: this is NOT `std::path::MAIN_SEPARATOR` (path separator).
+#[cfg(windows)]
+pub const CLASSPATH_SEPARATOR: &str = ";";
+#[cfg(not(windows))]
+pub const CLASSPATH_SEPARATOR: &str = ":";
+
+/// Build the classpath string (libraries separated by the platform classpath
+/// separator), appending `client_jar` last.
 pub fn build_classpath(
     libraries: &[ResolvedLibrary],
     libraries_dir: &std::path::Path,
     client_jar: &std::path::Path,
 ) -> String {
-    let sep = std::path::MAIN_SEPARATOR.to_string();
     let mut entries: Vec<String> = Vec::new();
     for lib in libraries {
         if lib.is_native {
@@ -323,7 +329,7 @@ pub fn build_classpath(
         entries.push(libraries_dir.join(&lib.path).to_string_lossy().to_string());
     }
     entries.push(client_jar.to_string_lossy().to_string());
-    entries.join(&sep)
+    entries.join(CLASSPATH_SEPARATOR)
 }
 
 #[cfg(test)]
@@ -490,8 +496,20 @@ mod tests {
         );
         assert!(cp.ends_with("/g/v/1.20.4.jar"));
         assert!(cp.contains("org/lwjgl/lwjgl/3.3.2/lwjgl-3.3.2.jar"));
-        // natives jars are excluded from classpath
-        assert!(!cp.contains("natives-linux"));
+        // entries separated by the platform classpath separator, not `/`
+        let expected_sep = super::CLASSPATH_SEPARATOR;
+        assert!(
+            cp.contains(expected_sep),
+            "classpath must be joined with '{expected_sep}', got: {cp}"
+        );
+        assert_eq!(
+            cp.matches(expected_sep).count() + 1,
+            cp.split(expected_sep).count()
+        );
+        assert!(
+            !cp.contains("natives-linux"),
+            "native jars must be excluded from classpath"
+        );
     }
 
     #[test]

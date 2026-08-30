@@ -222,7 +222,7 @@ pub fn adoptium_url(major: u32, platform: &Platform, image_type: &str) -> String
         _ => platform.arch.as_str(),
     };
     format!(
-        "https://api.adoptium.net/v3/assets/latest/{major}/hotspot?os={os}&architecture={arch}&image_type={image_type}&vendor=temurin"
+        "https://api.adoptium.net/v3/assets/latest/{major}/hotspot?os={os}&architecture={arch}&image_type={image_type}&vendor=adoptium"
     )
 }
 

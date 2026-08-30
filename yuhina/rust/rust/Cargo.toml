@@ -20,6 +20,7 @@ yuhina-instance = { version = "0.1.0", path = "../crates/yuhina-instance" }
 yuhina-core = { version = "0.1.0", path = "../crates/yuhina-core" }
 async-trait = "0.1.92"
 zip.workspace = true
+tracing-subscriber = { workspace = true }
 
 [dev-dependencies]
 tiny_http = { workspace = true }

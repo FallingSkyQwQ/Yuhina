@@ -62,6 +62,7 @@ impl HttpDownloader {
     pub fn new(source: Source) -> Self {
         let client = reqwest::Client::builder()
             .user_agent("yuhina/0.1")
+            .timeout(std::time::Duration::from_secs(300))
             .build()
             .expect("build reqwest client");
         Self { client, source }
