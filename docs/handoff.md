@@ -35,16 +35,14 @@
 
 ## 2. 里程碑勾选
 
-> **Agent F 状态快照（2026-08-30）**：工具链已就绪（Rust 1.97.1 + Flutter 3.47.2 stable + `flutter_rust_bridge_codegen 2.13.0`，与本机 Cargo.lock 锁定版本一致）；`cargo build --workspace` 本地通过；`ci.yml` / `release.yml` / Linux&Windows 打包脚本已交付（分支 `feature/f-ci`，未验证 CI 全绿，因 FRB `flutter_rust_bridge.yaml` 尚由 Agent E 创建，codegen 契约校验依赖它）。M0 的「CI 绿」待 E 合入后验证，因此**不勾选**。
+> **整合收尾状态快照（2026-08-30，main 分支）**：全部 Agent（A 核心 / B 下载 / C 实例 / D 账号 / E UI / F CI）已合入本地 `main`（`94c23d8` 整合 merge）。最终验证：`cargo test --workspace` 198 passed / 0 failed（29 套件）；`cargo clippy --workspace --all-targets -- -D warnings` **0 warning**（`254a0e0` 清理 55 条）；`cargo fmt --check` 通过；`flutter analyze` 0 问题；`flutter test` 18/18（含 golden）；`flutter_rust_bridge_codegen generate` 后 `git diff` 为空（契约可复现）。**尚未 push 到 GitHub，M1/M2/M3/M5 需真实网络与手动验证。**
 
-> **Agent E 状态快照（2026-08-30）**：`yuhina/flutter_rust_bridge.yaml` + `YuhinaService` 门面（api-contract §3 全方法）已交付并提交生成物（分支 `feature/e-ui`）；`flutter analyze` 零问题、`flutter test` 全绿（含首页/实例库浅深 golden）、`cargo test --workspace` 仍全绿、`integration_test/smoke_test.dart` 本机通过（service init + config 往返 + 事件流，未启动游戏）。M0 的「FRB 集成 + codegen 跑通」「CI 绿」两项的 E 侧阻塞已解除，仍需 F 侧验证 CI。
-
-- [ ] **M0 地基**：Cargo workspace 构建通过（✅ F 已验证）；FRB 集成 + codegen 跑通（⏳ 待 E 提供 `flutter_rust_bridge.yaml` 与 wrapper）；db schema 合入；`ci.yml` 绿（⏳ 待验证）。
-- [ ] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志。
-- [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功。
-- [ ] **M3 账号**：真实微软账号与 LittleSkin 账号登录并启动成功。
-- [ ] **M4 UI 收口**：手工 E2E 清单（§3）全过。
-- [ ] **M5 发布**：tag → 双平台安装包/便携包自动发布到 GitHub Release（⏳ workflow 已写，首次真 tag 验证待 M5）。
+- [x] **M0 地基**：Cargo workspace 构建通过；FRB 集成 + codegen 跑通且可复现；db schema 合入；clippy/fmt/test 门禁本地全绿（CI 真跑待 push 后验证）。
+- [ ] **M1 核心启动**：Linux 离线启动真实 MC 实例成功并捕获日志（需 Java + 真实下载，未验证）。
+- [ ] **M2 实例+Mod**：Fabric 实例安装带依赖 Mod 运行正常；mrpack 导出→重新导入成功（mock 测试已绿，真实 Modrinth 联调未做）。
+- [ ] **M3 账号**：真实微软账号（client_id `ff0aea8c-…79b`）与 LittleSkin 账号登录并启动成功（mock 测试已绿，真实联调未做）。
+- [ ] **M4 UI 收口**：手工 E2E 清单（§3）全过（widget/golden/冒烟测试已绿，真机手工清单未执行）。
+- [ ] **M5 发布**：push 后打 tag → 双平台安装包/便携包自动发布到 GitHub Release（workflow 已写，未真跑）。
 
 ## 3. 手工 E2E 清单（M4 执行）
 
