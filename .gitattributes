@@ -1,0 +1,11 @@
+# Normalize line endings to LF across the repo (critical for the
+# flutter_rust_bridge codegen "no diff" check on Windows runners).
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jar binary
+*.zip binary
+*.appimage binary
+*.ico binary
+*.exe binary
