@@ -1,12 +1,14 @@
 //! Repository modules. Each repo holds a clone of the shared connection.
 
 pub mod account;
+pub mod installed_mod;
 pub mod instance;
 pub mod java;
 pub mod version_cache;
 
 pub use account::{AccountRepo, AccountRow};
-pub use instance::InstanceRepo;
+pub use installed_mod::InstalledModRepo;
+pub use instance::{InstanceRecord, InstanceRepo};
 pub use java::JavaRepo;
 pub use version_cache::{VersionCacheEntry, VersionCacheRepo};
 

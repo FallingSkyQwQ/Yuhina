@@ -16,5 +16,11 @@ anyhow = { workspace = true }
 zip = { workspace = true }
 sha1 = { workspace = true }
 tracing = { workspace = true }
+toml = "1.1.4"
+async-trait = "0.1.92"
+uuid = { workspace = true, features = ["v4"] }
 
 [dev-dependencies]
+axum = "0.8.9"
+tempfile = "3.27.0"
+tiny_http.workspace = true

@@ -72,6 +72,12 @@ impl Db {
         }
     }
 
+    pub fn installed_mod_repo(&self) -> InstalledModRepo {
+        InstalledModRepo {
+            conn: self.conn(),
+        }
+    }
+
     fn migrate(&self) -> anyhow::Result<()> {
         let mut conn = self.conn.lock().unwrap();
         let version: i64 = conn.query_row("PRAGMA user_version", [], |r| r.get(0))?;

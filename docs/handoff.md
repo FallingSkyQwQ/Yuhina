@@ -77,7 +77,7 @@
 | 真实 release 版本元数据解析 | A | 需外网或缓存；`yuhina-core` 已用离线 fixture 单测覆盖，`version_list_cached` 网络测试标 `#[ignore]` |
 | Forge/Fabric/NeoForge/Quilt installer 安装 | A/C | 需真实 jar + 匹配 Java；A 已提供 `install_loader` 编排 + 版本解析（离线 fixture 单测），真实安装为 `#[ignore]` 慢测 |
 | 真实 Java 启动子进程 | A | 需已装 Java；进程模块用假进程（`sh`）集成测试覆盖流/退出码，真实 java 启动为 `#[ignore]` |
-| Modrinth 真实搜索/版本拉取 | C | 需外网 |
+| Modrinth 真实搜索/版本拉取 | C | 需外网；已交付 `rust/rust/tests/real_network_test.rs`（`--ignored`，含 Modrinth 搜索/项目/版本 + Fabric loader 真实 meta 拉取） |
 | 真实微软/XBL/XSTS 联调 | D | 手动，不进 CI |
 
 ## 5. 分支与评审约定

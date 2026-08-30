@@ -7,15 +7,69 @@ use rusqlite::Connection;
 
 use yuhina_api::{InstanceDetail, InstanceSummary, JavaSelection, LaunchArgs, Loader, LoaderKind};
 
+/// A full instance row for `InstanceRepo::create` (Agent C ownership: CRUD).
+#[derive(Debug, Clone)]
+pub struct InstanceRecord {
+    pub summary: InstanceSummary,
+    pub game_dir: String,
+    pub java: JavaSelection,
+    pub notes: String,
+}
+
 #[derive(Debug, Clone)]
 pub struct InstanceRepo {
     pub(crate) conn: Arc<Mutex<Connection>>,
 }
 
 impl InstanceRepo {
+    /// Insert a new instance row. `id` comes from `record.summary.id`.
+    pub fn create(&self, record: &InstanceRecord) -> anyhow::Result<()> {
+        let conn = self.conn.lock().unwrap();
+        let now = crate::repos::now_ms();
+        let loader = record.summary.loader.as_ref();
+        conn.execute(
+            "INSERT INTO instances (
+                id, name, icon, mc_version, loader_kind, loader_version,
+                game_dir, java_auto_major, java_manual_path, launch_args_json, notes,
+                is_installed, last_launched_at, created_at, updated_at
+             ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15)",
+            rusqlite::params![
+                record.summary.id,
+                record.summary.name,
+                record.summary.icon,
+                record.summary.mc_version,
+                loader.map(|l| loader_kind_str(l.kind)),
+                loader.map(|l| l.version.as_str()),
+                record.game_dir,
+                match &record.java {
+                    JavaSelection::Auto(major) => Some(*major as i64),
+                    JavaSelection::Manual(_) => None,
+                },
+                match &record.java {
+                    JavaSelection::Manual(path) => Some(path.as_str()),
+                    JavaSelection::Auto(_) => None,
+                },
+                Option::<String>::None,
+                record.notes,
+                record.summary.is_installed as i64,
+                record.summary.last_launched_at.map(|v| v as i64),
+                now,
+                now,
+            ],
+        )?;
+        Ok(())
+    }
+
+    /// Delete the instance row; `installed_mods` rows cascade.
+    pub fn delete(&self, id: &str) -> anyhow::Result<()> {
+        let conn = self.conn.lock().unwrap();
+        conn.execute("DELETE FROM instances WHERE id = ?1", [id])?;
+        Ok(())
+    }
+
     pub fn get(&self, id: &str) -> anyhow::Result<Option<InstanceSummary>> {
         let conn = self.conn.lock().unwrap();
-        let mut stmt = conn.prepare(SELECT_INSTANCE)?;
+        let mut stmt = conn.prepare(SELECT_INSTANCE_BY_ID)?;
         let mut rows = stmt.query([id])?;
         if let Some(r) = rows.next()? {
             Ok(Some(summary_from(&conn, r)?))
@@ -26,11 +80,14 @@ impl InstanceRepo {
 
     pub fn get_detail(&self, id: &str) -> anyhow::Result<Option<InstanceDetail>> {
         let conn = self.conn.lock().unwrap();
-        let mut stmt = conn.prepare(SELECT_INSTANCE)?;
+        let mut stmt = conn.prepare(SELECT_INSTANCE_BY_ID)?;
         let mut rows = stmt.query([id])?;
         if let Some(r) = rows.next()? {
             let summary = summary_from(&conn, r)?;
-            let java: JavaSelection = match (r.get::<_, Option<i64>>(11)?, r.get::<_, Option<String>>(12)?) {
+            let java: JavaSelection = match (
+                r.get::<_, Option<i64>>(11)?,
+                r.get::<_, Option<String>>(12)?,
+            ) {
                 (Some(major), _) => JavaSelection::Auto(major as u32),
                 (None, Some(path)) => JavaSelection::Manual(path),
                 _ => JavaSelection::Auto(21),
@@ -80,7 +137,10 @@ impl InstanceRepo {
         let conn = self.conn.lock().unwrap();
         let mut sets: Vec<String> = Vec::new();
         let mut params: Vec<rusqlite::types::Value> = Vec::new();
-        let mut sql = UpdateBuilder { sets: &mut sets, params: &mut params };
+        let mut sql = UpdateBuilder {
+            sets: &mut sets,
+            params: &mut params,
+        };
 
         if let Some(v) = name {
             sql.push("name", v.into());
@@ -134,10 +194,7 @@ impl InstanceRepo {
             .join(", ");
         let mut params = params;
         params.push(id.to_string().into());
-        let sql_text = format!(
-            "UPDATE instances SET {assign} WHERE id = ?{}",
-            params.len()
-        );
+        let sql_text = format!("UPDATE instances SET {assign} WHERE id = ?{}", params.len());
         conn.execute(&sql_text, rusqlite::params_from_iter(params))?;
         Ok(())
     }
@@ -174,6 +231,14 @@ const SELECT_INSTANCE: &str = r#"
            is_installed, last_launched_at, created_at, updated_at,
            game_dir, java_auto_major, java_manual_path, launch_args_json, notes
     FROM instances
+"#;
+
+const SELECT_INSTANCE_BY_ID: &str = r#"
+    SELECT id, name, icon, mc_version, loader_kind, loader_version,
+           is_installed, last_launched_at, created_at, updated_at,
+           game_dir, java_auto_major, java_manual_path, launch_args_json, notes
+    FROM instances
+    WHERE id = ?1
 "#;
 
 /// Build a summary row; column order follows SELECT_INSTANCE.
